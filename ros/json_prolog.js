@@ -22,8 +22,6 @@ function JsonProlog(ros, options){
 
   this.jsonQuery = function(query, callback) {
       
-      console.log("jsonQuery()");
-      
       //var qid = this.makeid();
 
       var jsonPrologQueryClient = new ROSLIB.Service({
@@ -62,13 +60,9 @@ function JsonProlog(ros, options){
           that.finishClient();
         }
       });
-      
-      console.log("~jsonQuery()");
   };
 
   this.nextQuery = function (callback) {
-      
-      console.log("nextQuery()");
 
     var jsonPrologNextResultClient = new ROSLIB.Service({
       ros : ros,
@@ -125,12 +119,9 @@ function JsonProlog(ros, options){
 //       }
     });
 
-      console.log("~nextQuery()");
-
   };
 
   this.finishClient = function () {
-      console.log("finishClient()");
       
     var jsonPrologFinishClient = new ROSLIB.Service({
       ros : ros,
@@ -144,8 +135,6 @@ function JsonProlog(ros, options){
 
     jsonPrologFinishClient.callService(request3, function(e) { });
     that.finished = true;
-    
-      console.log("~finishClient()");
   };
 
 }
