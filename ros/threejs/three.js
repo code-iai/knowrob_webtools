@@ -10269,19 +10269,13 @@ THREE.Loader.prototype = {
 		function create_texture( where, name, sourceFile, repeat, offset, wrap, anisotropy ) {
 
 			var isCompressed = /\.dds$/i.test( sourceFile );
-            var isTif = /\.tif$/i.test( sourceFile );
+// HACK
+var isTif = /\.tif$/i.test( sourceFile );
+if(isTif) { sourceFilex = sourceFilex.slice(0, -3) + "png" };
+
 			var fullPath = texturePath + "/" + sourceFile;
-console.log('create_texture');
-console.log(sourceFile);
-console.log(/\.tif$/i.test( sourceFile ));
 
-            if ( isTif ) {
-            console.log('isTif');
-                var texture = THREE.ImageUtils.loadTifTexture( fullPath );
-
-                where[ name ] = texture;
-            }
-			else if ( isCompressed ) {
+			if ( isCompressed ) {
 
 				var texture = THREE.ImageUtils.loadCompressedTexture( fullPath );
 
@@ -12751,22 +12745,19 @@ THREE.SceneLoader.prototype = {
 			} else {
 
 				var isCompressed = /\.dds$/i.test( textureJSON.url );
-            var isTif = /\.tif$/i.test( textureJSON.url );
+// HACK
+var isTif = /\.tif$/i.test( textureJSON.url );
+if(isTif) { sourceFilex = textureJSON.url.slice(0, -3) + "png" };
+
 				var fullUrl = get_url( textureJSON.url, data.urlBaseType );
 				var textureCallback = generateTextureCallback( 1 );
-                // TODO: tif
-console.log('isCompressed __ isTif');
-                
-                if ( isTif ) {
-console.log('isTif');
-                texture = THREE.ImageUtils.loadTifTexture( fullPath );
 
-            }
-				else if ( isCompressed ) {
+				if ( isCompressed ) {
 
 					texture = THREE.ImageUtils.loadCompressedTexture( fullUrl, textureJSON.mapping, textureCallback );
-                }
-            else {
+                                  
+                                }
+                                else {
 
 					texture = THREE.ImageUtils.loadTexture( fullUrl, textureJSON.mapping, textureCallback );
 
@@ -26766,49 +26757,7 @@ console.info(url);
 		return texture;
 
 	},
-
-    loadTifTexture: function ( url, mapping, onLoad, onError ) {
-
-console.info('loadTifTexture');
-console.info(url);
-
-        var request = new XMLHttpRequest();
-        var texture;
-
-        request.onload = function () {
-
-            var buffer = request.response;
-            var tif = THREE.ImageUtils.parseTIF( buffer, true );
-            
-        texture = new THREE.DataTexture( tif.data, tif.width, tif.height, tif.format ); //new THREE.CompressedTexture();
-        //texture.mapping = mapping;
-        //texture.image = { width: 0, height: 0 };
-        texture.mipmaps = tif.mipmaps;
-console.info('TIF');
-console.info(tif);
-
-            // gl.generateMipmap fails for compressed textures
-            // mipmaps must be embedded in the DDS file
-            // or texture filters must not use mipmapping
-
-            texture.generateMipmaps = false;
-
-            texture.needsUpdate = true;
-
-            if ( onLoad ) onLoad( texture );
-
-        }
-
-        request.onerror = onError;
-
-        request.open( 'GET', url, true );
-        request.responseType = "arraybuffer";
-        request.send( null );
-
-        return texture;
-
-    },
-
+        
 	loadTextureCube: function ( array, mapping, onLoad, onError ) {
 
 		var images = [];
@@ -27043,28 +26992,7 @@ console.info(url);
 
 	},
 
-    parseTIF: function ( buffer, loadMipmaps ) {
-        var parser = new TIFFParser();
-        var imgCanvas = parser.parseTIFF(buffer, null)
-        
-        console.info(imgCanvas);
-        
-        var tif = { mipmaps: [],
-            width: imgCanvas.width,
-            height: imgCanvas.height,
-            format: THREE.RGBAFormat, // XXX
-            data: imgCanvas.canvas,
-            //data: parser.tiffDataView,
-            mipmapCount: 1,
-            isCubemap: false
-        };
-            
-        return tif;
-    },
-
 	parseDDS: function ( buffer, loadMipmaps ) {
-
-console.log('parseDDS');
 		var dds = { mipmaps: [], width: 0, height: 0, format: null, mipmapCount: 1 };
 
 		// Adapted from @toji's DDS utils

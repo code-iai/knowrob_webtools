@@ -4170,12 +4170,15 @@
 
     ColladaLoader2.prototype._loadTextureFromURL = function(imageURL) {
       var texture;
+
+// HACK
+var isTif = /\.tif$/i.test( imageURL );
+if(isTif) { imageURL = imageURL.slice(0, -3) + "png" };
+
       texture = this._imageCache[imageURL];
       if (texture != null) return texture;
-                    
-      var isTif = /\.tif$/i.test( imageURL );
-      if (isTif) texture = THREE.ImageUtils.loadTifTexture(imageURL);
-      else if (this.options.localImageMode) texture = this._loadImageLocal(imageURL);
+
+      if (this.options.localImageMode) texture = this._loadImageLocal(imageURL);
       if (!(texture != null)) texture = this._loadImageSimple(imageURL);
       if (texture != null) {
         this._imageCache[imageURL] = texture;

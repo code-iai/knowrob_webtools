@@ -3202,14 +3202,12 @@ THREE.ColladaLoader = function () {
 								if (image) {
 console.info('COLLADA loadTexture');
 									var texture;
-   var isTif = /\.tif$/i.test( image.init_from );
-   if(isTif) {
-console.info('TIF');
-                                    texture = THREE.ImageUtils.loadTifTexture(baseUrl + image.init_from);
-   }
-   else {
-                                    texture = THREE.ImageUtils.loadTexture(baseUrl + image.init_from);
-   }
+                                                                        
+// HACK
+var isTif = /\.tif$/i.test( image.init_from );
+if(isTif) { image.init_from = image.init_from.slice(0, -3) + "png" };
+
+                                                                      texture = THREE.ImageUtils.loadTexture(baseUrl + image.init_from);
 									texture.wrapS = cot.texOpts.wrapU ? THREE.RepeatWrapping : THREE.ClampToEdgeWrapping;
 									texture.wrapT = cot.texOpts.wrapV ? THREE.RepeatWrapping : THREE.ClampToEdgeWrapping;
 									texture.offset.x = cot.texOpts.offsetU;
