@@ -20,7 +20,8 @@ function JsonProlog(ros, options){
   var qid = that.makeid();
 
 
-  this.jsonQuery = function(query, callback) {
+  this.jsonQuery = function(query, callback, mode=0) {
+      queryMode = mode || 0;
       
       //var qid = this.makeid();
 
@@ -33,12 +34,10 @@ function JsonProlog(ros, options){
       
       // send query
       var request = new ROSLIB.ServiceRequest({
-        mode : 0,  // 1->INCREMENTAL, 0->ALL
+        mode : queryMode,  // 1->INCREMENTAL, 0->ALL
         id : qid,
         query : query
       });
-
-//       console.log(request);
     
       jsonPrologQueryClient.callService(request, function(result) {
 
@@ -48,8 +47,6 @@ function JsonProlog(ros, options){
           name : '/json_prolog/next_solution',
           serviceType : 'json_prolog/PrologNextSolution'
         });
-
-//         console.log(result);
 
         if (result.ok == true) {
 
@@ -75,9 +72,6 @@ function JsonProlog(ros, options){
     });
 
     jsonPrologNextResultClient.callService(request2, function(result) {
-
-//       console.log(result);
-//       console.log(result.solution);
 
       // TODO result.solution should be parsed
       if (result.status == 0 && result.solution == "") {
@@ -112,11 +106,8 @@ function JsonProlog(ros, options){
           var ret = parseSolution(solution, 0, "");
         }
 
-//         console.log(solution);
         callback(ret);
-      } //else {
-//         console.log("wtf?");
-//       }
+      }
     });
 
   };
