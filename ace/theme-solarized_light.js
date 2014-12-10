@@ -3,15 +3,15 @@ ace.define("ace/theme/solarized_light",["require","exports","module","ace/lib/do
 exports.isDark = false;
 exports.cssClass = "ace-solarized-light";
 exports.cssText = ".ace-solarized-light .ace_gutter {\
-background: #fbf1d3;\
+background: #FFFFFF;\
 color: #333\
 }\
 .ace-solarized-light .ace_print-margin {\
 width: 1px;\
-background: #e8e8e8\
+background: #FFFFFF\
 }\
 .ace-solarized-light {\
-background-color: #FDF6E3;\
+background-color: #FFFFFF;\
 color: #586E75\
 }\
 .ace-solarized-light .ace_cursor {\
@@ -32,10 +32,10 @@ margin: -1px 0 0 -1px;\
 border: 1px solid rgba(147, 161, 161, 0.50)\
 }\
 .ace-solarized-light .ace_marker-layer .ace_active-line {\
-background: #EEE8D5\
+background: #FFFFFF\
 }\
 .ace-solarized-light .ace_gutter-active-line {\
-background-color : #EDE5C1\
+background-color : #FFFFFF\
 }\
 .ace-solarized-light .ace_marker-layer .ace_selected-word {\
 border: 1px solid #073642\
