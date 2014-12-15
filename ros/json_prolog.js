@@ -18,41 +18,26 @@ function JsonProlog(ros, options){
   };
 
   var qid = that.makeid();
-
-
+  
   this.jsonQuery = function(query, callback, mode=0) {
       queryMode = mode || 0;
-      
-      //var qid = this.makeid();
-
-      var jsonPrologQueryClient = new ROSLIB.Service({
+      // connect to ROS service
+      var client = new ROSLIB.Service({
         ros : ros,
         name : '/json_prolog/simple_query',
         serviceType : 'json_prolog/PrologQuery'
       });
-
-      
       // send query
       var request = new ROSLIB.ServiceRequest({
         mode : queryMode,  // 1->INCREMENTAL, 0->ALL
         id : qid,
         query : query
       });
-    
-      jsonPrologQueryClient.callService(request, function(result) {
-
-        // collect results
-        var jsonPrologNextResultClient = new ROSLIB.Service({
-          ros : ros,
-          name : '/json_prolog/next_solution',
-          serviceType : 'json_prolog/PrologNextSolution'
-        });
-
+      client.callService(request, function(result) {
         if (result.ok == true) {
-
           that.nextQuery(callback);
-
-        } else {
+        }
+        else {
           callback(result.message);
           that.finishClient();
         }
@@ -60,27 +45,24 @@ function JsonProlog(ros, options){
   };
 
   this.nextQuery = function (callback) {
-
-    var jsonPrologNextResultClient = new ROSLIB.Service({
+    // connect to ROS service
+    var client = new ROSLIB.Service({
       ros : ros,
       name : '/json_prolog/next_solution',
       serviceType : 'json_prolog/PrologNextSolution'
     });
-
-    var request2 = new ROSLIB.ServiceRequest({
-      id : qid
-    });
-
-    jsonPrologNextResultClient.callService(request2, function(result) {
-
-      // TODO result.solution should be parsed
+    // send query
+    var request = new ROSLIB.ServiceRequest({id : qid});
+    client.callService(request, function(result) {
       if (result.status == 0 && result.solution == "") {
         callback("false.\n\n");
         that.finishClient();
-      } else if (result.status == 3 && result.solution == "{}") {
+      }
+      else if (result.status == 3 && result.solution == "{}") {
         callback("true.\n\n");
         that.finishClient();
-      } else if (result.status == 3 && result.solution != "{}") {
+      }
+      else if (result.status == 3 && result.solution != "{}") {
         var solution = JSON.parse(result.solution);
 
         function parseSolution (solution, level, ret) {
@@ -113,19 +95,15 @@ function JsonProlog(ros, options){
   };
 
   this.finishClient = function () {
-      
-    var jsonPrologFinishClient = new ROSLIB.Service({
+    var client = new ROSLIB.Service({
       ros : ros,
       name : '/json_prolog/finish',
       serviceType : 'json_prolog/PrologFinish'
     });
-
-    request3 = new ROSLIB.ServiceRequest({
+    request = new ROSLIB.ServiceRequest({
       id : qid
     });
-
-    jsonPrologFinishClient.callService(request3, function(e) { });
+    client.callService(request, function(e) { });
     that.finished = true;
   };
-
 }
