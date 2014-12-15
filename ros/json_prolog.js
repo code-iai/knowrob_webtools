@@ -1,13 +1,11 @@
 
 function JsonProlog(ros, options){
-
   var that = this;
   this.raw = options.raw || false;
   this.finished = false;
   var ros = ros;
   
   this.makeid = function() {
-
     var text = "";
     var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
@@ -38,7 +36,7 @@ function JsonProlog(ros, options){
           that.nextQuery(callback);
         }
         else {
-          callback(result.message);
+          callback({ error: result.message });
           that.finishClient();
         }
       });
@@ -55,11 +53,11 @@ function JsonProlog(ros, options){
     var request = new ROSLIB.ServiceRequest({id : qid});
     client.callService(request, function(result) {
       if (result.status == 0 && result.solution == "") {
-        callback("false.\n\n");
+        callback({ completed: true });
         that.finishClient();
       }
       else if (result.status == 3 && result.solution == "{}") {
-        callback("true.\n\n");
+        callback({ completed: true, hasMore: true });
         that.finishClient();
       }
       else if (result.status == 3 && result.solution != "{}") {
@@ -88,7 +86,7 @@ function JsonProlog(ros, options){
           var ret = parseSolution(solution, 0, "");
         }
 
-        callback(ret);
+        callback({ value: ret });
       }
     });
 
@@ -106,4 +104,21 @@ function JsonProlog(ros, options){
     client.callService(request, function(e) { });
     that.finished = true;
   };
+  
+  this.format = function(result) {
+    if (result.error) {
+      return error;
+    }
+    else if (result.completed) {
+      if (result.hasMore) {
+        return "true.\n\n";
+      }
+      else {
+        return "false.\n\n";
+      }
+    }
+    else {
+      return result.value;
+    }
+  }
 }
