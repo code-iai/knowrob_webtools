@@ -66,10 +66,6 @@ function JsonProlog(ros, options){
         callback({ completed: true, hasMore: true });
         that.finishClient();
       }
-      else if (result.status == 3 && result.solution == "{}") {
-        callback({ completed: true, hasMore: true });
-        that.finishClient();
-      }
       else if (result.status == 3 && result.solution != "{}") {
         var solution = JSON.parse(result.solution);
 
