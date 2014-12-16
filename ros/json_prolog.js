@@ -52,8 +52,18 @@ function JsonProlog(ros, options){
     // send query
     var request = new ROSLIB.ServiceRequest({id : qid});
     client.callService(request, function(result) {
+      // status = NO_SOLUTION
       if (result.status == 0 && result.solution == "") {
         callback({ completed: true });
+        that.finishClient();
+      }
+      // status = QUERY_FAILED
+      else if (result.status == 2) {
+        callback({ error: result.solution });
+      }
+      // status = OK
+      else if (result.status == 3 && result.solution == "{}") {
+        callback({ completed: true, hasMore: true });
         that.finishClient();
       }
       else if (result.status == 3 && result.solution == "{}") {
@@ -107,7 +117,7 @@ function JsonProlog(ros, options){
   
   this.format = function(result) {
     if (result.error) {
-      return error;
+      return result.error;
     }
     else if (result.completed) {
       if (result.hasMore) {
