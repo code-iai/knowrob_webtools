@@ -36,7 +36,7 @@ function JsonProlog(ros, options){
           that.nextQuery(callback);
         }
         else {
-          callback({ error: result.message });
+          callback({ error: result });
           that.finishClient();
         }
       });
@@ -59,7 +59,7 @@ function JsonProlog(ros, options){
       }
       // status = QUERY_FAILED
       else if (result.status == 2) {
-        callback({ error: result.solution });
+        callback({ error: result });
       }
       // status = OK
       else if (result.status == 3 && result.solution == "{}") {
