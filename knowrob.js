@@ -34,6 +34,7 @@ function Knowrob(options){
     var historyDiv    = options.history_div || 'history'
     var libraryDiv    = options.library_div || 'examplequery'
     var queryDiv      = options.query_div || 'user_query'
+    var nextButtonDiv = options.next_button_div || 'btn_query_next'
 
     this.init = function () {
       // Connect to ROS.
@@ -105,13 +106,14 @@ function Knowrob(options){
         //height: 500//210
       });
       
-      this.resize_canvas();
       // fill example query select
       this.populate_query_select(libraryDiv, libraryFile);
       
       this.setup_autocompletion();
       this.setup_history_field();
       this.setup_query_field();
+      this.resize_canvas();
+      set_inactive(document.getElementById(nextButtonDiv));
     };
 
     this.setup_history_field = function () {
@@ -145,7 +147,7 @@ function Knowrob(options){
         userQuery.commands.addCommand({
             name: 'send_query', readOnly: false,
             bindKey: {win: 'Enter',  mac: 'Enter'},
-            exec: function(editor) { that.query(userQuery); }
+            exec: function(editor) { that.query(); }
         });
         userQuery.commands.addCommand({
             name: 'new_line', readOnly: false,
@@ -191,6 +193,8 @@ function Knowrob(options){
     
     this.new_pl_client = function() {
       if (prolog != null && prolog.finished == false) {
+        ace.edit(historyDiv).setValue(ace.edit(historyDiv).getValue() + "stopped.\n", -1);
+        ace.edit(historyDiv).navigateFileEnd();
         prolog.finishClient();
       }
       prolog = new JsonProlog(ros, {});
@@ -209,7 +213,6 @@ function Knowrob(options){
             for(i=1; i<lines.length-1; ++i) {
               var tmp = lines[i].split(" = ");
               if(tmp.length==2) {
-                console.log(tmp[1].trim());
                 prologNames.push(tmp[1].trim());
               }
             }
@@ -244,20 +247,23 @@ function Knowrob(options){
     //////////// Prolog queries
     ///////////////////////////////
 
-    this.query = function (query) {
+    this.query = function () {
+      var query = ace.edit(queryDiv);
       var history = ace.edit(historyDiv);
       var q = query.getValue().trim();
     
       if (q.substr(q.length - 1) == ".") {
         q = q.substr(0, q.length - 1);
+        prolog = this.new_pl_client();
         
         history.setValue(history.getValue() + "\n\n?- " + q +  ".\n", -1);
         history.navigateFileEnd();
+        set_active(document.getElementById(nextButtonDiv));
         
-        prolog = this.new_pl_client();
         prolog.jsonQuery(q, function(result) {
             history.setValue(history.getValue() + prolog.format(result), -1);
             history.navigateFileEnd();
+            if( ! result.value ) set_inactive(document.getElementById(nextButtonDiv));
         }, mode=1); // incremental mode
         
         query.setValue("");
@@ -267,7 +273,12 @@ function Knowrob(options){
       }
       else {
         if (prolog != null && prolog.finished == false) {
+          history.setValue(history.getValue() + "stopped.\n\n", -1);
+          history.navigateFileEnd();
           prolog.finishClient();
+        }
+        else {
+          alert("Invalid prolog query '" + q + "'. Prolog queries always end with a dot.");
         }
       }
     };
@@ -275,11 +286,24 @@ function Knowrob(options){
     this.next_solution = function () {
       var history = ace.edit(historyDiv);
       prolog.nextQuery(function(result) {
-            history.setValue(history.getValue() + prolog.format(result), -1);
-            history.navigateFileEnd();
+          history.setValue(history.getValue() + prolog.format(result), -1);
+          history.navigateFileEnd();
+          if( ! result.value ) set_inactive(document.getElementById(nextButtonDiv));
       });
       user_query.focus();
     };
+    
+    function set_active(div) {
+      div.style.pointerEvents = "auto";
+      div.style.backgroundColor = "#dadada";
+      div.style.color = "#606060";
+    }
+    
+    function set_inactive(div) {
+      div.style.pointerEvents = "none";
+      div.style.backgroundColor = "#cfcfcf";
+      div.style.color = "#adadad";
+    }
 
     // append the selected query to the user_query form
     this.add_selected_to_queryform = function (selectid) {
@@ -335,8 +359,8 @@ function Knowrob(options){
     ///////////////////////////////
     
     this.resize_canvas = function () {
-      var w = $('#'+canvasDiv).width()-8.0;
-      var h = $('#'+canvasDiv).height()-8.0;
+      var w = $('#'+canvasDiv).width();
+      var h = $('#'+canvasDiv).height();
       rosViewer.renderer.setSize(w, h);
       rosViewer.camera.aspect = w/h;
       rosViewer.camera.updateProjectionMatrix();
