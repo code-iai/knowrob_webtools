@@ -180,6 +180,30 @@ body {
   font-size: 16px;
 }
 
+.media {
+  height: 60px;
+  padding: 0;
+  margin: 0;
+}
+
+.ui-layout-east {
+}
+
+#logo_container{
+  float: left;
+  padding-right: 200px;
+}
+
+#msg_container{
+  width: 200px;
+  float: right;
+  height: 100%;
+  background: none repeat scroll 0% 0% #dadada;
+  border-left: 1px solid #AAA;
+  text-align: left;
+  overflow: auto;
+}
+
 .menu,
 .menu ul,
 .menu li,
