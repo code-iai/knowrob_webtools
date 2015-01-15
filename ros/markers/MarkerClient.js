@@ -41,7 +41,7 @@ ROS3D.MarkerClient = function(options) {
     compression : 'png'
   });
   rosTopic.subscribe(function(message) {
-
+    
     var newMarker = new ROS3D.Marker({
       message : message,
       path : that.path,

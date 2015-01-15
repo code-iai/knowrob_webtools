@@ -51,7 +51,7 @@ function Knowrob(options){
       ros.on('close', function() {
         console.log('Connection to websocket server closed.');
       });
-
+      
       // Create the main viewer.
       rosViewer = new ROS3D.Viewer({
         divID : canvasDiv,
@@ -123,7 +123,6 @@ function Knowrob(options){
       snapshotTopic = new ROSLIB.Topic({
         ros : ros,
         name : '/canvas/snapshot',
-        //messageType : 'std_msgs/String'
         messageType : 'sensor_msgs/Image'
       });
       
@@ -451,22 +450,27 @@ function Knowrob(options){
 
     // fill the select with json data from url
     this.populate_query_select = function (id, url) {
-      // url must point to a json-file containing an array named "query" with
-      // the query strings to display in the select
-      var request = new XMLHttpRequest
-      request.open("GET", url, false);
-      request.send(null);
+      try{
+        // url must point to a json-file containing an array named "query" with
+        // the query strings to display in the select
+        var request = new XMLHttpRequest
+        request.open("GET", url, false);
+        request.send(null);
 
-      var querylist = JSON.parse(request.responseText);
+        var querylist = JSON.parse(request.responseText);
 
-      var select = document.getElementById(id);
-      if(select !== null) {
-        for (var i = 0; i < querylist.query.length; i++) {
-          var opt = document.createElement('option');
-          opt.value = querylist.query[i].q;
-          opt.innerHTML = querylist.query[i].text;
-          select.appendChild(opt);
+        var select = document.getElementById(id);
+        if(select !== null) {
+          for (var i = 0; i < querylist.query.length; i++) {
+            var opt = document.createElement('option');
+            opt.value = querylist.query[i].q;
+            opt.innerHTML = querylist.query[i].text;
+            select.appendChild(opt);
+          }
         }
+      }
+      catch(e) {
+        console.warn(e);
       }
     }
 
