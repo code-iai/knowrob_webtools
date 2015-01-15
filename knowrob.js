@@ -27,6 +27,9 @@ function Knowrob(options){
     // File that contains example queries
     var libraryFile = options.library_file || 'queriesForRobohow.json'
     
+    // The topic where the canvas publishes snapshots
+    var snapshotTopic;
+    
     // configuration of div names
     var canvasDiv     = options.canvas_div || 'markers'
     var designatorDiv = options.designator_div || 'designator'
@@ -104,6 +107,14 @@ function Knowrob(options){
         topic: 'data_vis_msgs',
         //width: 500,//210,
         //height: 500//210
+      });
+    
+      // The topic where the canvas publishes snapshots
+      snapshotTopic = new ROSLIB.Topic({
+        ros : ros,
+        name : '/canvas/snapshot',
+        //messageType : 'std_msgs/String'
+        messageType : 'sensor_msgs/Image'
       });
       
       // fill example query select
@@ -356,6 +367,68 @@ function Knowrob(options){
     }
     
     ///////////////////////////////
+    //////////// Snapshots
+    ///////////////////////////////
+    
+    this.publish_snapshot = function (frameNumber, fps) {
+      console.log("Publishing canvas snapshot frame:" + frameNumber + " fps:" + fps);
+      var gl = rosViewer.renderer.getContext();
+      var width  = gl.drawingBufferWidth;
+      var height = gl.drawingBufferHeight;
+      
+      // Compute frame timestamp based on FPS and frame number
+      var t = frameNumber/fps;
+      var secs  = Math.floor(t);
+      var nsecs = Math.round(1000*(t - secs));
+      
+      // FIXME: Why does this fail?
+      //    Also it is not nice to copy the pixel data below. Would be
+      //    nicer if we could use the return of glReadPixels directly.
+      //var buf = new Uint8Array(width * height * 3);
+      //gl.readPixels(0, 0, width, height, gl.RGB, gl.UNSIGNED_BYTE, buf);
+      var buf = new Uint8Array(width * height * 4);
+      gl.readPixels(0, 0, width, height, gl.RGBA, gl.UNSIGNED_BYTE, buf);
+      // Copy to pixels array (Note: Workaround for serialization issue when using Uint8Array directly)
+      var pixels = [];
+      var pixelStride = 4; // 4 bytes per pixel (RGBA)
+      for(var y=height-1; y>=0; y--) {
+        for(var x=0; x<width; x++) {
+          var index = (x + y*width)*pixelStride;
+          // Read RGB, ignore alpha
+          pixels.push(buf[index+0]);
+          pixels.push(buf[index+1]);
+          pixels.push(buf[index+2]);
+        }
+      }
+      
+      // Finally generate ROS message
+      var msg = new ROSLIB.Message({
+        header: {
+          // Two-integer timestamp
+          stamp: { secs:secs, nsecs:nsecs },
+          // Frame this data is associated with
+          frame_id: "image",
+          // Consecutively increasing ID
+          seq: frameNumber
+        },
+        // image height, that is, number of rows
+        height: height,
+        // image width, that is, number of cols
+        width: width,
+        // Encoding of pixels -- channel meaning, ordering, size
+        encoding: "rgb8",
+        // is this data bigendian?
+        is_bigendian: 0,
+        // Full row length in bytes
+        step: width*3,
+        // actual matrix data, size is (step * rows)
+        data: pixels
+      });
+      
+      snapshotTopic.publish(msg);
+    }
+    
+    ///////////////////////////////
     ///////////////////////////////
     
     this.resize_canvas = function () {
@@ -377,12 +450,13 @@ function Knowrob(options){
       var querylist = JSON.parse(request.responseText);
 
       var select = document.getElementById(id);
-
-      for (var i = 0; i < querylist.query.length; i++) {
-        var opt = document.createElement('option');
-        opt.value = querylist.query[i].q;
-        opt.innerHTML = querylist.query[i].text;
-        select.appendChild(opt);
+      if(select !== null) {
+        for (var i = 0; i < querylist.query.length; i++) {
+          var opt = document.createElement('option');
+          opt.value = querylist.query[i].q;
+          opt.innerHTML = querylist.query[i].text;
+          select.appendChild(opt);
+        }
       }
     }
 
@@ -395,4 +469,3 @@ function Knowrob(options){
       });
     });
 }
-
