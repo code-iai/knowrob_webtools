@@ -121,10 +121,14 @@ body {
   padding:7px;
 }
 
+.vid_properties {
+  background-color:#dadada;
+}
+
 .vid_button {
   display:block;
   background-color:#dadada;
-  width:50px;
+  width:100px;
   height:100%;
   padding:7px;
 }
