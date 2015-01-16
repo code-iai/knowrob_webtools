@@ -38,6 +38,10 @@ function Knowrob(options){
     var libraryDiv    = options.library_div || 'examplequery'
     var queryDiv      = options.query_div || 'user_query'
     var nextButtonDiv = options.next_button_div || 'btn_query_next'
+    
+    var background = options.background || '#ffffff';
+    var near = options.near || 0.1;
+    var far = options.far || 1000;
 
     this.init = function () {
       // Connect to ROS.
@@ -58,7 +62,9 @@ function Knowrob(options){
         width : 800,
         height : 600,
         antialias : true,
-        background : '#ffffff'
+        background : background,
+        near: near,
+        far: far
       });
       rosViewer.addObject(new ROS3D.Grid());
       
