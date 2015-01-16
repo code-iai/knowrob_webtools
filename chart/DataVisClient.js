@@ -38,7 +38,7 @@ function DataVisClient(options) {
           handle: new DonutChart(options)
         });
 
-        chartHandle.myFind(function (element, index, array) {
+        chartHandle.find(function (element, index, array) {
             if(element.id == message.id) {return true} else {return false}
           }, this)
           .handle.update(message.values[0]);
