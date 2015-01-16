@@ -114,7 +114,7 @@ function JsonProlog(ros, options){
   
   this.format = function(result) {
     if (result.error) {
-      return result.error.solution || result.error.message || result.error;
+      return (result.error.solution || result.error.message || "Error") + "\n";
     }
     else if (result.completed) {
       if (result.hasMore) {
