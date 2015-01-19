@@ -40,8 +40,8 @@ function Knowrob(options){
     var nextButtonDiv = options.next_button_div || 'btn_query_next'
     
     var background = options.background || '#ffffff';
-    var near = options.near || 0.1;
-    var far = options.far || 1000;
+    var near = options.near || 0.01;
+    var far = options.far || 1000.0;
 
     this.init = function () {
       // Connect to ROS.
