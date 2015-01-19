@@ -202,8 +202,7 @@ body {
 }
 
 #logo_container{
-  float: left;
-  padding-right: 200px;
+  text-align: center;
 }
 
 #msg_container{
