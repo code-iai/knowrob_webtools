@@ -7,6 +7,43 @@ body {
     background: none repeat scroll 0% 0% #dadada;
 }
 
+.login-box {
+  width:300px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+.login-box0 {
+  position:relative;
+  left:0;
+  width:226px;
+  top:5px;
+  border: 1px black solid;
+  padding:5px 25px;
+}
+.login-box1 {
+}
+.register-box {
+  position:relative;
+  left:0;
+  width:226px;
+  top:5px;
+  border: 1px black solid;
+  padding:5px 25px;
+}
+#user-field {
+}
+#pw-field {
+}
+#sign-in-field {
+}
+#remember-me {
+  float:left;
+}
+#sign-in {
+  float:right;
+}
+
 #pkg-selection {
   width: 100%;
   top: 28px;
