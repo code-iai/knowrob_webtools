@@ -294,3 +294,10 @@ ROS3D.Marker.prototype.setPose = function(pose) {
   // update the world
   this.updateMatrixWorld();
 };
+
+ROS3D.Marker.prototype.update = function(message) {
+  // set the pose and get the color
+  this.setPose(message.pose);
+  // TODO: update color material
+  // TODO: update marker geometry
+}
