@@ -158,18 +158,6 @@ body {
   padding:7px;
 }
 
-.vid_properties {
-  background-color:#dadada;
-}
-
-.vid_button {
-  display:block;
-  background-color:#dadada;
-  width:100px;
-  height:100%;
-  padding:7px;
-}
-
 #chart {
   width:100%;
   height:100%;
@@ -385,4 +373,52 @@ a.navbar-tool-brand {
 .navbar-tool-brand-2 img{
   width: auto;
   height: 40px;
+}
+
+#vid_table {
+  width:100%;
+}
+#vid_table tr td {
+  padding-right: 5px;
+}
+#vid_table tr td input {
+  padding-right: 50px;
+  width:100%;
+  border: none;
+  background-color:#fff;
+	border: 1px solid #ccc;
+	-moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  padding: 4px 7px;
+  
+}
+#vid_table tr th {
+  font-size:13px;
+  font-weight:normal;
+  text-decoration:none;
+}
+#vid_table tr td div  {
+  height:200px;
+}
+.vid_properties {
+  background-color:#dadada;
+}
+.vid_button_group li {
+  width:50%;
+}
+.vid_button {
+  display:block;
+  background-color:#dadada;
+  height:100%;
+  padding:7px;
+}
+
+#vid_properties {
+  height: -o-calc(100% - 25px); /* opera */
+  height: -webkit-calc(100% - 25px); /* google, safari */
+  height: -moz-calc(100% - 25px); /* firefox */
+}
+#vid_bottom {
+  height: 25px;
 }
