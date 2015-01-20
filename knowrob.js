@@ -131,6 +131,15 @@ function Knowrob(options){
         name : '/canvas/snapshot',
         messageType : 'sensor_msgs/Image'
       });
+
+      var camera_topic = new ROSLIB.Topic({
+        ros : ros,
+        name : '/camera/pose',
+        messageType : 'geometry_msgs/Pose'
+      });
+      camera_topic.subscribe(function(message) {
+        that.set_camera_pose(message);
+      });
       
       // fill example query select
       this.populate_query_select(libraryDiv, libraryFile);
@@ -441,6 +450,30 @@ function Knowrob(options){
       });
       
       snapshotTopic.publish(msg);
+    }
+    
+    ///////////////////////////////
+    //////////// Camera
+    ///////////////////////////////
+    
+    this.set_camera_pose = function(pose) {
+        that.set_camera_position(pose.position);
+        that.set_camera_orientation(pose.orientation);
+    }
+    
+    this.set_camera_position = function(position) {
+        rosViewer.cameraControls.camera.position.x = position.x;
+        rosViewer.cameraControls.camera.position.y = position.y;
+        rosViewer.cameraControls.camera.position.z = position.z;
+    }
+    
+    this.set_camera_orientation = function(orientation) {
+        var orientation = new THREE.Quaternion(orientation.x, orientation.y,
+                                               orientation.z, orientation.w);
+        var frontVector = new THREE.Vector3(0, 1, 0);
+        frontVector.applyQuaternion(orientation);
+        rosViewer.cameraControls.center = rosViewer.cameraControls.camera.position.clone();
+        rosViewer.cameraControls.center.add(frontVector);
     }
     
     ///////////////////////////////
