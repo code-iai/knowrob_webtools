@@ -220,9 +220,10 @@ ROS3D.Marker = function(options) {
       // only work on non-empty text
       if (message.text.length > 0) {
         // setup the text
+        console.log(message.scale);
         var textGeo = new THREE.TextGeometry(message.text, {
-          size: message.scale.x * 0.5,
-          height: 0.1 * message.scale.x,
+          size: message.scale.z * 0.5,
+          height: 0.1 * message.scale.z,
           curveSegments: 4,
           font: 'helvetiker',
           bevelEnabled: false,
@@ -298,6 +299,13 @@ ROS3D.Marker.prototype.setPose = function(pose) {
 ROS3D.Marker.prototype.update = function(message) {
   // set the pose and get the color
   this.setPose(message.pose);
-  // TODO: update color material
+  // TODO: update text for MARKER_TEXT_VIEW_FACING
   // TODO: update marker geometry
+  // TODO: update color material only if changed
+  var colorMaterial = ROS3D.makeColorMaterial(
+      message.color.r, message.color.g,
+      message.color.b, message.color.a);
+  for(var child in this.children) {
+      // child could be: ROS3D.TriangleList, ROS3D.MeshResource, ROS3D.Arrow, THREE.Mesh
+  }
 }
