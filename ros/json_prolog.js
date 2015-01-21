@@ -17,7 +17,7 @@ function JsonProlog(ros, options){
 
   var qid = that.makeid();
   
-  this.jsonQuery = function(query, callback, mode=0) {
+  this.jsonQuery = function(query, callback, mode) {
       queryMode = mode || 0;
       // connect to ROS service
       var client = new ROSLIB.Service({
