@@ -121,7 +121,8 @@ function BarChart (options) {
       .style("font-size", fontsize);
 
     percent
-     .text(function(d,i) {return (100*parseInt(data.value2[i])/sum).toFixed(1) + "%" });//function(d) { return d; });
+//      .text(function(d,i) {return (100*parseInt(data.value2[i])/sum).toFixed(1) + "%" });
+      .text(function(d) { return parseFloat(d).toFixed(2); });
 
     percent.exit()
       .remove();
@@ -142,7 +143,7 @@ function BarChart (options) {
       .style("font-size", fontsize);
 
     total
-     .text(sum + " - " + label);//Total "+sum);//function(d) { return d; });
+      .text(label + " (total: " + sum + ")");//Total "+sum);//function(d) { return d; });
 
     total.exit()
       .remove();
