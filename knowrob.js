@@ -56,11 +56,13 @@ function Knowrob(options){
         console.log('Connection to websocket server closed.');
       });
       
+      var width = 800;
+      var height = 600;
       // Create the main viewer.
       rosViewer = new ROS3D.Viewer({
         divID : canvasDiv,
-        width : 800,
-        height : 600,
+        width : width,
+        height : height,
         antialias : true,
         background : background,
         near: near,
@@ -477,6 +479,105 @@ function Knowrob(options){
     }
     
     ///////////////////////////////
+    //////////// HUD
+    ///////////////////////////////
+    
+    var spriteLayouter = [];
+    
+    var hudTextMesh;
+    
+    this.create_text_texture = function(options) {
+        var textLines = options.textLines || [
+            "  Time: 56278462378",
+            "  Task: Making Pancake",
+            "Action: Grasp Pancake Tube"
+        ];
+        
+        // Font options
+        var font = options.font || "Bold 24px Monospace";
+        var useShadow = options.useShadow || false;
+        var margin = options.margin || [12, 12];
+        var lineHeight = 24;
+        
+        // Create a canvas for 2D rendering
+        var canvas  = document.createElement('canvas');
+        
+        // Compute size of the canvas so that it fits the text.
+        // We need a special context for measuring the size.
+        var maxWidth = 0;
+        var heightSum = 0;
+        var measure_ctx = canvas.getContext('2d');
+        measure_ctx.font = font;
+        for(var i=0; i<textLines.length; i++) {
+            var m = measure_ctx.measureText(textLines[i]);
+            if(m.width>maxWidth) maxWidth = m.width;
+            heightSum += m.height;
+        }
+        
+        // Create context with appropriate canvas size 
+        var ctx = canvas.getContext('2d');
+        // TODO: Don't multiply by 2!
+        ctx.canvas.width = 2*(maxWidth + margin[0]);
+        ctx.canvas.height = 2*(lineHeight*textLines.length + margin[1]);
+        ctx.font = font;
+        // Configure text shadow
+        if(useShadow) {
+            ctx.shadowColor = options.shadowColor || "gray";
+            ctx.shadowOffsetX = options.shadowOffsetX || 4;
+            ctx.shadowOffsetY = options.shadowOffsetY || 4
+            ctx.shadowBlur = options.shadowBlur || 6;
+        }
+        // Configure text
+        ctx.fillStyle = options.fillStyle || "#144F78";
+        
+        // Render text into 2D canvas
+        for(var i=0; i<textLines.length; i++) {
+            // TODO: Don't offset x by 0.5*ctx.canvas.width and y by 0.5*ctx.canvas.height
+            ctx.fillText(textLines[i],
+                         0.5*margin[0] + 0.5*ctx.canvas.width,
+                         0.5*margin[1] + (i+1)*lineHeight + 0.5*ctx.canvas.height);
+        }
+        
+        // Finally create texture from canvas
+        var texture = new THREE.Texture(canvas);
+        texture.needsUpdate = true;
+        
+        return texture;
+    }
+    
+    this.show_hud_text = function(options) {
+        var texture = this.create_text_texture(options);
+        
+        var material = new THREE.SpriteMaterial( {
+              map: texture
+            , useScreenCoordinates: false
+            , alignment: THREE.SpriteAlignment.center
+        } );
+        var mesh = new THREE.Sprite( material );
+        
+        var actualFontSize = 0.25; // ?
+        var scale_x = texture.image.width / texture.image.height * actualFontSize;
+        var scale_y = actualFontSize;
+        mesh.scale.set(scale_x, scale_y, 1);
+            
+        var layout_function = function() {
+            mesh.position.set(
+                rosViewer.cameraOrtho.left,
+                rosViewer.cameraOrtho.top,
+                1
+            );
+        };
+        spriteLayouter.push(layout_function);
+        layout_function();
+        
+        if(hudTextMesh) {
+            rosViewer.sceneOrtho.remove(hudTextMesh);
+        }
+        rosViewer.sceneOrtho.add(mesh);
+        hudTextMesh = mesh;
+    }
+    
+    ///////////////////////////////
     ///////////////////////////////
     
     this.resize_canvas = function () {
@@ -485,6 +586,16 @@ function Knowrob(options){
       rosViewer.renderer.setSize(w, h);
       rosViewer.camera.aspect = w/h;
       rosViewer.camera.updateProjectionMatrix();
+      
+      rosViewer.cameraOrtho.left = - w / 2;
+      rosViewer.cameraOrtho.right = w / 2;
+      rosViewer.cameraOrtho.top = h / 2;
+      rosViewer.cameraOrtho.bottom = - h / 2;
+      rosViewer.cameraOrtho.updateProjectionMatrix();
+      
+      for(var i=0; i<spriteLayouter.length; i++) {
+        spriteLayouter[i]();
+      }
     }
 
     // fill the select with json data from url
