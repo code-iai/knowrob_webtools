@@ -93,7 +93,7 @@ function JsonProlog(ros, options){
           var ret = parseSolution(solution, 0, "");
         }
 
-        callback({ value: ret });
+        callback({ value: ret, solution: solution });
       }
     });
 
