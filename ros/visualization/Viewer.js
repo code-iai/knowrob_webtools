@@ -48,6 +48,8 @@ ROS3D.Viewer = function(options) {
 
   // create the global scene
   this.scene = new THREE.Scene();
+  // create the global scene for HUD
+  this.sceneOrtho = new THREE.Scene();
 
   // create the global camera
   this.camera = new THREE.PerspectiveCamera(40, width / height, near, far);
@@ -60,6 +62,10 @@ ROS3D.Viewer = function(options) {
     camera : this.camera
   });
   this.cameraControls.userZoomSpeed = 0.5;
+  
+  // create the global camera with orthogonal projection
+  this.cameraOrtho = new THREE.OrthographicCamera( - width / 2, width / 2, height / 2, - height / 2, 1, 10 );
+  this.cameraOrtho.position.z = 10;
 
   // lights
   this.scene.add(new THREE.AmbientLight(0x555555));
@@ -101,6 +107,9 @@ ROS3D.Viewer = function(options) {
 
     // draw the frame
     requestAnimationFrame(draw);
+    
+    // draw HUD
+    that.renderer.render(that.sceneOrtho, that.cameraOrtho);
   }
 
   // add the renderer to the page
