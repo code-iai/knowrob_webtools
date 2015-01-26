@@ -25,8 +25,8 @@ ROS3D.Viewer = function(options) {
   var width = options.width;
   var height = options.height;
   var background = options.background || '#111111';
-  var antialias = options.antialias;
-  var intensity = options.intensity || 0.66;
+  var antialias = options.antialias || true;
+  var intensity = options.intensity || 0.2;
   var near = options.near || 0.1;
   var far = options.far || 1000;
   var cameraPosition = options.cameraPose || {
@@ -37,15 +37,23 @@ ROS3D.Viewer = function(options) {
 
   // create the canvas to render to
   this.renderer = new THREE.WebGLRenderer({
-    antialias : this.antialias,
-    preserveDrawingBuffer : true
+    antialias : this.antialias
+    //, preserveDrawingBuffer : true
   });
   this.renderer.setClearColor(parseInt(background.replace('#', '0x'), 16), 1.0);
   this.renderer.sortObjects = false;
   this.renderer.setSize(width, height);
-  this.renderer.shadowMapEnabled = false;
   this.renderer.autoClear = false;
-
+  
+  if(options.enableShadows) {
+      this.renderer.shadowMapEnabled = true;
+      this.renderer.shadowMapSoft = true;
+      this.renderer.shadowMapType = THREE.PCFSoftShadowMap;
+  }
+  else {
+      this.renderer.shadowMapEnabled = false;
+  }
+  
   // create the global scene
   this.scene = new THREE.Scene();
   // create the global scene for HUD
@@ -69,8 +77,36 @@ ROS3D.Viewer = function(options) {
 
   // lights
   this.scene.add(new THREE.AmbientLight(0x555555));
+  
   this.directionalLight = new THREE.DirectionalLight(0xffffff, intensity);
+  that.directionalLight.position = new THREE.Vector3(-1, -1, 1);
+  that.directionalLight.position.normalize();
+  /*
+  if(options.enableShadows) {
+      this.directionalLight.castShadow = true;
+      this.directionalLight.shadowMapWidth = this.directionalLight.shadowMapHeight = 4096;
+      this.directionalLight.shadowCameraNear = 1;
+      this.directionalLight.shadowCameraFar = 50;
+      this.directionalLight.shadowCameraLeft = -5;
+      this.directionalLight.shadowCameraRight = 5;
+      this.directionalLight.shadowCameraTop = 5;
+      this.directionalLight.shadowCameraBottom = -5;
+  }
+  */
   this.scene.add(this.directionalLight);
+  
+  this.spotLight = new THREE.SpotLight( 0xffff99, 0.9 );
+  this.spotLight.position.set( 0, 0, 10 );
+  this.spotLight.target.position.set( 0, 0, 0 );
+  this.spotLight.angle = Math.PI;
+  this.spotLight.exponent = 1;
+  if(options.enableShadows) {
+      this.spotLight.castShadow = true;
+      this.spotLight.shadowMapWidth = this.directionalLight.shadowMapHeight = 4096;
+      this.spotLight.shadowCameraNear = 1;
+      this.spotLight.shadowCameraFar = 50;
+  }
+  this.scene.add( this.spotLight );
 
   // propagates mouse events to three.js objects
   this.selectableObjects = new THREE.Object3D();
@@ -95,8 +131,8 @@ ROS3D.Viewer = function(options) {
     that.cameraControls.update();
 
     // put light to the top-left of the camera
-    that.directionalLight.position = that.camera.localToWorld(new THREE.Vector3(-1, 1, 0));
-    that.directionalLight.position.normalize();
+    //that.directionalLight.position = that.camera.localToWorld(new THREE.Vector3(-1, 1, 0));
+    //that.directionalLight.position.normalize();
 
     // set the scene
     that.renderer.clear(true, true, true);
