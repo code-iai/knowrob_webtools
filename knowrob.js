@@ -486,13 +486,7 @@ function Knowrob(options){
     
     var hudTextMesh;
     
-    this.create_text_texture = function(options) {
-        var textLines = options.textLines || [
-            "  Time: 56278462378",
-            "  Task: Making Pancake",
-            "Action: Grasp Pancake Tube"
-        ];
-        
+    this.create_text_texture = function(textLines, options) {
         // Font options
         var font = options.font || "Bold 24px Monospace";
         var useShadow = options.useShadow || false;
@@ -516,9 +510,18 @@ function Knowrob(options){
         
         // Create context with appropriate canvas size 
         var ctx = canvas.getContext('2d');
-        // TODO: Don't multiply by 2!
-        ctx.canvas.width = 2*(maxWidth + margin[0]);
-        ctx.canvas.height = 2*(lineHeight*textLines.length + margin[1]);
+        ctx.canvas.width = maxWidth + margin[0];
+        ctx.canvas.height = lineHeight*textLines.length + 0.5*margin[1];
+        
+        /*
+        ctx.globalAlpha = 0.7;
+        ctx.fillStyle = options.backgroundStyle || "#999999";
+        ctx.strokeStyle = options.backgroundBorderStyle || "#000000";
+        ctx.strokeRect(0,0,ctx.canvas.width,ctx.canvas.height);
+        ctx.fillRect(0,0,ctx.canvas.width,ctx.canvas.height);
+        ctx.globalAlpha = 1.0;
+        */
+        
         ctx.font = font;
         // Configure text shadow
         if(useShadow) {
@@ -529,13 +532,11 @@ function Knowrob(options){
         }
         // Configure text
         ctx.fillStyle = options.fillStyle || "#144F78";
-        
+        ctx.strokeStyle = options.strokeStyle || "#000000";
         // Render text into 2D canvas
         for(var i=0; i<textLines.length; i++) {
-            // TODO: Don't offset x by 0.5*ctx.canvas.width and y by 0.5*ctx.canvas.height
-            ctx.fillText(textLines[i],
-                         0.5*margin[0] + 0.5*ctx.canvas.width,
-                         0.5*margin[1] + (i+1)*lineHeight + 0.5*ctx.canvas.height);
+            //ctx.strokeText(textLines[i], 0.5*margin[0], (i+1)*lineHeight);
+            ctx.fillText(textLines[i], 0.5*margin[0], (i+1)*lineHeight);
         }
         
         // Finally create texture from canvas
@@ -545,35 +546,23 @@ function Knowrob(options){
         return texture;
     }
     
-    this.show_hud_text = function(options) {
-        var texture = this.create_text_texture(options);
+    this.show_hud_text = function(textLines, options) {
+        var texture = this.create_text_texture(textLines, options);
         
         var material = new THREE.SpriteMaterial( {
               map: texture
-            , useScreenCoordinates: false
-            , alignment: THREE.SpriteAlignment.center
+            , useScreenCoordinates: true
+            , alignment: THREE.SpriteAlignment.topLeft
         } );
         var mesh = new THREE.Sprite( material );
         
-        var actualFontSize = 0.25; // ?
-        var scale_x = texture.image.width / texture.image.height * actualFontSize;
-        var scale_y = actualFontSize;
-        mesh.scale.set(scale_x, scale_y, 1);
-            
-        var layout_function = function() {
-            mesh.position.set(
-                rosViewer.cameraOrtho.left,
-                rosViewer.cameraOrtho.top,
-                1
-            );
-        };
-        spriteLayouter.push(layout_function);
-        layout_function();
+        mesh.scale.set(texture.image.width, texture.image.height, 1);
+        mesh.position.set(0,0,0);
         
         if(hudTextMesh) {
-            rosViewer.sceneOrtho.remove(hudTextMesh);
+            rosViewer.scene.remove(hudTextMesh);
         }
-        rosViewer.sceneOrtho.add(mesh);
+        rosViewer.scene.add(mesh);
         hudTextMesh = mesh;
     }
     
