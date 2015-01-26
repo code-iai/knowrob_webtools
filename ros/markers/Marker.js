@@ -26,11 +26,18 @@ ROS3D.Marker = function(options) {
   }
 
   THREE.Object3D.call(this);
+  
+  if(message.scale)
+    this.msgScale = [message.scale.x, message.scale.y, message.scale.z];
+  else
+    this.msgScale = [1,1,1];
+  this.msgColor = [message.color.r, message.color.g, message.color.b, message.color.a];
+  this.msgMesh = undefined
 
   // set the pose and get the color
   this.setPose(message.pose);
-  var colorMaterial = ROS3D.makeColorMaterial(message.color.r, message.color.g, message.color.b,
-      message.color.a);
+  var colorMaterial = ROS3D.makeColorMaterial(this.msgColor[0],
+      this.msgColor[1], this.msgColor[2], this.msgColor[3]);
 
   // create the object based on the type
   switch (message.type) {
@@ -224,13 +231,11 @@ ROS3D.Marker = function(options) {
         var textGeo = new THREE.TextGeometry(message.text, {
           size: message.scale.z * 0.5,
           height: 0.1 * message.scale.z,
-          curveSegments: 4,
-          font: 'helvetiker',
-          bevelEnabled: false,
-          bevelThickness: 2,
-          bevelSize: 2,
+          curveSegments: 3,
+          font: 'helvetiker', weight: "bold", style: "normal",
+          bevelThickness: 0.01, bevelSize: 0.01, bevelEnabled: true,
           material: 0,
-          extrudeMaterial: 0
+          extrudeMaterial: 1
         });
         textGeo.computeVertexNormals();
         textGeo.computeBoundingBox();
@@ -251,9 +256,10 @@ ROS3D.Marker = function(options) {
          message.color.b !== 0 || message.color.a !== 0) {
         meshColorMaterial = colorMaterial;
       }
+      this.msgMesh = message.mesh_resource.substr(10);
       var meshResource = new ROS3D.MeshResource({
         path : path,
-        resource : message.mesh_resource.substr(10),
+        resource : meshResource,
         material : meshColorMaterial,
         loader : loader
       });
@@ -273,6 +279,11 @@ ROS3D.Marker = function(options) {
       console.error('Currently unsupported marker type: ' + message.type);
       break;
   }
+  
+  //this.traverse (function (child){
+  //    child.castShadow = true;
+  //    child.receiveShadow = true;
+  //});
 };
 ROS3D.Marker.prototype.__proto__ = THREE.Object3D.prototype;
 
@@ -296,16 +307,104 @@ ROS3D.Marker.prototype.setPose = function(pose) {
   this.updateMatrixWorld();
 };
 
+/**
+ * Update this marker.
+ *
+ * @param message - the marker message
+ * @return true on success otherwhise false is returned
+ */
 ROS3D.Marker.prototype.update = function(message) {
   // set the pose and get the color
   this.setPose(message.pose);
-  // TODO: update text for MARKER_TEXT_VIEW_FACING
-  // TODO: update marker geometry
-  // TODO: update color material only if changed
-  var colorMaterial = ROS3D.makeColorMaterial(
-      message.color.r, message.color.g,
-      message.color.b, message.color.a);
-  for(var child in this.children) {
-      // child could be: ROS3D.TriangleList, ROS3D.MeshResource, ROS3D.Arrow, THREE.Mesh
+  
+  // Update color
+  if(message.color.r !== this.msgColor[0] ||
+     message.color.g !== this.msgColor[1] || 
+     message.color.b !== this.msgColor[2] ||
+     message.color.a !== this.msgColor[3])
+  {
+      var colorMaterial = ROS3D.makeColorMaterial(
+          message.color.r, message.color.g,
+          message.color.b, message.color.a);
+  
+      switch (message.type) {
+      case ROS3D.MARKER_LINE_STRIP:
+      case ROS3D.MARKER_LINE_LIST:
+      case ROS3D.MARKER_POINTS:
+          break;
+      case ROS3D.MARKER_ARROW:
+      case ROS3D.MARKER_CUBE:
+      case ROS3D.MARKER_SPHERE:
+      case ROS3D.MARKER_CYLINDER:
+      case ROS3D.MARKER_TRIANGLE_LIST:
+      case ROS3D.MARKER_TEXT_VIEW_FACING:
+          this.traverse (function (child){
+              if (child instanceof THREE.Mesh) {
+                  child.material = colorMaterial;
+              }
+          });
+          break;
+      case ROS3D.MARKER_MESH_RESOURCE:
+          var meshColorMaterial = null;
+          if(message.color.r !== 0 || message.color.g !== 0 ||
+             message.color.b !== 0 || message.color.a !== 0) {
+              meshColorMaterial = this.colorMaterial;
+          }
+          this.traverse (function (child){
+              if (child instanceof THREE.Mesh) {
+                  child.material = meshColorMaterial;
+              }
+          });
+          break;
+      case ROS3D.MARKER_CUBE_LIST:
+      case ROS3D.MARKER_SPHERE_LIST:
+          // TODO support to update color for MARKER_CUBE_LIST & MARKER_SPHERE_LIST
+          return false;
+      default:
+          return false;
+      }
+      
+      this.msgColor = [message.color.r, message.color.g,
+            message.color.b, message.color.a];
   }
+  
+  // Update geometry
+  var scaleChanged =
+        this.scale[0] !== message.scale.x ||
+        this.scale[1] !== message.scale.y ||
+        this.scale[2] !== message.scale.z;
+  switch (message.type) {
+    case ROS3D.MARKER_CUBE:
+    case ROS3D.MARKER_SPHERE:
+    case ROS3D.MARKER_CYLINDER:
+        if(scaleChanged) {
+            return false;
+        }
+        break;
+    case ROS3D.MARKER_TEXT_VIEW_FACING:
+        if(scaleChanged || this.text !== message.text) {
+            return false;
+        }
+        break;
+    case ROS3D.MARKER_MESH_RESOURCE:
+        var meshResource = message.mesh_resource.substr(10);
+        if(meshResource !== this.msgMesh) {
+            return false;
+        }
+        break;
+    case ROS3D.MARKER_ARROW:
+    case ROS3D.MARKER_LINE_STRIP:
+    case ROS3D.MARKER_LINE_LIST:
+    case ROS3D.MARKER_CUBE_LIST:
+    case ROS3D.MARKER_SPHERE_LIST:
+    case ROS3D.MARKER_POINTS:
+    case ROS3D.MARKER_TRIANGLE_LIST:
+        // TODO: We would have to check each point here but this slows down updating of markers
+        return false;
+    default:
+        break;
+  }
+  this.msgScale = [message.scale.x, message.scale.y, message.scale.z];
+  
+  return true;
 }

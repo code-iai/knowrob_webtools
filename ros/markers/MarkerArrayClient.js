@@ -46,10 +46,14 @@ ROS3D.MarkerArrayClient = function(options) {
     
     arrayMessage.markers.forEach(function(message) {
       if(message.action == 0) {
+        var updated = false;
         if(message.ns + message.id in that.markers) { // MODIFY
-          that.markers[message.ns + message.id].children[0].update(message);
+          updated = that.markers[message.ns + message.id].children[0].update(message);
+          if(!updated) { // REMOVE
+              that.rootObject.remove(that.markers[message.ns + message.id]);
+          }
         }
-        else { // ADD
+        if(!updated) { // ADD
           var newMarker = new ROS3D.Marker({
             message : message,
             path : that.path,
