@@ -65,6 +65,7 @@ function Knowrob(options){
         height : height,
         antialias : true,
         background : background,
+        enableShadows: false,
         near: near,
         far: far
       });
