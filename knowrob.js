@@ -143,6 +143,18 @@ function Knowrob(options){
       camera_topic.subscribe(function(message) {
         that.set_camera_pose(message);
       });
+
+      var canvas_text_topic = new ROSLIB.Topic({
+        ros : ros,
+        name : '/canvas/text',
+        messageType : 'std_msgs/String'
+      });
+      canvas_text_topic.subscribe(function(message) {
+console.log(message);
+          var msgStr = message.data;
+          var lines = msgStr.split('\n');
+          that.show_hud_text(lines, {});
+      });
       
       // fill example query select
       this.populate_query_select(libraryDiv, libraryFile);
