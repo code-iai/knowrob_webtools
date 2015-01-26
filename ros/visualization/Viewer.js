@@ -95,7 +95,7 @@ ROS3D.Viewer = function(options) {
   */
   this.scene.add(this.directionalLight);
   
-  this.spotLight = new THREE.SpotLight( 0xffff99, 0.9 );
+  this.spotLight = new THREE.SpotLight( 0xffffcc, 0.9 );
   this.spotLight.position.set( 0, 0, 10 );
   this.spotLight.target.position.set( 0, 0, 0 );
   this.spotLight.angle = Math.PI;

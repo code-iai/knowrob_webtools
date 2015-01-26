@@ -229,15 +229,16 @@ ROS3D.Marker = function(options) {
         // setup the text
         console.log(message.scale);
         var textGeo = new THREE.TextGeometry(message.text, {
-          size: message.scale.z * 0.5,
-          height: 0.1 * message.scale.z,
-          curveSegments: 3,
+          size: message.scale.z * 0.2,
+          height: 0.04 * message.scale.z,
+          curveSegments: 4,
           font: 'helvetiker', weight: "bold", style: "normal",
-          bevelThickness: 0.01, bevelSize: 0.01, bevelEnabled: true,
+          bevelThickness: 0.01, bevelSize: 0.005, bevelEnabled: false,
           material: 0,
           extrudeMaterial: 1
         });
-        textGeo.computeVertexNormals();
+        // XXX: artifacts when calling computeVertexNormals!
+        //textGeo.computeVertexNormals();
         textGeo.computeBoundingBox();
 
         // position the text and add it
@@ -259,7 +260,7 @@ ROS3D.Marker = function(options) {
       this.msgMesh = message.mesh_resource.substr(10);
       var meshResource = new ROS3D.MeshResource({
         path : path,
-        resource : meshResource,
+        resource : this.msgMesh,
         material : meshColorMaterial,
         loader : loader
       });
