@@ -29,6 +29,12 @@ function Knowrob(options){
     
     // The topic where the canvas publishes snapshots
     var snapshotTopic;
+
+    // Use rosauth
+    var authentication  = options.authentication;
+
+    // URL for rosauth token retrieval
+    var authURL  = options.auth_url || '/wsauth/v1.0/by_session';
     
     // configuration of div names
     var canvasDiv     = options.canvas_div || 'markers'
@@ -48,6 +54,13 @@ function Knowrob(options){
       ros = new ROSLIB.Ros({url : rosURL});
       ros.on('connection', function() {
         console.log('Connected to websocket server.');
+        if (authentication) {
+          // Acquire auth token for current user and authenticate, then call registerNodes
+          that.authenticate(authURL, that.registerNodes);
+        } else {
+          // No authentication requested, call registerNodes directly
+          that.registerNodes();
+        }
       });
       ros.on('error', function(error) {
         console.log('Error connecting to websocket server: ', error);
@@ -70,7 +83,8 @@ function Knowrob(options){
         far: far
       });
       rosViewer.addObject(new ROS3D.Grid());
-      
+    }
+    this.registerNodes = function () {
       // Setup publisher that sends a dummy message in order to keep alive the socket connection
       keepAlive = new KeepAlivePublisher({ros : ros, interval : 30000});
       
@@ -123,7 +137,7 @@ function Knowrob(options){
       var dataVisClient = new DataVisClient({
         ros: ros,
         containerId: '#chart',
-        topic: 'data_vis_msgs',
+        topic: 'data_vis_msgs'
         //width: 500,//210,
         //height: 500//210
       });
@@ -367,6 +381,29 @@ console.log(message);
       user_query.setValue(val, -1);
       user_query.focus();
       user_query.navigateFileEnd();
+    }
+
+    ///////////////////////////////
+    //////////// Authentication
+    ///////////////////////////////
+
+    this.authenticate = function (authurl, then) {
+        console.log("Acquiring auth token");
+        // Call wsauth api to acquire auth token by existing user login session
+        $.ajax({
+            url: authurl,
+            type: "GET",
+            contentType: "application/json",
+            dataType: "json"
+        }).done( function (request) {
+            console.log("Sending auth token");
+            ros.authenticate(request.mac, request.client, request.dest, request.rand, request.t, request.level,
+                request.end);
+            // If a callback function was specified, call it in the context of Knowrob class (that)
+            if(then) {
+                then.call(that);
+            }
+        })
     }
     
     ///////////////////////////////
