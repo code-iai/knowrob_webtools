@@ -39,23 +39,23 @@ function DonutChart(options) {
   // -------------------
 
   var vis = d3.select(where).append("svg:svg")
-    .attr("width", w)
-    .attr("height", h);
+    .attr("width", w+50)
+    .attr("height", h+50);
 
   //GROUP FOR ARCS/PATHS
   var arc_group = vis.append("svg:g")
     .attr("class", "arc")
-    .attr("transform", "translate(" + (w/2) + "," + (h/2) + ")");
+    .attr("transform", "translate(" + ((w+50)/2) + "," + ((h+50)/2) + ")");
 
   //GROUP FOR LABELS
   var label_group = vis.append("svg:g")
     .attr("class", "label_group")
-    .attr("transform", "translate(" + (w/2) + "," + (h/2) + ")");
+    .attr("transform", "translate(" + ((w+50)/2) + "," + ((h+50)/2) + ")");
 
   //GROUP FOR CENTER TEXT  
   var center_group = vis.append("svg:g")
     .attr("class", "center_group")
-  .attr("transform", "translate(" + (w/2) + "," + (h/2) + ")");
+    .attr("transform", "translate(" + ((w+50)/2) + "," + ((h+50)/2) + ")");
 
   //PLACEHOLDER GRAY CIRCLE
   var paths = arc_group.append("svg:circle")
