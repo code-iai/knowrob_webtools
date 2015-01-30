@@ -164,7 +164,6 @@ function Knowrob(options){
         messageType : 'std_msgs/String'
       });
       canvas_text_topic.subscribe(function(message) {
-console.log(message);
           var msgStr = message.data;
           var lines = msgStr.split('\n');
           that.show_hud_text(lines, {});
