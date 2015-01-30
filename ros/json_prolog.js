@@ -31,7 +31,6 @@ function JsonProlog(ros, options){
         id : qid,
         query : query
       });
-      console.log("Sending query: " + String(query));
       client.callService(request, function(result) {
         if (result.ok == true) {
           that.nextQuery(callback);
@@ -40,6 +39,9 @@ function JsonProlog(ros, options){
           callback({ status: "QUERY_FAILED", service: "simple_query", error: result });
           that.finishClient();
         }
+      }, function(error) {
+          callback({ status: "QUERY_FAILED", service: "simple_query", error: error });
+          that.finishClient();
       });
   };
 
@@ -95,6 +97,9 @@ function JsonProlog(ros, options){
 
         callback({ value: ret, solution: solution });
       }
+    }, function(error) {
+        callback({ status: "QUERY_FAILED", service: "next_solution", error: error });
+        that.finishClient();
     });
 
   };
@@ -114,7 +119,8 @@ function JsonProlog(ros, options){
   
   this.format = function(result) {
     if (result.error) {
-      return (result.error.solution || result.error.message || "Error") + "\n";
+      console.log("Prolog Query failed: " + result.error.toString());
+      return (result.error.solution || result.error.message || result.error.toString()) + "\n";
     }
     else if (result.completed) {
       if (result.hasMore) {

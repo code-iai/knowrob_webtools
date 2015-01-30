@@ -177,7 +177,41 @@ function Knowrob(options){
       this.setup_query_field();
       this.resize_canvas();
       set_inactive(document.getElementById(nextButtonDiv));
+      
+      this.waitForJsonProlog();
     };
+    
+    this.waitForJsonProlog = function () {
+        var isConnected = false;
+        var isWaitingForJsonProlog__ = function(connectedHandler, errorHandler) {
+            var client = new JsonProlog(ros, {});
+            client.jsonQuery("true", function(result) {
+                if(result.error) {
+                    // Service /json_prolog/simple_query does not exist
+                    errorHandler();
+                }
+                else {
+                    connectedHandler();
+                }
+                client.finishClient();
+            });
+        };
+        var isWaitingForJsonProlog = function() {
+            if(isConnected) return false;
+            isWaitingForJsonProlog__(function() {
+                isConnected = true;
+            }, function() {});
+            return (isConnected == false);
+        };
+        
+        isWaitingForJsonProlog__(function() {}, function() {
+            iosOverlay({
+                text: "Loading Knowledge Base",
+                isSpinning: isWaitingForJsonProlog,
+                spinner: createSpinner()
+            });
+        });
+    }
 
     this.setup_history_field = function () {
         var history = ace.edit(historyDiv);
