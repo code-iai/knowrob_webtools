@@ -32,6 +32,8 @@ function Knowrob(options){
 
     // Use rosauth
     var authentication  = options.authentication;
+    
+    var meshPath  = options.meshPath | '/';
 
     // URL for rosauth token retrieval
     var authURL  = options.auth_url || '/wsauth/v1.0/by_session';
@@ -111,7 +113,8 @@ function Knowrob(options){
         tfClient : tfClient,
         topic : '/visualization_marker_array',
         rootObject : rosViewer.scene,
-        markerClient : markerClient
+        markerClient : markerClient,
+        path : meshPath
       });
 
       var desig_listener = new ROSLIB.Topic({
