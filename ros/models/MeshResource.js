@@ -59,7 +59,7 @@ ROS3D.MeshResource = function(options) {
 
       if(material !== null) {
         var setMaterial = function(node, material) {
-          // Note(daniel): node.material.map is defined even if loading failed.
+          // NOTE(daniel): node.material.map is defined even if loading failed.
           // But texture size is set to zero then.
           // Don't use the mesh material if this is the case.
           var hasMap = false;
