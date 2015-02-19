@@ -52,21 +52,20 @@ function DataVisClient(options) {
       // create diagram object (wrapping d3 object)
       var handle = null
       if (type == 0) {
-        handle = new DonutChart(options)
+        handle = new DonutChart(options);
         
       } else if (type == 1) {
-        handle = new BarChart(options)
+        handle = new BarChart(options);
         
       } else if (type == 2) {
-        handle = new TreeDiagram(options)
+        handle = new TreeDiagram(options);
         
       } else if (type == 3) {
-        handle = new Timeline(options)
+        handle = new Timeline(options);
       }
       
       // add to internal map id--handle
       if(handle != null) {
-        
         chartHandle.push({
           id: id,
           handle: handle
@@ -118,7 +117,9 @@ function DataVisClient(options) {
     $( "div#"+id ).parents( ".col-md-3" ).remove();
     
     // remove from internal array buffer
-    chartHandle.splice(that.getChart(id), 1);
+    chartHandle.splice(chartHandle.findIndex(function (element, index, array) {
+      if(element.id == id) {return true} else {return false}
+    }, this), 1);
     
   };
   
@@ -131,6 +132,9 @@ function DataVisClient(options) {
   };
   
   
+  
+  
+  
   var rosTopic = new ROSLIB.Topic({
     ros : ros,
     name : topic,
@@ -138,8 +142,6 @@ function DataVisClient(options) {
   });
   
   rosTopic.subscribe(function(message) {
-    
-    console.log(message);
     
     // remove chart if message empty
     if (message.values.length == 0) {
@@ -150,7 +152,7 @@ function DataVisClient(options) {
     // create new chart if ID is not yet in chartHandle buffer
     if (chartHandle.findIndex(function (element, index, array) {
       if(element.id == message.id) {return true} else {return false}
-    }, this) == -1 && message.values[0].value2.length != 0) {
+    }, this) == -1 ) {
       
       var options = {
         id: message.id,
@@ -167,7 +169,7 @@ function DataVisClient(options) {
       that.addChart(message.id, message.type, options);
     }
     
-    if (message.type == 2) {
+    if (message.type == 2) { // tree diagram
       that.updateChartData(message.id, message.values);
     } else {
       that.updateChartData(message.id, message.values[0]);

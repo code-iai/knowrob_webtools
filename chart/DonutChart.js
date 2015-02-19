@@ -1,6 +1,9 @@
 //inspired by http://blog.stephenboak.com/2011/08/07/easy-as-a-pie.html
 
 function DonutChart(options) {
+  
+  this.options = options || {};
+  
   options = options || {};
   var w = options.width || 300;
   var h = options.height || 300;
