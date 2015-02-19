@@ -8,7 +8,7 @@ function DataVisClient(options) {
   
   
   // internal buffer, keeps mapping between IDs and the chart objects
-  var chartHandle = [];
+  var chartHandle = {};
   
   
   // add a chart to the internal buffer and create the appropriate HTML elements
@@ -66,21 +66,20 @@ function DataVisClient(options) {
       
       // add to internal map id--handle
       if(handle != null) {
-        chartHandle.push({
-          id: id,
-          handle: handle
-        });
+        chartHandle[id] = handle;
       }
     } else {
-      console.log("Warning: Tried to add duplicate chart for ID " + id);
+      console.log("Warning: Tried to add duplicate chart for ID " + id + ", options=" + JSON.stringify(options));
     }
     
   };
   
   
   // update a chart based on the options passed as argument
-  this.updateChart = function(id, options) {
+  this.updateChartProperties = function(id, options) {
 
+//     console.log("Updating chart " + id + " with options " + JSON.stringify(options));
+    
     chart = that.getChart(id);
     
     // clear possibly existing diagrams for this elements
@@ -96,19 +95,33 @@ function DataVisClient(options) {
       chart = new Timeline(options)
     }
     
+    chartHandle[id] = chart;
+    
     $('#footer_'+ id).text(options.label);
   }
   
-  // find the d3 diagram this message refers to and update the data
-  this.updateChartData = function(id, values) {
-    that.getChart(id).update(values);
-  };
+  
+  this.reloadChartData = function(id) {
+    
+    var q = that.getChart(id).getQuery();
+    
+//     console.log("Reloading: " + id + " using " + q);
+    
+    if (prolog != null && prolog.finished == false) {
+      prolog.finishClient();
+    }
+    
+    prolog = new JsonProlog(ros, {});
+    prolog.jsonQuery(q, function(result) {});
+    
+    if (prolog != null && prolog.finished == false) {
+      prolog.finishClient();
+    }
+  }
   
   
   // Remove a chart both from the internal buffer and the HTML page
   this.removeChart = function(id) {
-    
-    console.log("Removing: " + id)
     
     // remove SVG
     that.getChart(id).remove();
@@ -117,21 +130,14 @@ function DataVisClient(options) {
     $( "div#"+id ).parents( ".col-md-3" ).remove();
     
     // remove from internal array buffer
-    chartHandle.splice(chartHandle.findIndex(function (element, index, array) {
-      if(element.id == id) {return true} else {return false}
-    }, this), 1);
-    
+    delete chartHandle[id];    
   };
   
   
   
   this.getChart = function(id) {
-    return chartHandle.find(function (element, index, array) {
-      if(element.id == id) {return true} else {return false}
-    }, this).handle;
+    return chartHandle[id];
   };
-  
-  
   
   
   
@@ -150,9 +156,7 @@ function DataVisClient(options) {
     }
     
     // create new chart if ID is not yet in chartHandle buffer
-    if (chartHandle.findIndex(function (element, index, array) {
-      if(element.id == message.id) {return true} else {return false}
-    }, this) == -1 ) {
+    if (! (message.id in chartHandle) ) {
       
       var options = {
         id: message.id,
@@ -170,12 +174,13 @@ function DataVisClient(options) {
     }
     
     if (message.type == 2) { // tree diagram
-      that.updateChartData(message.id, message.values);
+      that.getChart(message.id).update(message.values);
     } else {
-      that.updateChartData(message.id, message.values[0]);
+      that.getChart(message.id).update(message.values[0]);
     }
   })
 }
+
 // type constants
 // DataVisClient.PIECHART = 0;
 // DataVisClient.BARCHART = 1;
