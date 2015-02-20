@@ -28,9 +28,6 @@ function BarChart (options) {
       .scale(x)
       .orient("bottom");
   
-      
-  var color = d3.scale.category20();
-  
   
   // Create SVG canvas
   var svg = d3.select("#"+options.id).append("svg:svg")
@@ -52,7 +49,12 @@ function BarChart (options) {
     // Set up domains of scale objects:
     x.domain([0, max]);
     y.domain(d3.range(data.value2.length))
-
+    
+//     var color = d3.scale.ordinal()
+//         .domain(d3.range(data.value2.length))
+//         .range(colorbrewer.Blues[7]);
+    var color = d3.scale.category20();
+    
     // Add x axis
     svg.append("g")
         .attr("class", "x axis")
