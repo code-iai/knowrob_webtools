@@ -10,7 +10,13 @@ function Knowrob(options){
     var prologNames;
 
     // global ROS handle
-    var ros;
+    var ros = undefined;
+    
+    // URL for ROS server
+    var rosURL = options.ros_url || 'ws://localhost:9090';
+    
+    var isConnected = false;
+    var isPrologConnected = false;
 
     // global jsonprolog handle
     var prolog;
@@ -20,9 +26,6 @@ function Knowrob(options){
     
     // keep aliva message publisher
     var keepAlive;
-    
-    // URL for ROS server
-    var rosURL = options.ros_url || 'ws://localhost:9090'
     
     // File that contains example queries
     var libraryFile = options.library_file || 'queriesForRobohow.json'
@@ -51,25 +54,40 @@ function Knowrob(options){
     var near = options.near || 0.01;
     var far = options.far || 1000.0;
 
-    this.init = function () {
-      // Connect to ROS.
+    this.connect = function () {
       ros = new ROSLIB.Ros({url : rosURL});
       ros.on('connection', function() {
-        console.log('Connected to websocket server.');
-        if (authentication) {
-          // Acquire auth token for current user and authenticate, then call registerNodes
-          that.authenticate(authURL, that.registerNodes);
-        } else {
-          // No authentication requested, call registerNodes directly
-          that.registerNodes();
-        }
-      });
-      ros.on('error', function(error) {
-        console.log('Error connecting to websocket server: ', error);
+          that.isConnected = true;
+          console.log('Connected to websocket server.');
+          if (that.authentication) {
+              // Acquire auth token for current user and authenticate, then call registerNodes
+              that.authenticate(authURL, that.registerNodes);
+          } else {
+              // No authentication requested, call registerNodes directly
+              that.registerNodes();
+          }
       });
       ros.on('close', function() {
-        console.log('Connection to websocket server closed.');
+          that.ros = undefined;
+          setTimeout(that.connect, 500);
       });
+      ros.on('error', function() {
+          if(that.ros) that.ros.close();
+          that.ros = undefined;
+          setTimeout(that.connect, 500);
+      });
+    }
+
+    this.init = function () {
+      // Connect to ROS.
+      iosOverlay({
+            text: "Loading Knowledge Base"
+          , spinner: createSpinner()
+          , isSpinning: function() {
+              return !that.isConnected || !that.isPrologConnected;
+          }
+      });
+      this.connect();
       
       var width = 800;
       var height = 600;
@@ -85,7 +103,16 @@ function Knowrob(options){
         far: far
       });
       rosViewer.addObject(new ROS3D.Grid());
-    }
+      
+      this.setup_autocompletion();
+      this.setup_history_field();
+      this.setup_query_field();
+      this.populate_query_select(libraryDiv, libraryFile);
+      this.resize_canvas();
+      
+      set_inactive(document.getElementById(nextButtonDiv));
+    };
+    
     this.registerNodes = function () {
       // Setup publisher that sends a dummy message in order to keep alive the socket connection
       keepAlive = new KeepAlivePublisher({ros : ros, interval : 30000});
@@ -172,49 +199,23 @@ function Knowrob(options){
           that.show_hud_text(lines, {});
       });
       
-      // fill example query select
-      this.populate_query_select(libraryDiv, libraryFile);
-      
-      this.setup_autocompletion();
-      this.setup_history_field();
-      this.setup_query_field();
-      this.resize_canvas();
-      set_inactive(document.getElementById(nextButtonDiv));
-      
       this.waitForJsonProlog();
     };
     
     this.waitForJsonProlog = function () {
-        var isConnected = false;
-        var isWaitingForJsonProlog__ = function(connectedHandler, errorHandler) {
-            var client = new JsonProlog(ros, {});
-            client.jsonQuery("true", function(result) {
-                if(result.error) {
-                    // Service /json_prolog/simple_query does not exist
-                    errorHandler();
-                }
-                else {
-                    connectedHandler();
-                }
-                client.finishClient();
-            });
-        };
-        var isWaitingForJsonProlog = function() {
-            if(isConnected) return false;
-            isWaitingForJsonProlog__(function() {
-                isConnected = true;
-            }, function() {});
-            return (isConnected == false);
-        };
-        
-        isWaitingForJsonProlog__(function() {}, function() {
-            iosOverlay({
-                text: "Loading Knowledge Base",
-                isSpinning: isWaitingForJsonProlog,
-                spinner: createSpinner()
-            });
+        var client = new JsonProlog(ros, {});
+        client.jsonQuery("true", function(result) {
+            client.finishClient();
+            
+            if(result.error) {
+                // Service /json_prolog/simple_query does not exist
+                setTimeout(that.waitForJsonProlog, 500);
+            }
+            else {
+                that.isPrologConnected = true;
+            }
         });
-    }
+    };
 
     this.setup_history_field = function () {
         var history = ace.edit(historyDiv);
@@ -229,7 +230,7 @@ function Knowrob(options){
             highlightGutterLine: false
         });
         return history;
-    }
+    };
 
     this.setup_query_field = function () {
         var userQuery = ace.edit(queryDiv);
@@ -275,7 +276,7 @@ function Knowrob(options){
             exec: function(editor) { that.set_previous_history_item(); }
         });
         return userQuery;
-    }
+    };
     
     this.setup_autocompletion = function() {
         // Add completer for prolog code
@@ -289,7 +290,7 @@ function Knowrob(options){
                 }
             }
         });
-    }
+    };
     
     this.new_pl_client = function() {
       if (prolog != null && prolog.finished == false) {
@@ -325,7 +326,7 @@ function Knowrob(options){
         }, mode=0);
       }
       return prologNames;
-    }
+    };
     
     ///////////////////////////////
     //////////// Getter
@@ -333,15 +334,15 @@ function Knowrob(options){
     
     this.get_ros = function () {
       return ros;
-    }
+    };
 
     this.get_ros_viewer = function () {
       return rosViewer;
-    }
+    };
     
     this.get_prolog_names = function() {
       return prologNames;
-    }
+    };
     
     ///////////////////////////////
     //////////// Prolog queries
@@ -397,19 +398,19 @@ function Knowrob(options){
       div.style.pointerEvents = "auto";
       div.style.backgroundColor = "#dadada";
       div.style.color = "#606060";
-    }
+    };
     
     function set_inactive(div) {
       div.style.pointerEvents = "none";
       div.style.backgroundColor = "#cfcfcf";
       div.style.color = "#adadad";
-    }
+    };
 
     // append the selected query to the user_query form
     this.add_selected_to_queryform = function (selectid) {
       var select = document.getElementById(selectid);
       this.set_query_value(select.options[select.selectedIndex].value);
-    }
+    };
 
     // set the value of the query editor and move the cursor to the end
     this.set_query_value = function (val){
@@ -417,7 +418,7 @@ function Knowrob(options){
       user_query.setValue(val, -1);
       user_query.focus();
       user_query.navigateFileEnd();
-    }
+    };
 
     ///////////////////////////////
     //////////// Authentication
@@ -440,7 +441,7 @@ function Knowrob(options){
                 then.call(that);
             }
         })
-    }
+    };
     
     ///////////////////////////////
     //////////// History
@@ -454,7 +455,7 @@ function Knowrob(options){
             data: JSON.stringify({query: query}),  
             dataType: "json"
         }).done( function (request) {})
-    }
+    };
 
     this.set_history_item = function (index) {
         $.ajax({
@@ -468,15 +469,15 @@ function Knowrob(options){
                  historyIndex = data.index;
             }
         }).done( function (request) {})
-    }
+    };
 
     this.set_next_history_item = function () {
         this.set_history_item(historyIndex+1);
-    }
+    };
     
     this.set_previous_history_item = function () {
         this.set_history_item(historyIndex-1);
-    }
+    };
     
     ///////////////////////////////
     //////////// Snapshots
@@ -538,7 +539,7 @@ function Knowrob(options){
       });
       
       snapshotTopic.publish(msg);
-    }
+    };
     
     ///////////////////////////////
     //////////// Camera
@@ -547,13 +548,13 @@ function Knowrob(options){
     this.set_camera_pose = function(pose) {
         that.set_camera_position(pose.position);
         that.set_camera_orientation(pose.orientation);
-    }
+    };
     
     this.set_camera_position = function(position) {
         rosViewer.cameraControls.camera.position.x = position.x;
         rosViewer.cameraControls.camera.position.y = position.y;
         rosViewer.cameraControls.camera.position.z = position.z;
-    }
+    };
     
     this.set_camera_orientation = function(orientation) {
         var orientation = new THREE.Quaternion(orientation.x, orientation.y,
@@ -562,7 +563,7 @@ function Knowrob(options){
         frontVector.applyQuaternion(orientation);
         rosViewer.cameraControls.center = rosViewer.cameraControls.camera.position.clone();
         rosViewer.cameraControls.center.add(frontVector);
-    }
+    };
     
     ///////////////////////////////
     //////////// HUD
@@ -630,7 +631,7 @@ function Knowrob(options){
         texture.needsUpdate = true;
         
         return texture;
-    }
+    };
     
     this.show_hud_text = function(textLines, options) {
         var texture = this.create_text_texture(textLines, options);
@@ -650,7 +651,7 @@ function Knowrob(options){
         }
         rosViewer.scene.add(mesh);
         hudTextMesh = mesh;
-    }
+    };
     
     ///////////////////////////////
     ///////////////////////////////
@@ -671,7 +672,7 @@ function Knowrob(options){
       for(var i=0; i<spriteLayouter.length; i++) {
         spriteLayouter[i]();
       }
-    }
+    };
 
     // fill the select with json data from url
     this.populate_query_select = function (id, url) {
@@ -697,7 +698,7 @@ function Knowrob(options){
       catch(e) {
         console.warn(e);
       }
-    }
+    };
 
     // hook for links of class "show_code" that pastes the content of the
     // previous code block into the query field
