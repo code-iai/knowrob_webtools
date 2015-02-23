@@ -61,9 +61,9 @@ ROS3D.makeColorMaterial = function(r, g, b, a) {
   var color = new THREE.Color();
   color.setRGB(r, g, b);
   if (a <= 0.99) {
-    return new THREE.MeshBasicMaterial({
+    return new THREE.MeshPhongMaterial({
       color : color.getHex(),
-      opacity : a + 0.1,
+      opacity : a,
       transparent : true,
       depthWrite : true,
       blendSrc : THREE.SrcAlphaFactor,
@@ -74,7 +74,6 @@ ROS3D.makeColorMaterial = function(r, g, b, a) {
   } else {
     return new THREE.MeshPhongMaterial({
       color : color.getHex(),
-      opacity : a,
       blending : THREE.NormalBlending
     });
   }

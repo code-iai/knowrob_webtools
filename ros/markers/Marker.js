@@ -84,7 +84,7 @@ ROS3D.Marker = function(options) {
       break;
     case ROS3D.MARKER_SPHERE:
       // set the sphere dimensions
-      var sphereGeom = new THREE.SphereGeometry(0.5);
+      var sphereGeom = new THREE.SphereGeometry(0.5, 32, 16);
       var sphereMesh = new THREE.Mesh(sphereGeom, colorMaterial);
       sphereMesh.scale.x = message.scale.x;
       sphereMesh.scale.y = message.scale.y;
@@ -93,7 +93,7 @@ ROS3D.Marker = function(options) {
       break;
     case ROS3D.MARKER_CYLINDER:
       // set the cylinder dimensions
-      var cylinderGeom = new THREE.CylinderGeometry(0.5, 0.5, 1, 16, 1, false);
+      var cylinderGeom = new THREE.CylinderGeometry(0.5, 0.5, 1, 32, 2, false);
       var cylinderMesh = new THREE.Mesh(cylinderGeom, colorMaterial);
       cylinderMesh.quaternion.setFromAxisAngle(new THREE.Vector3(1, 0, 0), Math.PI * 0.5);
       cylinderMesh.scale = new THREE.Vector3(message.scale.x, message.scale.z, message.scale.y);
