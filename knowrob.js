@@ -59,7 +59,7 @@ function Knowrob(options){
       ros.on('connection', function() {
           that.isConnected = true;
           console.log('Connected to websocket server.');
-          if (that.authentication) {
+          if (authentication) {
               // Acquire auth token for current user and authenticate, then call registerNodes
               that.authenticate(authURL, that.registerNodes);
           } else {
