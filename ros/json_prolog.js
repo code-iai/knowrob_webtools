@@ -79,7 +79,6 @@ function JsonProlog(ros, options){
             if (solution.hasOwnProperty(key)) {
               if (solution[key] instanceof Array || solution[key] instanceof Object) {
                 ret += indent + key + " = [\n";
-                //console.log("array!");
                 ret = parseSolution(solution[key], level + 1, ret);
                 ret += indent + "]\n"
               } else {

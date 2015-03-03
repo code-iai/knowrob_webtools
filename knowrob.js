@@ -151,7 +151,7 @@ function Knowrob(options){
       });
       desig_listener.subscribe(function(message) {
         document.getElementById(designatorDiv).innerHTML=
-            format_designator(message.description, "", 0, 0);
+            format_designator(message.description);
       });
 
       var img_listener = new ROSLIB.Topic({
