@@ -21,6 +21,7 @@ ROS3D.MeshResource = function(options) {
   var that = this;
   options = options || {};
   var path = options.path || '/';
+  var scale = options.scale || [1,1,1];
   var resource = options.resource;
   var material = options.material || null;
   this.warnings = options.warnings;
@@ -53,8 +54,13 @@ ROS3D.MeshResource = function(options) {
     loader.load(uri, function colladaReady(collada) {
       // check for a scale factor in ColladaLoader2
       if(loaderType === ROS3D.COLLADA_LOADER_2 && collada.dae.asset.unit) {
-        var scale = collada.dae.asset.unit;
-        collada.scene.scale = new THREE.Vector3(scale, scale, scale);
+        collada.scene.scale = new THREE.Vector3(
+          scale[0]*collada.dae.asset.unit,
+          scale[1]*collada.dae.asset.unit,
+          scale[2]*collada.dae.asset.unit);
+      }
+      else {
+        collada.scene.scale = new THREE.Vector3(scale[0], scale[1], scale[2]);
       }
 
       if(material !== null) {

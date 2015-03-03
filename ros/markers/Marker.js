@@ -264,8 +264,10 @@ ROS3D.Marker = function(options) {
         path : path,
         resource : this.msgMesh,
         material : meshColorMaterial,
-        loader : loader
+        loader : loader,
+        scale : this.msgScale
       });
+	  
       this.add(meshResource);
       break;
     case ROS3D.MARKER_TRIANGLE_LIST:
