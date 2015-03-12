@@ -348,7 +348,7 @@ function DonutChart(options) {
   
   // External trigger to remove this chart
   this.remove = function() {
-    svg.remove();
+    vis.remove();
   }
   
   
