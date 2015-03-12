@@ -161,7 +161,7 @@ function Knowrob(options){
       });
       img_listener.subscribe(function(message) {
         document.getElementById(pictureDiv).innerHTML=
-            '<img class="picture" src="/'+message.data+'" width="300" height="240"/>';
+            '<img class="picture" src="/knowrob/'+message.data+'" width="300" height="240"/>';
       });
       
       var dataVisClient = new DataVisClient({
@@ -449,7 +449,7 @@ function Knowrob(options){
 
     this.add_history_item = function (query) {
         $.ajax({
-            url: "/add_history_item",
+            url: "/knowrob/add_history_item",
             type: "POST",
             contentType: "application/json",
             data: JSON.stringify({query: query}),  
@@ -459,7 +459,7 @@ function Knowrob(options){
 
     this.set_history_item = function (index) {
         $.ajax({
-            url: "/get_history_item",
+            url: "/knowrob/get_history_item",
             type: "POST",
             contentType: "application/json",
             data: JSON.stringify({index: index}),  
