@@ -52,7 +52,7 @@ function BarChart (options) {
     
 //     var color = d3.scale.ordinal()
 //         .domain(d3.range(data.value2.length))
-//         .range(colorbrewer.Blues[7]);
+//         .range(colorbrewer.Paired[11]);
     var color = d3.scale.category20();
     
     // Add x axis
