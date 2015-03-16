@@ -4,7 +4,6 @@ function BarChart (options) {
   
   options = options || {};
   var data = options.data || [];
-  var where = options.where;
   var label = options.label;
   var fontsize = options.fontsize || "14px";
   var query = options.query || "";
@@ -142,7 +141,6 @@ function BarChart (options) {
          .attr("dy", 0)
          .attr("text-anchor", "start")
          .style("font-size", fontsize)
-//          .text(label + " (# values: " + sum + ")")
          .text(label);
         
     total.exit()
@@ -150,17 +148,16 @@ function BarChart (options) {
     
   }
   
+  
+  
+  // // // // // // // // // // // // // // // // // // // // // // // // 
+  // Helper functions
+  // 
+  
   // External trigger to remove this chart
   this.remove = function() {
     svg.remove();
   }
-  
-  
-  
-  // // // // // // // // // // // // // // // // // // // // // // // // 
-  // Getters and setters
-  // 
-  
   
   this.getWidth = function() {
     return width;

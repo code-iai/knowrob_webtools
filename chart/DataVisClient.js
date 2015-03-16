@@ -17,8 +17,14 @@ function DataVisClient(options) {
     // only create a new panel if none with this ID exists already:
     if($( containerId ).find("#" + options.id).length == 0) {
     
+      // Create div container of appropriate size:
+      var div_class = 'col-md-3';
+      if (type == 0) {
+        div_class = 'col-md-4';
+      } 
+      
       var html = 
-      '<div class="col-md-3">\n' +
+      '<div class="' + div_class + ' chartcontainer">\n' +
       '  <div class="panel panel-default">\n' +
       '    <div class="panel-heading text-right">\n';
       
@@ -127,7 +133,7 @@ function DataVisClient(options) {
     that.getChart(id).remove();
     
     // remove surrounding divs
-    $( "div#"+id ).parents( ".col-md-3" ).remove();
+    $( "div#"+id ).parents( ".chartcontainer" ).remove();
     
     // remove from internal array buffer
     delete chartHandle[id];    
@@ -165,9 +171,7 @@ function DataVisClient(options) {
         label: message.title,
         width: message.width,
         height: message.height,
-        radius: (message.height-120)/2,//height*3/10,
-        innerRadius: (message.height-120)/2*4/9,
-        fontsize: message.fontsize//"14px"
+        fontsize: message.fontsize
       };
       
       that.addChart(message.id, message.type, options);
