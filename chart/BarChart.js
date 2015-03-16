@@ -49,10 +49,11 @@ function BarChart (options) {
     x.domain([0, max]);
     y.domain(d3.range(data.value2.length))
     
-//     var color = d3.scale.ordinal()
+    var color = d3.scale.ordinal()
 //         .domain(d3.range(data.value2.length))
-//         .range(colorbrewer.Paired[11]);
-    var color = d3.scale.category20();
+          .range(["#71b7cc", "#99d5e7", "#5ea3b7", "#c6e7f2", "#43b2d2", "#8ddcf3", "#00a1cf", "#b9edff", "#84a5ad", "#b6cfd6", "#e4ebee"]);
+//     var color = d3.scale.category20();
+        
     
     // Add x axis
     svg.append("g")

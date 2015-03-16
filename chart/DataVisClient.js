@@ -68,6 +68,9 @@ function DataVisClient(options) {
         
       } else if (type == 3) {
         handle = new Timeline(options);
+
+      } else if (type == 4) {
+        handle = new LineChart(options);
       }
       
       // add to internal map id--handle
@@ -99,6 +102,8 @@ function DataVisClient(options) {
       chart = new TreeDiagram(options)
     } else if(chart instanceof Timeline) {
       chart = new Timeline(options)
+    } else if(chart instanceof LineChart) {
+      chart = new LineChart(options)
     }
     
     chartHandle[id] = chart;

@@ -21,7 +21,10 @@ function DonutChart(options) {
       height = h - margin.top - margin.bottom,
       radius = Math.min(width, height) / 2;
       
-  var color = d3.scale.category20();
+  var color = d3.scale.ordinal()
+//       .domain(d3.range(data.value2.length))
+        .range(["#71b7cc", "#99d5e7", "#5ea3b7", "#c6e7f2", "#43b2d2", "#8ddcf3", "#00a1cf", "#b9edff", "#84a5ad", "#b6cfd6", "#e4ebee"]);
+      
       
   var svg = d3.select("#"+options.id).append("svg:svg")
             .attr("width", width + margin.left + margin.right)
