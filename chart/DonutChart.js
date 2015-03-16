@@ -171,6 +171,67 @@ function DonutChart(options) {
     
     polyline.exit()
             .remove();
+            
+    
+    // Relaxation algorithm modified from http://jsfiddle.net/thudfactor/B2WBU/
+    alpha = 0.5;
+    spacing = 12;
+    
+    function relax() {
+      
+        again = false;
+        text.each(function (d, i) {
+            a = this;
+            
+            da = d3.select(a);
+            xa = d3.transform(da.attr("transform")).translate[0];
+            ya = d3.transform(da.attr("transform")).translate[1];
+            
+            text.each(function (d, j) {
+                b = this;
+                
+                // a & b are the same element and don't collide.
+                if (a == b) return;
+                      
+                db = d3.select(b);
+
+                xb = d3.transform(db.attr("transform")).translate[0];
+                yb = d3.transform(db.attr("transform")).translate[1];
+                
+                deltaY = ya - yb;
+
+                // If both labels are on opposite sides, we don't collide
+                if (Math.sign(xa) != Math.sign(xb)) {                  
+                  return;
+                }
+                
+                // If spacing is greater than our specified spacing,
+                // they don't collide.
+                if (Math.abs(deltaY) > spacing) {
+                  return;
+                }
+                              
+                // If the labels collide, we'll push each 
+                // of the two labels up and down a little bit.
+                again = true;
+                sign = deltaY > 0 ? 1 : -1;
+                adjust = sign * alpha;
+                
+                ya_adj = +ya + adjust;
+                yb_adj = +yb - adjust;
+                
+                da.attr("transform", "translate(" + xa+ "," + ya_adj + ")");
+                db.attr("transform", "translate(" + xb+ "," + yb_adj + ")");
+            });
+        });
+
+        if(again) {
+            setTimeout(relax,1)
+        }
+    }
+    
+    relax();
+            
   };
 
   
