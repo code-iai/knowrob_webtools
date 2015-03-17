@@ -13,6 +13,7 @@ function LineChart(options) {
   var fontsize = options.fontsize || "14px";
   var query = options.query || "";
   
+  var timeFormat = d3.time.format("%I:%M");
   
   // // // // // // // // // // // // // 
   // Set up chart canvas
@@ -22,7 +23,7 @@ function LineChart(options) {
       
   var color = d3.scale.category20();
   
-  var x = d3.scale.linear()
+  var x = d3.time.scale()
           .range([0, width]);
   
   var y = d3.scale.linear()
@@ -30,7 +31,9 @@ function LineChart(options) {
   
   var xAxis = d3.svg.axis()
           .scale(x)
-          .orient("bottom");
+          .orient("bottom")
+          .ticks(5)
+          .tickPadding(5);
   
   var yAxis = d3.svg.axis()
           .scale(y)
@@ -57,7 +60,7 @@ function LineChart(options) {
     
     // convert strings to floats
     data.forEach(function(d) {
-      d.x = parseFloat(d.x);
+      d.x = new Date(parseFloat(d.x) * 1000);
       d.y = parseFloat(d.y);
     });
     
