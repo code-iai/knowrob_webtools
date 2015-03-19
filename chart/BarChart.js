@@ -132,17 +132,17 @@ function BarChart (options) {
 //        .remove();
     
     
-    // Summary legend at the bottom
-    var total = vis.selectAll("text.total")
-        .data([sum]);
-        
-    total.enter().append("text")
-         .attr("class", "total")
-         .attr("y", height + margin.top + (margin.bottom / 2))
-         .attr("dy", 0)
-         .attr("text-anchor", "start")
-         .style("font-size", fontsize)
-         .text(label);
+//     // Summary legend at the bottom
+//     var total = vis.selectAll("text.total")
+//         .data([sum]);
+//         
+//     total.enter().append("text")
+//          .attr("class", "total")
+//          .attr("y", height + margin.top + (margin.bottom / 2))
+//          .attr("dy", 0)
+//          .attr("text-anchor", "start")
+//          .style("font-size", fontsize)
+//          .text(label);
         
     total.exit()
          .remove();
