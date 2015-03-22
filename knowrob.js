@@ -29,6 +29,9 @@ function Knowrob(options){
     
     // File that contains example queries
     var libraryFile = options.library_file || 'queriesForRobohow.json'
+
+    // File that contains video query
+    var videoFile = options.video_file || 'video.json'
     
     // The topic where the canvas publishes snapshots
     var snapshotTopic;
@@ -49,6 +52,10 @@ function Knowrob(options){
     var libraryDiv    = options.library_div || 'examplequery'
     var queryDiv      = options.query_div || 'user_query'
     var nextButtonDiv = options.next_button_div || 'btn_query_next'
+    var initQueryDiv = options.init_query_div || 'init_query'
+    var userQueryDiv = options.user_video_query_div || 'user_query'
+    var minTimeRange = options.min_time_range || 'start_time'
+    var maxTimeRange = options.max_time_range || 'end_time'
     
     var background = options.background || '#ffffff';
     var near = options.near || 0.01;
@@ -108,6 +115,7 @@ function Knowrob(options){
       this.setup_history_field();
       this.setup_query_field();
       this.populate_query_select(libraryDiv, libraryFile);
+      this.populate_video_divs(initQueryDiv, userQueryDiv, minTimeRange, maxTimeRange, videoFile);
       this.resize_canvas();
       
       set_inactive(document.getElementById(nextButtonDiv));
@@ -693,6 +701,40 @@ function Knowrob(options){
             opt.innerHTML = querylist.query[i].text;
             select.appendChild(opt);
           }
+        }
+      }
+      catch(e) {
+        console.warn(e);
+      }
+    };
+
+    // fill the video divs with json data from url
+    this.populate_video_divs = function (firstId, secondId, firstTime, secondTime, url) {
+      try{
+        var request = new XMLHttpRequest
+        request.open("GET", url, false);
+        request.send(null);
+        var querylist = JSON.parse(request.responseText);
+
+        var initdiv = document.getElementById(firstId);
+	var userdiv = document.getElementById(secondId);
+	var firstrange = document.getElementById(firstTime);
+	var secondrange = document.getElementById(secondTime);
+        if(initdiv !== null) {
+          initdiv.innerHTML = querylist.init;
+        }
+        if(initdiv !== null && userdiv !== null) {
+          userdiv.innerHTML = querylist.user;
+        }
+	if(firstrange !== null) {
+          firstrange.min = querylist.start;
+	  firstrange.max = querylist.end;
+	  firstrange.value = querylist.start;
+        }
+        if(secondrange !== null) {
+          secondrange.min = querylist.start;
+	  secondrange.max = querylist.end;
+	  secondrange.value = querylist.end;
         }
       }
       catch(e) {
