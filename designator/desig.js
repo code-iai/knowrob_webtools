@@ -6,12 +6,13 @@ function format_designator(desig) {
 function format_designator(desig, pre, parent, level) {
     if(desig.length==0) return pre;
 
-    post = pre;
+    post = pre || 'ROOT';
     d = desig.shift();
 
     // context ended, go one level up
-    if(d["parent"] < parent)
-      level--;
+    //if(d["parent"] < parent)
+    //  level--;
+    level = d["parent"];
 
     if(d["key"].substring(0, 1) != '_')
     {
@@ -48,9 +49,8 @@ function format_designator(desig, pre, parent, level) {
       else {
         post += "<div class='desig div"+level+"'>\n"
         post += d["key"];
-        post = format_designator(desig, post, d["parent"], level+1);
         post += "</div>\n";
-
+        post = format_designator(desig, post, d["parent"], level+1);
       }
     }
     return post;
