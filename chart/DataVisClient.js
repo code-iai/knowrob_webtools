@@ -107,5 +107,7 @@ function DataVisClient(options) {
       }
     }
     //console.log(chartHandle);
+    
+    $(containerId).change();
   });
 }

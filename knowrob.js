@@ -160,6 +160,7 @@ function Knowrob(options){
       desig_listener.subscribe(function(message) {
         document.getElementById(designatorDiv).innerHTML=
             format_designator(message.description);
+        $('#'+designatorDiv).change();
       });
 
       var img_listener = new ROSLIB.Topic({
@@ -170,6 +171,7 @@ function Knowrob(options){
       img_listener.subscribe(function(message) {
         document.getElementById(pictureDiv).innerHTML=
             '<img class="picture" src="/knowrob/'+message.data+'" width="300" height="240"/>';
+        $('#'+pictureDiv).change();
       });
       
       var dataVisClient = new DataVisClient({
