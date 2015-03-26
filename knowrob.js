@@ -716,6 +716,11 @@ function Knowrob(options){
         var request = new XMLHttpRequest
         request.open("GET", url, false);
         request.send(null);
+        if(request.responseText == '' ||  request.responseText == null || request.status == 404 || request.status == 403)
+        {
+          request.open("GET", '/knowrob/static/experiments/video/video.json', false);
+          request.send(null);
+        }
         var querylist = JSON.parse(request.responseText);
 
         var initdiv = document.getElementById(firstId);
