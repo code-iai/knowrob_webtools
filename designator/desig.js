@@ -1,6 +1,6 @@
 
 function format_designator(desig) {
-    format_designator(desig, "", 0, 0);
+    return format_designator(desig, "", 0, 0);
 }
 
 function format_designator(desig, pre, parent, level) {
