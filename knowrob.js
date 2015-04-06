@@ -158,9 +158,31 @@ function Knowrob(options){
         messageType : 'designator_integration_msgs/Designator'
       });
       desig_listener.subscribe(function(message) {
-        document.getElementById(designatorDiv).innerHTML=
-            format_designator(message.description);
-        $('#'+designatorDiv).change();
+        if(message.description.length==0) {
+          console.warn("Ignoring empty designator.");
+        }
+        else {
+          var designatorHtml = "";
+          if(message.type==0) {
+              designatorHtml += "OBJECT DESIGNATOR";
+          }
+          else if(message.type==1) {
+              designatorHtml += "ACTION DESIGNATOR";
+          }
+          else if(message.type==2) {
+              designatorHtml += "LOCATION DESIGNATOR";
+          }
+          else if(message.type==3) {
+              designatorHtml += "HUMAN DESIGNATOR";
+          }
+          else {
+              designatorHtml += "DESIGNATOR";
+          }
+          designatorHtml += format_designator(message.description);
+          
+          document.getElementById(designatorDiv).innerHTML = designatorHtml;
+          $('#'+designatorDiv).change();
+        }
       });
 
       var img_listener = new ROSLIB.Topic({
