@@ -605,6 +605,56 @@ function Knowrob(options){
     
     var hudTextMesh;
     
+    this.draw_speech_bubble = function(ctx, tw, th, radius, peak) {
+        ctx.beginPath();
+        ctx.strokeStyle="black";
+        ctx.lineWidth="1";
+        ctx.fillStyle="rgba(255, 255, 255, 0.8)";
+        
+        var ls = 1;
+        var w = tw + 2*radius;
+        var h = th + 2*radius;
+        var px=0, py=0;
+        
+        // TODO: is there really no "getPenPosition" method ?
+        var moveTo = function(x,y) {
+            ctx.moveTo(x,y);
+            px=x; py=y;
+        };
+        var lineTo = function(x,y) {
+            ctx.lineTo(x,y);
+            px=x; py=y;
+        };
+        var curveTo = function(x,y,maxx,maxy) {
+            var cx = (maxx ? Math.max(x,px) : Math.min(x,px));
+            var cy = (maxy ? Math.max(y,py) : Math.min(y,py));
+            ctx.quadraticCurveTo(cx,cy,x,y);
+            px=x; py=y;
+        };
+        
+        moveTo(w-radius, h-ls);
+        // bottom right
+        curveTo(w-ls, h-radius, 1, 1);
+        lineTo (w-ls, radius);
+        // top right
+        curveTo(w-radius, ls, 1, 0);
+        lineTo (  radius, ls);
+        // top left
+        curveTo(ls, radius, 0, 0);
+        lineTo (ls, h-radius);
+        // bottom left
+        curveTo(radius, h-ls, 0, 1);
+        // the peak
+        lineTo(radius + peak[2], h-ls);
+        lineTo(px + 0.5*peak[0], h-ls+peak[1]);
+        lineTo(radius + peak[2] + peak[0], h-ls);
+        lineTo(w-radius, h-ls);
+        
+        ctx.fill();
+        ctx.stroke();
+        ctx.closePath();
+    };
+    
     this.create_text_texture = function(textLines, options) {
         // Font options
         var font = options.font || "Bold 24px Monospace";
@@ -627,19 +677,24 @@ function Knowrob(options){
             heightSum += m.height;
         }
         
+        // The text size
+        var tw = maxWidth;
+        var th = lineHeight*textLines.length;
+        // The canvas size
+        var cw = tw + margin[0];
+        var ch = th + 0.5*margin[1];
+        
+        //var bubbleRadius = 10;
+        //var bubblePeak = [15, 20, 200]; // width, height, x-offset
+        //cw += bubbleRadius*2;
+        //ch += bubbleRadius*2 + bubblePeak[1];
+        
         // Create context with appropriate canvas size 
         var ctx = canvas.getContext('2d');
-        ctx.canvas.width = maxWidth + margin[0];
-        ctx.canvas.height = lineHeight*textLines.length + 0.5*margin[1];
+        ctx.canvas.width  = cw;
+        ctx.canvas.height = ch;
         
-        /*
-        ctx.globalAlpha = 0.7;
-        ctx.fillStyle = options.backgroundStyle || "#999999";
-        ctx.strokeStyle = options.backgroundBorderStyle || "#000000";
-        ctx.strokeRect(0,0,ctx.canvas.width,ctx.canvas.height);
-        ctx.fillRect(0,0,ctx.canvas.width,ctx.canvas.height);
-        ctx.globalAlpha = 1.0;
-        */
+        //this.draw_speech_bubble(ctx, tw, th, bubbleRadius, bubblePeak);
         
         ctx.font = font;
         // Configure text shadow
@@ -655,7 +710,7 @@ function Knowrob(options){
         // Render text into 2D canvas
         for(var i=0; i<textLines.length; i++) {
             //ctx.strokeText(textLines[i], 0.5*margin[0], (i+1)*lineHeight);
-            ctx.fillText(textLines[i], 0.5*margin[0], (i+1)*lineHeight);
+            ctx.fillText(textLines[i], margin[0], 0.5*margin[1] + (i+1)*lineHeight);
         }
         
         // Finally create texture from canvas
