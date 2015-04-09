@@ -60,6 +60,9 @@ function Knowrob(options){
     var background = options.background || '#ffffff';
     var near = options.near || 0.01;
     var far = options.far || 1000.0;
+    
+    // Speech bubbles that are displayed
+    this.speechBubbles = {};
 
     this.connect = function () {
       ros = new ROSLIB.Ros({url : rosURL});
@@ -230,8 +233,67 @@ function Knowrob(options){
           var lines = msgStr.split('\n');
           that.show_hud_text(lines, {});
       });
+
+      var speech_topic = new ROSLIB.Topic({
+        ros : ros,
+        name : '/canvas/speech',
+        messageType : 'data_vis_msgs/Speech'
+      });
+      speech_topic.subscribe(function(message) {
+          that.handleSpeechMessage(message);
+      });
       
       this.waitForJsonProlog();
+    };
+    
+    this.handleSpeechMessage = function (message) {
+        // TODO(daniel): Make sprite handling more generic
+        //    - Use marker messages?
+        //    - clear_canvas predicate should also remove bubbles
+        var bubble = that.speechBubbles[message.id];
+        var bubbleTexture = that.draw_speech_bubble(message.text);
+        
+        if(message.text.length==0) {
+            if(bubble) {
+                rosViewer.scene.remove(bubble);
+                delete that.speechBubbles[message.id];
+            }
+        }
+        else if(!bubble) {
+            var material = new THREE.SpriteMaterial({
+                useScreenCoordinates: false,
+                alignment: THREE.SpriteAlignment.bottomLeft});
+            material.map = bubbleTexture;
+            
+            console.log(bubbleTexture);
+            
+            bubble = new THREE.Sprite(material);
+            rosViewer.scene.add(bubble);
+            that.speechBubbles[message.id] = bubble;
+        }
+        else {
+            bubble.material.map = bubbleTexture;
+        }
+        if(bubble) {
+            // make sure text has the same dimensions for different texture sizes
+            var scale = bubbleTexture.image.height/100.0;
+            // make sure text is not stretched
+            bubble.scale.set(
+                scale*bubbleTexture.image.width/bubbleTexture.image.height,
+                scale,
+                1.0);
+            bubble.position.set(message.position.x, message.position.y, message.position.z);
+            
+            if(message.duration>0) {
+                // TODO(daniel): Fade-out bubble ?
+                window.setTimeout(function(){
+                    if(that.speechBubbles[message.id]) {
+                        rosViewer.scene.remove(bubble);
+                        delete that.speechBubbles[message.id];
+                    }
+              }, message.duration*1000);
+            }
+        }
     };
     
     this.waitForJsonProlog = function () {
@@ -605,7 +667,35 @@ function Knowrob(options){
     
     var hudTextMesh;
     
-    this.draw_speech_bubble = function(ctx, tw, th, radius, peak) {
+    this.draw_speech_bubble = function(text) {
+        var maxCharacterPerLine = 15;
+        var words = text.split(' ');
+        var lines = [];
+        var line = '';
+        for(var i=0; i<words.length; i++) {
+            var l0 = line.length;
+            var l1 = words[i].length;
+            if(l0 == 0) {
+                line = words[i];
+            }
+            else if(l0+l1 < maxCharacterPerLine) {
+                line += ' ' + words[i];
+            }
+            else {
+                lines.push(line);
+                line = words[i];
+            }
+        }
+        if(line.length>0) {
+            lines.push(line);
+        }
+        
+        return that.create_text_texture(lines, {
+            useBubble: true
+        });
+    };
+    
+    this.draw_speech_bubble__ = function(ctx, tw, th, radius, peak) {
         ctx.beginPath();
         ctx.strokeStyle="black";
         ctx.lineWidth="1";
@@ -646,7 +736,8 @@ function Knowrob(options){
         curveTo(radius, h-ls, 0, 1);
         // the peak
         lineTo(radius + peak[2], h-ls);
-        lineTo(px + 0.5*peak[0], h-ls+peak[1]);
+        //lineTo(px + 0.5*peak[0], h-ls+peak[1]);
+        lineTo(1, h-ls+peak[1]);
         lineTo(radius + peak[2] + peak[0], h-ls);
         lineTo(w-radius, h-ls);
         
@@ -659,6 +750,7 @@ function Knowrob(options){
         // Font options
         var font = options.font || "Bold 24px Monospace";
         var useShadow = options.useShadow || false;
+        var useBubble = options.useBubble || false;
         var margin = options.margin || [12, 12];
         var lineHeight = 24;
         
@@ -684,17 +776,22 @@ function Knowrob(options){
         var cw = tw + margin[0];
         var ch = th + 0.5*margin[1];
         
-        //var bubbleRadius = 10;
-        //var bubblePeak = [15, 20, 200]; // width, height, x-offset
-        //cw += bubbleRadius*2;
-        //ch += bubbleRadius*2 + bubblePeak[1];
+        var bubbleRadius = 10;
+        var bubblePeak = [15, 20, 0]; // width, height, x-offset
+        
+        if(useBubble) {
+            cw += bubbleRadius*2;
+            ch += bubbleRadius*2 + bubblePeak[1];
+        }
         
         // Create context with appropriate canvas size 
         var ctx = canvas.getContext('2d');
         ctx.canvas.width  = cw;
         ctx.canvas.height = ch;
         
-        //this.draw_speech_bubble(ctx, tw, th, bubbleRadius, bubblePeak);
+        if(useBubble) {
+            this.draw_speech_bubble__(ctx, tw, th, bubbleRadius, bubblePeak);
+        }
         
         ctx.font = font;
         // Configure text shadow
