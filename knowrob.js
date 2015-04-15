@@ -56,6 +56,8 @@ function Knowrob(options){
     var userQueryDiv = options.user_video_query_div || 'user_query'
     var minTimeRange = options.min_time_range || 'start_time'
     var maxTimeRange = options.max_time_range || 'end_time'
+    var summaryImageDiv = options.summary_image_div || 'summary'
+    var summaryHeaderDiv = options.summary_image_div || 'summary_header'
     
     var background = options.background || '#ffffff';
     var near = options.near || 0.01;
@@ -115,7 +117,7 @@ function Knowrob(options){
       this.setup_history_field();
       this.setup_query_field();
       this.populate_query_select(libraryDiv, libraryFile);
-      this.populate_video_divs(initQueryDiv, userQueryDiv, minTimeRange, maxTimeRange, videoFile);
+      this.populate_video_divs(initQueryDiv, userQueryDiv, minTimeRange, maxTimeRange, videoFile, summaryImageDiv, summaryHeaderDiv);
       this.resize_canvas();
       
       set_inactive(document.getElementById(nextButtonDiv));
@@ -711,7 +713,7 @@ function Knowrob(options){
     };
 
     // fill the video divs with json data from url
-    this.populate_video_divs = function (firstId, secondId, firstTime, secondTime, url) {
+    this.populate_video_divs = function (firstId, secondId, firstTime, secondTime, url, sumId, sumHeaderId) {
       try{
         var request = new XMLHttpRequest
         request.open("GET", url, false);
@@ -721,28 +723,51 @@ function Knowrob(options){
           request.open("GET", '/knowrob/static/experiments/video/video.json', false);
           request.send(null);
         }
+
+        var pictureUrl = '/knowrob/summary_data/' + url.replace('/knowrob/static/experiments/video/', '').replace('.json', '.jpg');
         var querylist = JSON.parse(request.responseText);
 
         var initdiv = document.getElementById(firstId);
-	var userdiv = document.getElementById(secondId);
-	var firstrange = document.getElementById(firstTime);
-	var secondrange = document.getElementById(secondTime);
+        var userdiv = document.getElementById(secondId);
+        var sumdiv = document.getElementById(sumId);
+        var sumheaderdiv = document.getElementById(sumHeaderId);
+        var firstrange = document.getElementById(firstTime);
+        var secondrange = document.getElementById(secondTime);
         if(initdiv !== null) {
           initdiv.innerHTML = querylist.init;
         }
         if(initdiv !== null && userdiv !== null) {
           userdiv.innerHTML = querylist.user;
         }
-	if(firstrange !== null) {
+        if(firstrange !== null) {
           firstrange.min = querylist.start;
-	  firstrange.max = querylist.end;
-	  firstrange.value = querylist.start;
+          firstrange.max = querylist.end;
+          firstrange.value = querylist.start;
         }
         if(secondrange !== null) {
           secondrange.min = querylist.start;
-	  secondrange.max = querylist.end;
-	  secondrange.value = querylist.end;
+          secondrange.max = querylist.end;
+          secondrange.value = querylist.end;
         }
+        if(sumdiv !== null && typeof(querylist.summary) != "undefined" ) {
+          var http = new XMLHttpRequest();
+          http.open('HEAD', pictureUrl, false);
+          http.send();
+          if (http.status !== 404){
+             sumheaderdiv.innerHTML = 'Summary';
+             sumdiv.innerHTML = '<img class="picture" src="'+pictureUrl+'" width="300" height="240"/>';
+          }
+          else if(typeof(querylist.summary) != "undefined" ){
+             var image_creator_prolog_engine = this.new_pl_client();
+             var regQuery = querylist.summary;
+             image_creator_prolog_engine.jsonQuery(regQuery, function(result) {
+                sumheaderdiv.innerHTML = 'Summary';
+                sumdiv.innerHTML = '<img class="picture" src="'+pictureUrl+'" width="300" height="240"/>'; 
+             }); 
+          }
+        }
+	
+	
       }
       catch(e) {
         console.warn(e);
