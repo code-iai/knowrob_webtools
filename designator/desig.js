@@ -1,17 +1,13 @@
 
 function format_designator(desig) {
-    format_designator(desig, "", 0, 0);
-}
+    return __format_designator(desig, "");
+};
 
-function format_designator(desig, pre, parent, level) {
+function __format_designator(desig, pre) {
     if(desig.length==0) return pre;
 
-    post = pre || 'ROOT';
+    post = pre || "";
     d = desig.shift();
-
-    // context ended, go one level up
-    //if(d["parent"] < parent)
-    //  level--;
     level = d["parent"];
 
     if(d["key"].substring(0, 1) != '_')
@@ -19,46 +15,46 @@ function format_designator(desig, pre, parent, level) {
       if(d["type"]==0) { // string
         post += format_designator_value(
             d["key"], d["value_string"], level);
-        post = format_designator(desig, post, d["parent"], level);
+        post = __format_designator(desig, post);
       }
       else if(d["type"]==1) { // float
         post += format_designator_value(
             d["key"], d["value_float"], level);
-        post = format_designator(desig, post, d["parent"], level);
+        post = __format_designator(desig, post);
       }
       else if(d["type"]==5) { // Pose
         post += format_designator_value(
             d["key"], format_pose(d["value_pose"], level), level);
-        post = format_designator(desig, post, d["parent"], level);
+        post = __format_designator(desig, post);
       }
       else if(d["type"]==12) { // Matrix
         post += format_designator_value(
             d["key"], format_matrix(d["value_array"], level), level);
-        post = format_designator(desig, post, d["parent"], level);
+        post = __format_designator(desig, post);
       }
       else if(d["type"]==13) { // Vector
         post += format_designator_value(
             d["key"], format_array(d["value_array"], level), level);
-        post = format_designator(desig, post, d["parent"], level);
+        post = __format_designator(desig, post);
       }
       else if(d["type"]==4) { // PoseStamped
         post += format_designator_value(
             d["key"], format_pose_stamped(d["value_posestamped"], level), level);
-        post = format_designator(desig, post, d["parent"], level);
+        post = __format_designator(desig, post);
       }
       else {
         post += "<div class='desig div"+level+"'>\n"
         post += d["key"];
         post += "</div>\n";
-        post = format_designator(desig, post, d["parent"], level+1);
+        post = __format_designator(desig, post);
       }
     }
     return post;
-}
+};
 
 function format_designator_value(key, value, level) {
     return "<div class='desig div"+level+"'>\n" + key + " = " + value + "</div>\n";
-}
+};
 
 function format_array(value, level) {
     post = "";
@@ -68,7 +64,7 @@ function format_array(value, level) {
     }
     post += "</div>\n";
     return post;
-}
+};
 
 function format_matrix(value, level) {
     post = "";
@@ -81,7 +77,7 @@ function format_matrix(value, level) {
     }
     post += "</div>\n";
     return post;
-}
+};
 
 function format_pose_stamped(poseStampedMsg, level) {
     post = "";
@@ -96,7 +92,7 @@ function format_pose_stamped(poseStampedMsg, level) {
     post += format_pose(poseStampedMsg["pose"], level+1);
     post += "</div>\n";
     return post;
-}
+};
 
 function format_pose(poseMsg, level) {
     post = "";
@@ -116,4 +112,4 @@ function format_pose(poseMsg, level) {
     post += "</div>\n";
     post += "</div>\n";
     return post;
-}
+};

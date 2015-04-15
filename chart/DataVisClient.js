@@ -16,6 +16,8 @@ function DataVisClient(options) {
 
 
   rosTopic.subscribe(function(message) {
+    $(containerId).change();
+    
     if (chartHandle.findIndex(function (element, index, array) {
           if(element.id == message.id) {return true} else {return false}
         }, this) == -1 && message.values[0].value2.length != 0) {
@@ -107,7 +109,5 @@ function DataVisClient(options) {
       }
     }
     //console.log(chartHandle);
-    
-    $(containerId).change();
   });
 }
