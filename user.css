@@ -341,6 +341,7 @@ body {
     padding: 4px 14px 4px 14px;
     margin: 0;
     border: none;
+    line-height: 10px
 }
  
 .menu ul li:last-child a { border: none; }
