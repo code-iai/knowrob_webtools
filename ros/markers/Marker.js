@@ -259,7 +259,12 @@ ROS3D.Marker = function(options) {
          message.color.b !== 0 || message.color.a !== 0) {
         meshColorMaterial = colorMaterial;
       }
-      this.msgMesh = message.mesh_resource.substr(10);
+      if(message.mesh_resource.startsWith('package://'))
+        this.msgMesh = message.mesh_resource.substr(10);
+      else if(message.mesh_resource.startsWith('/'))
+        this.msgMesh = message.mesh_resource.substr(1);
+      else
+        this.msgMesh = message.mesh_resource;
       var meshResource = new ROS3D.MeshResource({
         path : path,
         resource : this.msgMesh,
