@@ -1958,7 +1958,7 @@
             case "reflectivity":
             case "transparency":
             case "index_of_refraction":
-              technique[child.nodeName] = parseFloat(child.childNodes[1].textContent);
+              technique[child.nodeName] = parseFloat(child.childNodes[0].textContent);
               break;
             case "transparent":
               this._parseEffectColorOrTexture(technique, child);

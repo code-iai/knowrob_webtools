@@ -276,8 +276,6 @@ function Knowrob(options){
                 alignment: THREE.SpriteAlignment.bottomLeft});
             material.map = bubbleTexture;
             
-            console.log(bubbleTexture);
-            
             bubble = new THREE.Sprite(material);
             rosViewer.scene.add(bubble);
             that.speechBubbles[message.id] = bubble;
