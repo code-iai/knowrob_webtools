@@ -41,9 +41,9 @@ function TreeDiagram(options){
   .attr('class', 'd3-tip')
   .offset([0, 30]) //-10, 0
   .html(function(d) {
-    var ret = "";
+    var ret = "<span>";
     for (i in d.info) {
-      ret += d.info[i] + "</br>";
+      ret += d.info[i] + "</span>";
     }
     /*for (key in d.info) {
       if(d.info.hasOwnProperty(key)){
@@ -60,6 +60,14 @@ function TreeDiagram(options){
   // removes this chart
   this.remove = function() {
     vis.remove();
+    /*vis = d3.select(where).append("svg:svg")
+      .attr("width", width)
+      .attr("height", height);
+   svg = vis
+    .append("svg:g")
+      .attr("transform", "translate(10,10)");
+   node = svg.selectAll(".node"),
+      link = svg.selectAll(".link");*/
   }
 
   this.update = function(data) {
@@ -70,10 +78,10 @@ function TreeDiagram(options){
                 parent: "",
                 color: options.data.value1[2],
                 info: options.data.value2};*/
-    var root = {id: data[0].value1[0],
-                parent: "",
-                color: data[0].value1[2],
-                info: data[0].value2};
+    var root = {id: data.data[0].id,
+                parent: data.data[0].id,
+                color: data.data[0].color,
+                info: data.data[0].info};
 
     var nodes = tree(root);
 
@@ -82,12 +90,12 @@ function TreeDiagram(options){
     root.py = root.x;
 
 
-    for (var i = 0; i < data.length; i++) {
+    for (var i = 0; i < data.data.length; i++) {
 
-      var n = {id: data[i].value1[0],
-               parent: data[i].value1[1],
-               color: data[i].value1[2],
-               info: data[i].value2};
+      var n = {id: data.data[i].id,
+               parent: data.data[i].parent,
+               color: data.data[i].color,
+               info: data.data[i].info};
 
       if (nodes.find(function (element, index, array) {
             if(element.id == n.id) {return true} else {return false}
@@ -111,7 +119,7 @@ function TreeDiagram(options){
 
 
 
-    // Add entering nodes in the parent’s old position.
+   // Add entering nodes in the parent’s old position.
     node.enter().append("svg:circle")
         .attr("class", "node")
         .attr("r", 6)

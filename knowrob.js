@@ -201,13 +201,22 @@ function Knowrob(options){
         $('#'+pictureDiv).change();
       });
       
-      var dataVisClient = new DataVisClient({
-        ros: ros,
-        containerId: '#chart',
-        topic: 'data_vis_msgs'
-        //width: 500,//210,
-        //height: 500//210
-      });
+      var visCLient;
+      if ($('#chart').length) {
+          visClient = new DataVisClient({
+             ros: ros,
+             containerId: '#chart',
+             topic: 'data_vis_msgs'
+             //width: 500,//210,
+             //height: 500//210
+          });
+      } else if ($('#tasktree').length){
+         visClient = new TaskTreeVisClient({
+             ros: ros,
+             containerId: '#tasktree',
+             topic: 'task_tree_msgs'
+          });
+      };
     
       // The topic where the canvas publishes snapshots
       snapshotTopic = new ROSLIB.Topic({
@@ -936,7 +945,7 @@ function Knowrob(options){
              var regQuery = querylist.summary;
              image_creator_prolog_engine.jsonQuery(regQuery, function(result) {
                 sumheaderdiv.innerHTML = 'Summary';
-                sumdiv.innerHTML = '<img class="picture" src="'+pictureUrl+'" width="300" height="240"/>'; 
+                sumdiv.innerHTML = '<img class="picture" src="'+pictureUrl+'" width="300" height="210"/>'; 
              }); 
           }
         }
