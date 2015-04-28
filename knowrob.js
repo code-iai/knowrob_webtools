@@ -52,16 +52,24 @@ function Knowrob(options){
     var libraryDiv    = options.library_div || 'examplequery'
     var queryDiv      = options.query_div || 'user_query'
     var nextButtonDiv = options.next_button_div || 'btn_query_next'
-    var initQueryDiv = options.init_query_div || 'init_query'
-    var userQueryDiv = options.user_video_query_div || 'user_query'
-    var minTimeRange = options.min_time_range || 'start_time'
-    var maxTimeRange = options.max_time_range || 'end_time'
-    var summaryImageDiv = options.summary_image_div || 'summary'
-    var summaryHeaderDiv = options.summary_image_div || 'summary_header'
+   
     
     var background = options.background || '#ffffff';
     var near = options.near || 0.01;
     var far = options.far || 1000.0;
+
+    // configuration for video page
+    this.initQueryDiv = options.init_query_div || 'init_query'
+    this.userQueryDiv = options.user_video_query_div || 'user_query'
+    this.experimentSelect = options.experiment_select || 'experiment_select'
+    this.minTimeRange = options.min_time_range || 'start_time'
+    this.maxTimeRange = options.max_time_range || 'end_time'
+    this.summaryImageDiv = options.summary_image_div || 'summary'
+    this.summaryHeaderDiv = options.summary_image_div || 'summary_header'
+
+    // File that contains video query
+    this.videoFile = options.video_file || 'video.json'
+    var videoQuery;
     
     // Speech bubbles that are displayed
     this.speechBubbles = {};
@@ -120,7 +128,7 @@ function Knowrob(options){
       this.setup_history_field();
       this.setup_query_field();
       this.populate_query_select(libraryDiv, libraryFile);
-      this.populate_video_divs(initQueryDiv, userQueryDiv, minTimeRange, maxTimeRange, videoFile, summaryImageDiv, summaryHeaderDiv);
+      this.init_video_divs(that.experimentSelect,that.initQueryDiv,that.userQueryDiv,that.minTimeRange,that.maxTimeRange,that.videoFile);
       this.resize_canvas();
       
       set_inactive(document.getElementById(nextButtonDiv));
@@ -893,20 +901,51 @@ function Knowrob(options){
       }
     };
 
-    // fill the video divs with json data from url
-    this.populate_video_divs = function (firstId, secondId, firstTime, secondTime, url, sumId, sumHeaderId) {
-      try{
-        var request = new XMLHttpRequest
-        request.open("GET", url, false);
-        request.send(null);
-        if(request.responseText == '' ||  request.responseText == null || request.status == 404 || request.status == 403)
+    this.init_video_divs = function (expSelect, firstId, secondId, firstTime, secondTime, url) {
+        videoQuery = new XMLHttpRequest
+        videoQuery.open("GET", url, false);
+        videoQuery.send(null);
+        if(videoQuery.responseText == '' ||  videoQuery.responseText == null || videoQuery.status == 404 || videoQuery.status == 403)
         {
-          request.open("GET", '/knowrob/static/experiments/video/video.json', false);
-          request.send(null);
+          videoQuery.open("GET", '/knowrob/static/experiments/video/video.json', false);
+          videoQuery.send(null);
         }
 
+        var querylist = JSON.parse(videoQuery.responseText);
+
+        var initdiv = document.getElementById(firstId);
+        var userdiv = document.getElementById(secondId);
+        var firstrange = document.getElementById(firstTime);
+        var secondrange = document.getElementById(secondTime);
+        var expselect = document.getElementById(expSelect);
+        if(initdiv !== null) {
+          initdiv.innerHTML = "";
+        }
+        if(initdiv !== null && userdiv !== null) {
+          userdiv.innerHTML = "";
+        }
+        if(firstrange !== null) {
+          firstrange.min = 0;
+          firstrange.max = 0;
+          firstrange.value = 0;
+        }
+        if(secondrange !== null) {
+          secondrange.min = 0;
+          secondrange.max = 0;
+          secondrange.value = 0;
+        }
+	if (expselect !== null) {
+           for (var i = 0; i < querylist.video.length; i++) {
+            expselect.options[expselect.options.length] =new Option(querylist.video[i].name, i);
+          }
+        }
+    }
+
+    // fill the video divs with json data from url
+    this.update_video_divs = function (expSelect, firstId, secondId, firstTime, secondTime, url, sumId, sumHeaderId) {
+      try{
         var pictureUrl = '/knowrob/summary_data/' + url.replace('/knowrob/static/experiments/video/', '').replace('.json', '.jpg');
-        var querylist = JSON.parse(request.responseText);
+        var querylist = JSON.parse(videoQuery.responseText);
 
         var initdiv = document.getElementById(firstId);
         var userdiv = document.getElementById(secondId);
@@ -914,37 +953,42 @@ function Knowrob(options){
         var sumheaderdiv = document.getElementById(sumHeaderId);
         var firstrange = document.getElementById(firstTime);
         var secondrange = document.getElementById(secondTime);
-        if(initdiv !== null) {
-          initdiv.innerHTML = querylist.init;
-        }
-        if(initdiv !== null && userdiv !== null) {
-          userdiv.innerHTML = querylist.user;
-        }
-        if(firstrange !== null) {
-          firstrange.min = querylist.start;
-          firstrange.max = querylist.end;
-          firstrange.value = querylist.start;
-        }
-        if(secondrange !== null) {
-          secondrange.min = querylist.start;
-          secondrange.max = querylist.end;
-          secondrange.value = querylist.end;
-        }
-        if(sumdiv !== null && typeof(querylist.summary) != "undefined" ) {
-          var http = new XMLHttpRequest();
-          http.open('HEAD', pictureUrl, false);
-          http.send();
-          if (http.status !== 404){
-             sumheaderdiv.innerHTML = 'Summary';
-             sumdiv.innerHTML = '<img class="picture" src="'+pictureUrl+'" width="300" height="240"/>';
+        var expselect = document.getElementById(expSelect);
+        var selectedExperiment = expselect.options[expselect.selectedIndex].value;
+        if(selectedExperiment > -1){
+          if(initdiv !== null) {
+            initdiv.innerHTML = querylist.video[selectedExperiment].init;
           }
-          else if(typeof(querylist.summary) != "undefined" ){
-             var image_creator_prolog_engine = this.new_pl_client();
-             var regQuery = querylist.summary;
-             image_creator_prolog_engine.jsonQuery(regQuery, function(result) {
-                sumheaderdiv.innerHTML = 'Summary';
-                sumdiv.innerHTML = '<img class="picture" src="'+pictureUrl+'" width="300" height="210"/>'; 
-             }); 
+          if(initdiv !== null && userdiv !== null) {
+            userdiv.innerHTML = querylist.video[selectedExperiment].user;
+          }
+          if(firstrange !== null) {
+            firstrange.min = querylist.video[selectedExperiment].start;
+            firstrange.max = querylist.video[selectedExperiment].end;
+            firstrange.value = querylist.video[selectedExperiment].start;
+          }
+          if(secondrange !== null) {
+            secondrange.min = querylist.video[selectedExperiment].start;
+            secondrange.max = querylist.video[selectedExperiment].end;
+            secondrange.value = querylist.video[selectedExperiment].end;
+          }
+          $( "#currentRange" ).val(document.getElementById("start_time").value + " - " + document.getElementById("end_time").value )
+          if(sumdiv !== null && typeof(querylist.video[selectedExperiment].summary) != "undefined" ) {
+            var http = new XMLHttpRequest();
+            http.open('HEAD', pictureUrl, false);
+            http.send();
+            if (http.status !== 404){
+               sumheaderdiv.innerHTML = 'Summary';
+               sumdiv.innerHTML = '<img class="picture" src="'+pictureUrl+'" width="205" height="180"/>';
+            }
+            else if(typeof(querylist.video[selectedExperiment].summary) != "undefined" ){
+               var image_creator_prolog_engine = this.new_pl_client();
+               var regQuery = querylist.video[selectedExperiment].summary;
+               image_creator_prolog_engine.jsonQuery(regQuery, function(result) {
+                  sumheaderdiv.innerHTML = 'Summary';
+                  sumdiv.innerHTML = '<img class="picture" src="'+pictureUrl+'" width="205" height="180"/>'; 
+               }); 
+            }
           }
         }
 	
