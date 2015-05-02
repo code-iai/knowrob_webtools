@@ -34,10 +34,10 @@ function TreeDiagram(options){
   var node = svg.selectAll(".node"),
       link = svg.selectAll(".link");
 
-  var duration = 750;
+  var duration = 0;
   //    timer = setInterval(update, duration);
 
-  var tip = d3.tip()
+  /*var tip = d3.tip()
   .attr('class', 'd3-tip')
   .offset([0, 30]) //-10, 0
   .html(function(d) {
@@ -45,17 +45,11 @@ function TreeDiagram(options){
     for (i in d.info) {
       ret += d.info[i] + "</span>";
     }
-    /*for (key in d.info) {
-      if(d.info.hasOwnProperty(key)){
-        ret += key + ": " + d.info[key] + "</br>";
-        //alert(key + " = " + d[key]);
-      }
-    }*/
+    
     return ret;
-    //return "<strong>Id:</strong> <span>" + d.id + "</span></br><strong>Parent:</strong> <span>" + d.parent.id + "</span>";
   });
 
-  svg.call(tip);
+  svg.call(tip);*/
 
   // removes this chart
   this.remove = function() {
@@ -71,13 +65,17 @@ function TreeDiagram(options){
   }
 
   this.update = function(data) {
+    vis.remove();
+    vis = d3.select(where).append("svg:svg")
+      .attr("width", width)
+      .attr("height", height);
+    svg = vis
+    .append("svg:g")
+      .attr("transform", "translate(10,10)");
+    node = svg.selectAll(".node"),
+      link = svg.selectAll(".link");
     var tree = d3.layout.tree()
       .size([height - 20, width - 20]);
-
-    /*var root = {id: options.data.value1[0],
-                parent: "",
-                color: options.data.value1[2],
-                info: options.data.value2};*/
     var root = {id: data.data[0].id,
                 parent: data.data[0].id,
                 color: data.data[0].color,
@@ -119,16 +117,18 @@ function TreeDiagram(options){
 
 
 
-   // Add entering nodes in the parent’s old position.
-    node.enter().append("svg:circle")
+    // Add entering nodes in the parent’s old position.
+    var node_ = node.enter().append("svg:circle")
         .attr("class", "node")
         .attr("r", 6)
         .attr("fill", function(d,i) {return d.color})
         .attr("cx", function(d) { return d.parent.px; })
         .attr("cy", function(d) { return d.parent.py; })
         .on("click", function(){return})
-        .on("mouseover", tip.show)
-        .on("mouseout", tip.hide);
+        .on("mouseover", function(){return})
+        .on("mouseout", function(){return});
+
+    
 
     // Add entering links in the parent’s old position.
     link.enter().insert("svg:path", ".node")
@@ -151,6 +151,14 @@ function TreeDiagram(options){
         .attr("cx", function(d) { return d.px = d.y; })
         .attr("cy", function(d) { return d.py = d.x; });
 
+    node.enter().append("text")
+      .text(function(d) { return d.info; })
+      .attr("text-anchor", "middle")
+      .attr("font-size", "10px")
+      .attr("fill", "blue")
+      .attr("x", function(d) { return d.px; })
+      .attr("y", function(d) { return d.py; });
+        
   // exit nodes and links
   var nodeExit = node.exit()
       .remove();

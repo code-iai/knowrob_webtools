@@ -29,5 +29,6 @@ function TaskTreeVisClient(options) {
       };
       taskTreeHandle.update(options);         
       $(containerId).change();
+      
   });
 }

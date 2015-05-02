@@ -593,10 +593,11 @@ function Knowrob(options){
     ///////////////////////////////
     //////////// Snapshots
     ///////////////////////////////
-    
+    //todo(Asil): Currently snapshots of canvas and task tree are not published via ROS Topic rather prompts browser user to download them.
+    // This will be fixed after robohow
     this.publish_snapshot = function (frameNumber, fps) {
       console.log("Publishing canvas snapshot frame:" + frameNumber + " fps:" + fps);
-      var gl = rosViewer.renderer.getContext();
+      /*var gl = rosViewer.renderer.getContext();
       var width  = gl.drawingBufferWidth;
       var height = gl.drawingBufferHeight;
       
@@ -624,7 +625,6 @@ function Knowrob(options){
           pixels.push(buf[index+2]);
         }
       }
-      
       // Finally generate ROS message
       var msg = new ROSLIB.Message({
         header: {
@@ -649,7 +649,75 @@ function Knowrob(options){
         data: pixels
       });
       
-      snapshotTopic.publish(msg);
+      snapshotTopic.publish(msg);*/
+
+      
+      $("svg").attr({ version: '1.1' , xmlns:"http://www.w3.org/2000/svg"});
+
+      var svg = $("#tasktree").html();
+      var nodesToRecover = [];
+      var nodesToRemove = [];
+
+      var svgElem = $("#tasktree").find('svg');
+
+      svgElem.each(function(index, node) {
+        var parentNode = node.parentNode;
+        var svg = parentNode.innerHTML;
+
+        var canvas = document.createElement('canvas');
+
+        canvg(canvas, svg);
+
+        nodesToRecover.push({
+            parent: parentNode,
+            child: node
+        });
+        parentNode.removeChild(node);
+
+        nodesToRemove.push({
+            parent: parentNode,
+            child: canvas
+        });
+
+        parentNode.appendChild(canvas);
+      });
+
+      /*var b64 = btoa(svg); // or use btoa if supported
+      var img = '<img src="'+'data:image/svg+xml;base64,\n'+b64+'">'; 
+      document.getElementById('hidden_tasktree_img_div').innerHTML = img;*/
+      var img_png;
+      html2canvas($('#tasktree'), {logging: true, profile: true, useCORS: true, allowTaint: true,
+         onrendered: function (canvas) {
+            var ctx = canvas.getContext('2d');
+            ctx.webkitImageSmoothingEnabled = false;
+            ctx.mozImageSmoothingEnabled = false;
+            ctx.imageSmoothingEnabled = false;
+            canvas.toBlob(function(blob) {
+                nodesToRemove.forEach(function(pair) {
+                    pair.parent.removeChild(pair.child);
+                });
+
+                nodesToRecover.forEach(function(pair) {
+                    pair.parent.appendChild(pair.child);
+                });
+                saveAs(blob, 'taskTree_'+ frameNumber+'.png');
+            });
+          }
+      });
+
+      /*var tmp_canvas = rosViewer.renderer;
+      var img = tmp_canvas.toDataURL("image/png");
+      window.open(img);*/      
+
+      var rosCtx = rosViewer.renderer.getContext('2d');
+      rosCtx.webkitImageSmoothingEnabled = false;
+      rosCtx.mozImageSmoothingEnabled = false;
+      rosCtx.imageSmoothingEnabled = false;
+      rosViewer.renderer.domElement.toBlob(function(blob) {   
+          saveAs(blob, 'canvas_'+ frameNumber+'.png');
+      });      
+
+      
     };
     
     ///////////////////////////////
@@ -670,7 +738,7 @@ function Knowrob(options){
     this.set_camera_orientation = function(orientation) {
         var orientation = new THREE.Quaternion(orientation.x, orientation.y,
                                                orientation.z, orientation.w);
-        var frontVector = new THREE.Vector3(0, 1, 0);
+        var frontVector = new THREE.Vector3(0, 0, 1);
         frontVector.applyQuaternion(orientation);
         rosViewer.cameraControls.center = rosViewer.cameraControls.camera.position.clone();
         rosViewer.cameraControls.center.add(frontVector);
@@ -902,6 +970,7 @@ function Knowrob(options){
     };
 
     this.init_video_divs = function (expSelect, firstId, secondId, firstTime, secondTime, url) {
+      try{
         videoQuery = new XMLHttpRequest
         videoQuery.open("GET", url, false);
         videoQuery.send(null);
@@ -912,34 +981,17 @@ function Knowrob(options){
         }
 
         var querylist = JSON.parse(videoQuery.responseText);
-
-        var initdiv = document.getElementById(firstId);
-        var userdiv = document.getElementById(secondId);
-        var firstrange = document.getElementById(firstTime);
-        var secondrange = document.getElementById(secondTime);
         var expselect = document.getElementById(expSelect);
-        if(initdiv !== null) {
-          initdiv.innerHTML = "";
-        }
-        if(initdiv !== null && userdiv !== null) {
-          userdiv.innerHTML = "";
-        }
-        if(firstrange !== null) {
-          firstrange.min = 0;
-          firstrange.max = 0;
-          firstrange.value = 0;
-        }
-        if(secondrange !== null) {
-          secondrange.min = 0;
-          secondrange.max = 0;
-          secondrange.value = 0;
-        }
-	if (expselect !== null) {
+        if (expselect !== null) {
            for (var i = 0; i < querylist.video.length; i++) {
             expselect.options[expselect.options.length] =new Option(querylist.video[i].name, i);
           }
         }
-    }
+      }
+      catch(e) {
+        console.warn(e);
+      }
+    };
 
     // fill the video divs with json data from url
     this.update_video_divs = function (expSelect, firstId, secondId, firstTime, secondTime, url, sumId, sumHeaderId) {
@@ -957,10 +1009,10 @@ function Knowrob(options){
         var selectedExperiment = expselect.options[expselect.selectedIndex].value;
         if(selectedExperiment > -1){
           if(initdiv !== null) {
-            initdiv.innerHTML = querylist.video[selectedExperiment].init;
+            ace.edit(firstId).setValue(querylist.video[selectedExperiment].init);
           }
           if(initdiv !== null && userdiv !== null) {
-            userdiv.innerHTML = querylist.video[selectedExperiment].user;
+            ace.edit(secondId).setValue(querylist.video[selectedExperiment].user);
           }
           if(firstrange !== null) {
             firstrange.min = querylist.video[selectedExperiment].start;
