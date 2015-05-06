@@ -264,7 +264,6 @@ body {
     list-style: none;
     float: left;
     display: block;
-    height: 25px;
     z-index: 5000;
 }
 
@@ -307,7 +306,7 @@ body {
 }
  
 .menu li:hover > ul li {
-    height: 25px;
+    height: auto;
     overflow: visible;
     padding: 0;
 }
@@ -315,7 +314,6 @@ body {
 .menu li a {
     display: block;
     padding: 0px 14px;
-    line-height: 16px;
     text-decoration: none;
  
     border-left: 1px solid #a9a9b2;
@@ -344,7 +342,6 @@ body {
     padding: 4px 14px 4px 14px;
     margin: 0;
     border: none;
-    line-height: 10px
 }
  
 .menu ul li:last-child a { border: none; }
@@ -391,8 +388,8 @@ a.navbar-tool-brand {
   width:100%;
   border: none;
   background-color:#fff;
-	border: 1px solid #ccc;
-	-moz-border-radius: 10px;
+    border: 1px solid #ccc;
+    -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
   border-radius: 10px;
   padding: 4px 7px;
