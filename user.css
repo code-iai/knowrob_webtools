@@ -257,6 +257,7 @@ body {
 .menu {
     height: 25px;
     z-index: 5000;
+    white-space:nowrap;
 }
  
 .menu li {
@@ -303,6 +304,9 @@ body {
     -o-transition: height .25s ease .1s;
     -ms-transition: height .25s ease .1s;
     transition: height .25s ease .1s;
+  
+    z-index: 5000;
+    width: 100%;
 }
  
 .menu li:hover > ul li {
@@ -345,6 +349,21 @@ body {
 }
  
 .menu ul li:last-child a { border: none; }
+
+/* Submenus */
+.menu li ul li ul {
+    border-top: 2px solid #A9A982;
+    -webkit-border-radius: 5px 5px 5px 5px;
+    -moz-border-radius: 5px 5px 5px 5px;
+    border-radius: 5px 5px 5px 5px;
+  
+    top: 0px;
+    left: 100%;
+  
+}
+.menu li ul li:hover {
+    z-index: 5001;
+}
 
 #navbar-tool{
   width:100%;
