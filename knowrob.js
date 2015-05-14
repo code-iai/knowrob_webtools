@@ -127,6 +127,7 @@ function Knowrob(options){
       this.setup_autocompletion();
       this.setup_history_field();
       this.setup_query_field();
+      
       this.populate_query_select(libraryDiv, libraryFile);
       this.init_video_divs(that.experimentSelect,that.initQueryDiv,that.userQueryDiv,that.minTimeRange,that.maxTimeRange,that.videoFile);
       this.resize_canvas();
@@ -386,6 +387,19 @@ function Knowrob(options){
             bindKey: {win: 'Down',  mac: 'Down'},
             exec: function(editor) { that.set_previous_history_item(); }
         });
+        
+        // Create console iosOverlay
+        var console = document.getElementById('console');
+        if(console) {
+            var consoleOverlay = document.createElement("div");
+            consoleOverlay.setAttribute("id", "console-overlay");
+            consoleOverlay.className = "ui-ios-overlay ios-overlay-hide";
+            consoleOverlay.innerHTML += '<span class="title">Processing Query</span';
+            console.appendChild(consoleOverlay);
+            var spinner = createSpinner();
+            consoleOverlay.appendChild(spinner.el);
+        }
+        
         return userQuery;
     };
     
@@ -458,6 +472,22 @@ function Knowrob(options){
     ///////////////////////////////
     //////////// Prolog queries
     ///////////////////////////////
+    
+    this.showConsoleOverlay = function () {
+      var consoleOverlay = document.getElementById('console-overlay');
+      if(consoleOverlay) {
+        consoleOverlay.className = consoleOverlay.className.replace("hide","show");
+        consoleOverlay.style.pointerEvents = "auto";
+      }
+    };
+    
+    this.hideConsoleOverlay = function () {
+      var consoleOverlay = document.getElementById('console-overlay');
+      if(consoleOverlay) {
+        consoleOverlay.className = consoleOverlay.className.replace("show","hide");
+        consoleOverlay.style.pointerEvents = "none";
+      }
+    };
 
     this.query = function () {
       var query = ace.edit(queryDiv);
@@ -467,12 +497,14 @@ function Knowrob(options){
       if (q.substr(q.length - 1) == ".") {
         q = q.substr(0, q.length - 1);
         prolog = this.new_pl_client();
+        that.showConsoleOverlay();
         
         history.setValue(history.getValue() + "\n\n?- " + q +  ".\n", -1);
         history.navigateFileEnd();
         set_active(document.getElementById(nextButtonDiv));
         
         prolog.jsonQuery(q, function(result) {
+            that.hideConsoleOverlay();
             history.setValue(history.getValue() + prolog.format(result), -1);
             history.navigateFileEnd();
             if( ! result.value ) set_inactive(document.getElementById(nextButtonDiv));
@@ -485,6 +517,7 @@ function Knowrob(options){
       }
       else {
         if (prolog != null && prolog.finished == false) {
+          that.hideConsoleOverlay();
           history.setValue(history.getValue() + "stopped.\n\n", -1);
           history.navigateFileEnd();
           prolog.finishClient();
@@ -497,7 +530,9 @@ function Knowrob(options){
 
     this.next_solution = function () {
       var history = ace.edit(historyDiv);
+      that.showConsoleOverlay();
       prolog.nextQuery(function(result) {
+          that.hideConsoleOverlay();
           history.setValue(history.getValue() + prolog.format(result), -1);
           history.navigateFileEnd();
           if( ! result.value ) set_inactive(document.getElementById(nextButtonDiv));
