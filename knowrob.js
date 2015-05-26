@@ -52,7 +52,9 @@ function Knowrob(options){
     var libraryDiv    = options.library_div || 'examplequery'
     var queryDiv      = options.query_div || 'user_query'
     var nextButtonDiv = options.next_button_div || 'btn_query_next'
-   
+    
+    var imageWidth = function() { return 0.0; };
+    var imageHeight = function() { return 0.0; };
     
     var background = options.background || '#ffffff';
     var near = options.near || 0.01;
@@ -133,6 +135,34 @@ function Knowrob(options){
       this.resize_canvas();
       
       set_inactive(document.getElementById(nextButtonDiv));
+      
+      var imageResizer = function(){
+          var image = $('#mjpeg_image');
+          var div = $('#'+pictureDiv);
+          var image_width = that.imageWidth();
+          var image_height = that.imageHeight();
+          console.log(image_width);
+          console.log(image_height);
+          if(!image || image_width <= 0.0 || image_height <= 0.0) return true;
+          
+          var image_ratio = image_height/image_width;
+          var div_ratio = div.height()/div.width();
+          if(image_ratio < div_ratio) {
+              image.width(div.width());
+              image.height(div.width()*image_ratio);
+          }
+          else {
+              image.height(div.height());
+              image.width(div.height()/image_ratio);
+          }
+          return false;
+      };
+      $('#'+pictureDiv).resize(function(){
+          var timeout = function(){
+              if(imageResizer()) window.setTimeout(timeout, 10);
+          };
+          if(imageResizer()) window.setTimeout(timeout, 10);
+      });
     };
     
     this.registerNodes = function () {
@@ -206,36 +236,45 @@ function Knowrob(options){
       });
       img_listener.subscribe(function(message) {
           var ext = message.data.substr(message.data.lastIndexOf('.') + 1);
-          var html = "";
           var url;
           if(message.data.substring(0,1) == '/') {
               url = '/knowrob'+message.data;
           }
+          else if(message.data.indexOf("knowrob_data/") === 0) {
+              url = '/knowrob/'+message.data;
+          }
           else {
               url = message.data;
           }
+          console.log("publish_img " + message.data);
+          
+          var html = '';
           if(ext=='jpg' || ext =='png') {
-              html += '<img class="picture" src="'+url+'" width="300" height="240"/>';
+              html += '<img id="mjpeg_image" class="picture" src="'+url+'" width="300" height="240"/>';
+              
+              that.imageHeight = function() { return document.getElementById('mjpeg_image').height; };
+              that.imageWidth  = function() { return document.getElementById('mjpeg_image').width; };
           }
           else if(ext =='ogg' || ext =='ogv' || ext =='mp4') {
-              html += '<div class="video">';
-              html += '    <video controls autobuffer autoplay>';
-              
-              html += '        <source src="'+url+'" ';
+              html += '<div class="image_view">';
+              html += '  <video id="mjpeg_image" controls autoplay loop>';
+              html += '    <source src="'+url+'" ';
               if(ext =='ogg' || ext =='ogv') html += 'type="video/ogg" ';
               else if(ext =='mp4') html += 'type="video/mp4" ';
               html += '/>';
+              html += 'Your browser does not support the video tag.';
+              html += '</video></div>';
               
-              html += '        Your browser does not support the video tag.';
-              html += '    </video>';
-              html += '</div>';
+              that.imageHeight = function() { return document.getElementById('mjpeg_image').videoHeight; };
+              that.imageWidth  = function() { return document.getElementById('mjpeg_image').videoWidth; };
           }
           else {
               console.warn("Unknown data format on /logged_images topic: " + message.data);
           }
-          if(html.length > 0) {
+          if(content) {
             document.getElementById(pictureDiv).innerHTML = html;
             $('#'+pictureDiv).change();
+            $('#'+pictureDiv).resize();
           }
       });
       
