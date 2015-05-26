@@ -209,7 +209,7 @@ function Knowrob(options){
           var html = "";
           var url;
           if(message.data.substring(0,1) == '/') {
-              url = '/knowrob/'+message.data;
+              url = '/knowrob'+message.data;
           }
           else {
               url = message.data;
