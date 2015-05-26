@@ -205,9 +205,31 @@ function Knowrob(options){
         messageType : 'std_msgs/String'
       });
       img_listener.subscribe(function(message) {
-        document.getElementById(pictureDiv).innerHTML=
-            '<img class="picture" src="/knowrob/'+message.data+'" width="300" height="240"/>';
-        $('#'+pictureDiv).change();
+          var ext = message.data.substr(message.data.lastIndexOf('.') + 1);
+          var html = "";
+          if(ext=='jpg' || ext =='png') {
+              html += '<img class="picture" src="/knowrob/'+message.data+'" width="300" height="240"/>';
+          }
+          else if(ext =='ogg' || ext =='ogv' || ext =='mp4') {
+              html += '<div class="video">';
+              html += '    <video controls autobuffer autoplay>';
+              
+              html += '        <source src="'+message.data+'" ';
+              if(ext =='ogg' || ext =='ogv') html += 'type="video/ogg" ';
+              else if(ext =='mp4') html += 'type="video/mp4" ';
+              html += '/>';
+              
+              html += '        Your browser does not support the video tag.';
+              html += '    </video>';
+              html += '</div>';
+          }
+          else {
+              console.warn("Unknown data format on /logged_images topic: " + message.data);
+          }
+          if(html.length > 0) {
+            document.getElementById(pictureDiv).innerHTML = html;
+            $('#'+pictureDiv).change();
+          }
       });
       
       var visCLient;

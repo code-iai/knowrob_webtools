@@ -444,6 +444,11 @@ a.navbar-tool-brand {
   height: 25px;
 }
 
+video {
+  width: 100% !important;
+  height: auto !important;
+}
+
 #console-overlay {
   position: absolute;
   top: 0%;
