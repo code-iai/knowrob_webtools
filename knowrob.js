@@ -246,11 +246,12 @@ function Knowrob(options){
           else {
               url = message.data;
           }
-          console.log("publish_img " + message.data);
           
           var html = '';
           if(ext=='jpg' || ext =='png') {
+              html += '<div class="image_view">';
               html += '<img id="mjpeg_image" class="picture" src="'+url+'" width="300" height="240"/>';
+              html += '</div>';
               
               that.imageHeight = function() { return document.getElementById('mjpeg_image').height; };
               that.imageWidth  = function() { return document.getElementById('mjpeg_image').width; };

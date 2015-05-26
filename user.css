@@ -450,7 +450,17 @@ a.navbar-tool-brand {
   height: 100%;
 }
 
-#mjpeg_image {
+.image_view img {
+  position: relative;
+  left:0%;
+  top:50%;
+  transform:translate(0%,-50%);
+  -webkit-transform:translate(0%,-50%);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.image_view video {
   position: relative;
   left:50%;
   top:50%;
