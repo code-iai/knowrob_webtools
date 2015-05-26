@@ -207,14 +207,21 @@ function Knowrob(options){
       img_listener.subscribe(function(message) {
           var ext = message.data.substr(message.data.lastIndexOf('.') + 1);
           var html = "";
+          var url;
+          if(message.data.substring(0,1) == '/') {
+              url = '/knowrob/'+message.data;
+          }
+          else {
+              url = message.data;
+          }
           if(ext=='jpg' || ext =='png') {
-              html += '<img class="picture" src="/knowrob/'+message.data+'" width="300" height="240"/>';
+              html += '<img class="picture" src="'+url+'" width="300" height="240"/>';
           }
           else if(ext =='ogg' || ext =='ogv' || ext =='mp4') {
               html += '<div class="video">';
               html += '    <video controls autobuffer autoplay>';
               
-              html += '        <source src="'+message.data+'" ';
+              html += '        <source src="'+url+'" ';
               if(ext =='ogg' || ext =='ogv') html += 'type="video/ogg" ';
               else if(ext =='mp4') html += 'type="video/mp4" ';
               html += '/>';
