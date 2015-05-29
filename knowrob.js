@@ -1190,7 +1190,6 @@ function Knowrob(options){
           }
         }
         else if(type === "id") {
-          // document.getElementById(name).style.backgroundColor = highlight ? "#144F78" : "";
           document.getElementById(name).style.border = highlight ? "5px solid #144F78" : "1px solid #BBB";
         }
       }
