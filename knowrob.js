@@ -37,7 +37,8 @@ function Knowrob(options){
     var snapshotTopic;
 
     // Use rosauth
-    var authentication  = options.authentication;
+    console.log('knowrob instantiation, authentication', options.authentication, options.authentication === undefined);
+    var authentication  = options.authentication === undefined ? true : options.authentication;
     
     var meshPath  = options.meshPath || '/';
 
@@ -1051,11 +1052,27 @@ function Knowrob(options){
       }
     };
 
+    this.highlight_element = function (name, type, highlight) {
+      if(typeof type == "string") {
+        if(type === "class") {
+          var elems = document.getElementsByClassName(name);
+          for (i = 0; i < elems.length; i++) {
+            elems[i].style.backgroundColor = highlight ? "#144F78" : "#BBB";
+            elems[i].style.border = highlight ? "5px solid #144F78" : "1px solid #BBB";
+          }
+        }
+        else if(type === "id") {
+          // document.getElementById(name).style.backgroundColor = highlight ? "#144F78" : "";
+          document.getElementById(name).style.border = highlight ? "5px solid #144F78" : "1px solid #BBB";
+        }
+      }
+    }; 
+
     // hook for links of class "show_code" that pastes the content of the
     // previous code block into the query field
     $( document ).ready(function() {
       $( "a.show_code" ).click(function( event ) {
-        this.set_query_value( $(this).closest("pre + *").prev().find('code').html() );
+        that.set_query_value( $(this).closest("pre + *").prev().find('code').html() );
         event.preventDefault();
       });
     });
