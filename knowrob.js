@@ -278,6 +278,30 @@ function Knowrob(options){
             $('#'+pictureDiv).resize();
           }
       });
+
+      var background_listener = new ROSLIB.Topic({
+        ros : ros,
+        name : '/background_images',
+        messageType : 'std_msgs/String'
+      });
+      background_listener.subscribe(function(message) {
+          var imgUrl = message.data;
+          if(rosViewer) {
+              // Read texture
+              var bgTexture = THREE.ImageUtils.loadTexture( imgUrl );
+              // Remove old mesh
+              if(that.backgroundMesh) {
+                  rosViewer.backgroundScene.remove(that.backgroundMesh);
+              }
+              // Add new mesh
+              that.backgroundMesh = new THREE.Mesh(
+                  new THREE.PlaneGeometry(2, 2, 0),
+                  new THREE.MeshBasicMaterial({ map: bgTexture }));
+              that.backgroundMesh.material.depthTest = false;
+              that.backgroundMesh.material.depthWrite = false;
+              rosViewer.backgroundScene.add(that.backgroundMesh);
+          }
+      });
       
       var visCLient;
       if ($('#chart').length) {
