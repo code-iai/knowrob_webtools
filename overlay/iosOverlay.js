@@ -1,8 +1,9 @@
 /*global $*/
 /*jshint unused:false,forin:false*/
 
-var createSpinner = function() {
-        var opts = {
+var createSpinner = function(node) {
+    var parent = node || document.body;
+    var opts = {
                 lines: 13, // The number of lines to draw
                 length: 11, // The length of each line
                 width: 5, // The line thickness
@@ -18,10 +19,10 @@ var createSpinner = function() {
                 zIndex: 2e9, // The z-index (defaults to 2000000000)
                 top: 'auto', // Top position relative to parent in px
                 left: 'auto' // Left position relative to parent in px
-        };
-        var target = document.createElement("div");
-        document.body.appendChild(target);
-        return new Spinner(opts).spin(target);
+    };
+    var target = document.createElement("div");
+    parent.appendChild(target);
+    return new Spinner(opts).spin(target);
 }
 
 var iosOverlay = function(params) {

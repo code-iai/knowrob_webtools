@@ -443,3 +443,48 @@ a.navbar-tool-brand {
 #vid_bottom {
   height: 25px;
 }
+
+.image_view {
+  background-color:black;
+  width: 100%;
+  height: 100%;
+}
+
+.image_view img {
+  position: relative;
+  left:0%;
+  top:50%;
+  transform:translate(0%,-50%);
+  -webkit-transform:translate(0%,-50%);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.image_view video {
+  position: relative;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  -webkit-transform:translate(-50%,-50%);
+}
+
+#mjpeg_image:-webkit-full-screen { transform:translate(0%,0%); -webkit-transform:translate(0%,0%); }
+#mjpeg_image:-moz-full-screen { transform:translate(0%,0%); -webkit-transform:translate(0%,0%); }
+#mjpeg_image:-ms-full-screen { transform:translate(0%,0%); -webkit-transform:translate(0%,0%); }
+#mjpeg_image:-o-full-screen { transform:translate(0%,0%); -webkit-transform:translate(0%,0%); }
+#mjpeg_image:full-screen { transform:translate(0%,0%); -webkit-transform:translate(0%,0%); }
+
+#console-overlay {
+  position: absolute;
+  top: 0%;
+  left: 0%;
+  width: 100%;
+  height: 100%;
+  z-index: 1002;
+  pointer-events: none;
+}
+
+#console-overlay div {
+  position: relative;
+  opacity: 1.0;
+}

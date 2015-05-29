@@ -122,7 +122,11 @@ ROS3D.Viewer = function(options) {
   this.highlighter = new ROS3D.Highlighter({
     mouseHandler : mouseHandler
   });
-
+  
+  this.backgroundScene = new THREE.Scene();
+  this.backgroundCamera = new THREE.Camera();
+  this.backgroundScene.add(this.backgroundCamera);
+  
   /**
    * Renders the associated scene to the viewer.
    */
@@ -133,9 +137,9 @@ ROS3D.Viewer = function(options) {
     // put light to the top-left of the camera
     //that.directionalLight.position = that.camera.localToWorld(new THREE.Vector3(-1, 1, 0));
     //that.directionalLight.position.normalize();
-
-    // set the scene
+    
     that.renderer.clear(true, true, true);
+    that.renderer.render(that.backgroundScene, that.backgroundCamera);
     that.renderer.render(that.scene, that.camera);
 
     // render any mouseovers

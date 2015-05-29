@@ -53,7 +53,9 @@ function Knowrob(options){
     var libraryDiv    = options.library_div || 'examplequery'
     var queryDiv      = options.query_div || 'user_query'
     var nextButtonDiv = options.next_button_div || 'btn_query_next'
-   
+    
+    var imageWidth = function() { return 0.0; };
+    var imageHeight = function() { return 0.0; };
     
     var background = options.background || '#ffffff';
     var near = options.near || 0.01;
@@ -128,11 +130,40 @@ function Knowrob(options){
       this.setup_autocompletion();
       this.setup_history_field();
       this.setup_query_field();
+      
       this.populate_query_select(libraryDiv, libraryFile);
       this.init_video_divs(that.experimentSelect,that.initQueryDiv,that.userQueryDiv,that.minTimeRange,that.maxTimeRange,that.videoFile);
       this.resize_canvas();
       
       set_inactive(document.getElementById(nextButtonDiv));
+      
+      var imageResizer = function(){
+          var image = $('#mjpeg_image');
+          var div = $('#'+pictureDiv);
+          var image_width = that.imageWidth();
+          var image_height = that.imageHeight();
+          console.log(image_width);
+          console.log(image_height);
+          if(!image || image_width <= 0.0 || image_height <= 0.0) return true;
+          
+          var image_ratio = image_height/image_width;
+          var div_ratio = div.height()/div.width();
+          if(image_ratio < div_ratio) {
+              image.width(div.width());
+              image.height(div.width()*image_ratio);
+          }
+          else {
+              image.height(div.height());
+              image.width(div.height()/image_ratio);
+          }
+          return false;
+      };
+      $('#'+pictureDiv).resize(function(){
+          var timeout = function(){
+              if(imageResizer()) window.setTimeout(timeout, 10);
+          };
+          if(imageResizer()) window.setTimeout(timeout, 10);
+      });
     };
     
     this.registerNodes = function () {
@@ -205,9 +236,72 @@ function Knowrob(options){
         messageType : 'std_msgs/String'
       });
       img_listener.subscribe(function(message) {
-        document.getElementById(pictureDiv).innerHTML=
-            '<img class="picture" src="/knowrob/'+message.data+'" width="300" height="240"/>';
-        $('#'+pictureDiv).change();
+          var ext = message.data.substr(message.data.lastIndexOf('.') + 1);
+          var url;
+          if(message.data.substring(0,1) == '/') {
+              url = '/knowrob'+message.data;
+          }
+          else if(message.data.indexOf("knowrob_data/") === 0) {
+              url = '/knowrob/'+message.data;
+          }
+          else {
+              url = message.data;
+          }
+          
+          var html = '';
+          if(ext=='jpg' || ext =='png') {
+              html += '<div class="image_view">';
+              html += '<img id="mjpeg_image" class="picture" src="'+url+'" width="300" height="240"/>';
+              html += '</div>';
+              
+              that.imageHeight = function() { return document.getElementById('mjpeg_image').height; };
+              that.imageWidth  = function() { return document.getElementById('mjpeg_image').width; };
+          }
+          else if(ext =='ogg' || ext =='ogv' || ext =='mp4') {
+              html += '<div class="image_view">';
+              html += '  <video id="mjpeg_image" controls autoplay loop>';
+              html += '    <source src="'+url+'" ';
+              if(ext =='ogg' || ext =='ogv') html += 'type="video/ogg" ';
+              else if(ext =='mp4') html += 'type="video/mp4" ';
+              html += '/>';
+              html += 'Your browser does not support the video tag.';
+              html += '</video></div>';
+              
+              that.imageHeight = function() { return document.getElementById('mjpeg_image').videoHeight; };
+              that.imageWidth  = function() { return document.getElementById('mjpeg_image').videoWidth; };
+          }
+          else {
+              console.warn("Unknown data format on /logged_images topic: " + message.data);
+          }
+          if(content) {
+            document.getElementById(pictureDiv).innerHTML = html;
+            $('#'+pictureDiv).change();
+            $('#'+pictureDiv).resize();
+          }
+      });
+
+      var background_listener = new ROSLIB.Topic({
+        ros : ros,
+        name : '/background_images',
+        messageType : 'std_msgs/String'
+      });
+      background_listener.subscribe(function(message) {
+          var imgUrl = message.data;
+          if(rosViewer) {
+              // Read texture
+              var bgTexture = THREE.ImageUtils.loadTexture( imgUrl );
+              // Remove old mesh
+              if(that.backgroundMesh) {
+                  rosViewer.backgroundScene.remove(that.backgroundMesh);
+              }
+              // Add new mesh
+              that.backgroundMesh = new THREE.Mesh(
+                  new THREE.PlaneGeometry(2, 2, 0),
+                  new THREE.MeshBasicMaterial({ map: bgTexture }));
+              that.backgroundMesh.material.depthTest = false;
+              that.backgroundMesh.material.depthWrite = false;
+              rosViewer.backgroundScene.add(that.backgroundMesh);
+          }
       });
       
       var visCLient;
@@ -387,6 +481,19 @@ function Knowrob(options){
             bindKey: {win: 'Down',  mac: 'Down'},
             exec: function(editor) { that.set_previous_history_item(); }
         });
+        
+        // Create console iosOverlay
+        var console = document.getElementById('console');
+        if(console) {
+            var consoleOverlay = document.createElement("div");
+            consoleOverlay.setAttribute("id", "console-overlay");
+            consoleOverlay.className = "ui-ios-overlay ios-overlay-hide";
+            consoleOverlay.innerHTML += '<span class="title">Processing Query</span';
+            console.appendChild(consoleOverlay);
+            var spinner = createSpinner();
+            consoleOverlay.appendChild(spinner.el);
+        }
+        
         return userQuery;
     };
     
@@ -459,6 +566,22 @@ function Knowrob(options){
     ///////////////////////////////
     //////////// Prolog queries
     ///////////////////////////////
+    
+    this.showConsoleOverlay = function () {
+      var consoleOverlay = document.getElementById('console-overlay');
+      if(consoleOverlay) {
+        consoleOverlay.className = consoleOverlay.className.replace("hide","show");
+        consoleOverlay.style.pointerEvents = "auto";
+      }
+    };
+    
+    this.hideConsoleOverlay = function () {
+      var consoleOverlay = document.getElementById('console-overlay');
+      if(consoleOverlay) {
+        consoleOverlay.className = consoleOverlay.className.replace("show","hide");
+        consoleOverlay.style.pointerEvents = "none";
+      }
+    };
 
     this.query = function () {
       var query = ace.edit(queryDiv);
@@ -468,12 +591,14 @@ function Knowrob(options){
       if (q.substr(q.length - 1) == ".") {
         q = q.substr(0, q.length - 1);
         prolog = this.new_pl_client();
+        that.showConsoleOverlay();
         
         history.setValue(history.getValue() + "\n\n?- " + q +  ".\n", -1);
         history.navigateFileEnd();
         set_active(document.getElementById(nextButtonDiv));
         
         prolog.jsonQuery(q, function(result) {
+            that.hideConsoleOverlay();
             history.setValue(history.getValue() + prolog.format(result), -1);
             history.navigateFileEnd();
             if( ! result.value ) set_inactive(document.getElementById(nextButtonDiv));
@@ -486,6 +611,7 @@ function Knowrob(options){
       }
       else {
         if (prolog != null && prolog.finished == false) {
+          that.hideConsoleOverlay();
           history.setValue(history.getValue() + "stopped.\n\n", -1);
           history.navigateFileEnd();
           prolog.finishClient();
@@ -498,7 +624,9 @@ function Knowrob(options){
 
     this.next_solution = function () {
       var history = ace.edit(historyDiv);
+      that.showConsoleOverlay();
       prolog.nextQuery(function(result) {
+          that.hideConsoleOverlay();
           history.setValue(history.getValue() + prolog.format(result), -1);
           history.navigateFileEnd();
           if( ! result.value ) set_inactive(document.getElementById(nextButtonDiv));
