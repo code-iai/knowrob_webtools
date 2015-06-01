@@ -283,6 +283,65 @@ function Knowrob(options){
       var background_listener = new ROSLIB.Topic({
         ros : ros,
         name : '/background_images',
+        messageType : 'sensor_msgs/Image'
+      });
+      background_listener.subscribe(function(message) {
+          //var imgUrl = message.data;
+          if(rosViewer) {
+              console.log('Received image message!');
+              //Object { encoding: "bgr8", height: 1024, header: Object, step: 3840, data: "...", width: 1280, is_bigendian: 0 }
+      
+      var buf = new Uint8Array(message.width * message.height * 3);
+      var pixelStride = 3; // 3 bytes per pixel (BGR)
+      var encodedData = window.btoa(message.data);
+      var i = 0;
+      for(var y=message.height-1; y>=0; y--) {
+        for(var x=0; x<message.width; x++) {
+          var index = (x + y*message.width)*pixelStride;
+          buf[i+0] = encodedData[index+0];
+          buf[i+1] = encodedData[index+1];
+          buf[i+2] = encodedData[index+2];
+          console.log(encodedData[index+0]);
+          i += 3;
+        }
+      }
+      var bgTexture = new THREE.DataTexture( buf, message.width, message.height, THREE.RGBFormat );
+      bgTexture.needsUpdate = true;
+              
+              // Read texture
+              //var bgTexture = that.loadTextureBinary( message.data );
+              console.log(bgTexture);
+              // Remove old mesh
+              if(that.backgroundMesh) {
+                  rosViewer.backgroundScene.remove(that.backgroundMesh);
+              }
+              
+              // TODO: Keep aspect ratio
+              
+              // Add new mesh
+              that.backgroundMesh = new THREE.Mesh(
+                  new THREE.PlaneGeometry(2, 2, 0),
+                  new THREE.MeshBasicMaterial({ map: bgTexture }));
+              that.backgroundMesh.material.depthTest = false;
+              that.backgroundMesh.material.depthWrite = false;
+              rosViewer.backgroundScene.add(that.backgroundMesh);
+          }
+      });
+
+      /*
+      var camera_listener = new ROSLIB.Topic({
+        ros : ros,
+        name : '/scene_camera',
+        messageType : 'sensor_msgs/CameraInfo'
+      });
+      camera_listener.subscribe(function(message) {
+          
+      });
+      */
+      /*
+      var background_listener = new ROSLIB.Topic({
+        ros : ros,
+        name : '/background_images',
         messageType : 'std_msgs/String'
       });
       background_listener.subscribe(function(message) {
@@ -303,6 +362,7 @@ function Knowrob(options){
               rosViewer.backgroundScene.add(that.backgroundMesh);
           }
       });
+      */
       
       var visCLient;
       if ($('#chart').length) {
@@ -509,6 +569,16 @@ function Knowrob(options){
                 }
             }
         });
+    };
+    
+    this.loadTextureBinary = function ( data ) {
+        var image = new Image();
+        var texture = new THREE.Texture( image );
+        image.onload = function () { texture.needsUpdate = true; };
+        image.crossOrigin = this.crossOrigin;
+        image.src = "data:image/png;base64," + data;
+        //image.src = "data:image/png;base64," + Base64.encode(data);
+        return texture;
     };
     
     this.new_pl_client = function() {
