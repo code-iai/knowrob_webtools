@@ -293,15 +293,14 @@ function Knowrob(options){
       
       var buf = new Uint8Array(message.width * message.height * 3);
       var pixelStride = 3; // 3 bytes per pixel (BGR)
-      var encodedData = window.btoa(message.data);
+      var decoded = window.atob(message.data);
       var i = 0;
       for(var y=message.height-1; y>=0; y--) {
         for(var x=0; x<message.width; x++) {
           var index = (x + y*message.width)*pixelStride;
-          buf[i+0] = encodedData[index+0];
-          buf[i+1] = encodedData[index+1];
-          buf[i+2] = encodedData[index+2];
-          console.log(encodedData[index+0]);
+          buf[i+0] = decoded[index+0];
+          buf[i+1] = decoded[index+1];
+          buf[i+2] = decoded[index+2];
           i += 3;
         }
       }
