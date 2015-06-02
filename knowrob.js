@@ -125,7 +125,7 @@ function Knowrob(options){
         near: near,
         far: far
       });
-      //rosViewer.addObject(new ROS3D.Grid());
+      rosViewer.addObject(new ROS3D.Grid());
       
       this.setup_autocompletion();
       this.setup_history_field();
