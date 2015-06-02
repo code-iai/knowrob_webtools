@@ -125,7 +125,7 @@ function Knowrob(options){
         near: near,
         far: far
       });
-      rosViewer.addObject(new ROS3D.Grid());
+      //rosViewer.addObject(new ROS3D.Grid());
       
       this.setup_autocompletion();
       this.setup_history_field();
@@ -280,6 +280,7 @@ function Knowrob(options){
           }
       });
 
+      /*
       var background_listener = new ROSLIB.Topic({
         ros : ros,
         name : '/background_images',
@@ -289,22 +290,25 @@ function Knowrob(options){
           //var imgUrl = message.data;
           if(rosViewer) {
               console.log('Received image message!');
+              console.log('width: ' + message.width);
+              console.log('height: ' + message.height);
               //Object { encoding: "bgr8", height: 1024, header: Object, step: 3840, data: "...", width: 1280, is_bigendian: 0 }
       
       var buf = new Uint8Array(message.width * message.height * 3);
       var pixelStride = 3; // 3 bytes per pixel (BGR)
-      var decoded = window.atob(message.data);
-      var i = 0;
-      for(var y=message.height-1; y>=0; y--) {
+      var encodedData = message.data;
+      var index = 0;
+      for(var y=0; y<message.height; y++) {
         for(var x=0; x<message.width; x++) {
-          var index = (x + y*message.width)*pixelStride;
-          buf[i+0] = decoded[index+0];
-          buf[i+1] = decoded[index+1];
-          buf[i+2] = decoded[index+2];
-          i += 3;
+          buf[index+0] = encodedData[index+0];
+          buf[index+1] = encodedData[index+1];
+          buf[index+2] = encodedData[index+2];
+          index += 3;
         }
       }
-      var bgTexture = new THREE.DataTexture( buf, message.width, message.height, THREE.RGBFormat );
+      var bgTexture = new THREE.DataTexture( buf,
+                                             message.width, message.height,
+                                             THREE.RGBFormat );
       bgTexture.needsUpdate = true;
               
               // Read texture
@@ -326,6 +330,7 @@ function Knowrob(options){
               rosViewer.backgroundScene.add(that.backgroundMesh);
           }
       });
+      */
 
       /*
       var camera_listener = new ROSLIB.Topic({
@@ -337,7 +342,6 @@ function Knowrob(options){
           
       });
       */
-      /*
       var background_listener = new ROSLIB.Topic({
         ros : ros,
         name : '/background_images',
@@ -359,9 +363,11 @@ function Knowrob(options){
               that.backgroundMesh.material.depthTest = false;
               that.backgroundMesh.material.depthWrite = false;
               rosViewer.backgroundScene.add(that.backgroundMesh);
+              
+              // HACK
+              that.resize_canvas_(1280, 1024);
           }
       });
-      */
       
       var visCLient;
       if ($('#chart').length) {
@@ -1124,8 +1130,10 @@ function Knowrob(options){
     ///////////////////////////////
     
     this.resize_canvas = function () {
-      var w = $('#'+canvasDiv).width();
-      var h = $('#'+canvasDiv).height();
+        that.resize_canvas_($('#'+canvasDiv).width(), $('#'+canvasDiv).height());
+    }
+    
+    this.resize_canvas_ = function (w,h) {
       rosViewer.renderer.setSize(w, h);
       rosViewer.camera.aspect = w/h;
       rosViewer.camera.updateProjectionMatrix();
