@@ -37,8 +37,9 @@ function Knowrob(options){
     var snapshotTopic;
 
     // Use rosauth
-    console.log('knowrob instantiation, authentication', options.authentication, options.authentication === undefined);
-    var authentication  = options.authentication === undefined ? true : options.authentication;
+    console.log('knowrob instantiation, authentication', options.authentication, typeof options.authentication, options.authentication === '');
+    var authentication  = options.authentication === '' ? true : options.authentication === 'true';
+    console.log('authentication is: ', authentication);
     
     var meshPath  = options.meshPath || '/';
 
