@@ -37,8 +37,7 @@ function Knowrob(options){
     var snapshotTopic;
 
     // Use rosauth
-    console.log('knowrob instantiation, authentication', options.authentication, options.authentication === undefined);
-    var authentication  = options.authentication === undefined ? true : options.authentication;
+    var authentication  = options.authentication === '' ? true : options.authentication === 'true';
     
     var meshPath  = options.meshPath || '/';
 
@@ -1267,7 +1266,6 @@ function Knowrob(options){
           }
         }
         else if(type === "id") {
-          // document.getElementById(name).style.backgroundColor = highlight ? "#144F78" : "";
           document.getElementById(name).style.border = highlight ? "5px solid #144F78" : "1px solid #BBB";
         }
       }
