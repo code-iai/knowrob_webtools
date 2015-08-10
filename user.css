@@ -8,21 +8,23 @@ body {
 }
 
 .login-box {
-  width:300px;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
+  float: left;
+  width: 50%;
 }
-.login-box0 {
-  position:relative;
-  left:0;
-  width:226px;
-  top:5px;
-  border: 1px black solid;
-  padding:5px 25px;
+.video-box {
+  float: right;
+  width: 50%;
 }
-.login-box1 {
+.login-box-inner {
+  padding-top: 0px;
+  width: 300px;
+  margin: 0 auto;
 }
+.video-box-inner {
+  padding-top: 50px;
+  margin: 0 auto;
+}
+
 .register-box {
   position:relative;
   left:0;
@@ -32,16 +34,34 @@ body {
   padding:5px 25px;
 }
 #user-field {
+  margin-bottom: 0px;
 }
 #pw-field {
+  margin-bottom: 0px;
 }
 #sign-in-field {
 }
 #remember-me {
-  float:left;
+  margin-bottom: 14px;
 }
 #sign-in {
   float:right;
+}
+#sign-up-button {
+  color: #fff;
+}
+#register-button {
+  margin-top: 14px;
+}
+#reset-pw-button {
+  margin-top: 14px;
+}
+
+#forgot-password-link {
+  margin-right: 15px;
+}
+#already-registered-link {
+  margin-right: 15px;
 }
 
 #pkg-selection {
