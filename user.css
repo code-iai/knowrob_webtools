@@ -7,22 +7,63 @@ body {
     background: none repeat scroll 0% 0% #dadada;
 }
 
+#container {
+    height: -o-calc(100% - 90px); /* opera */
+    height: -webkit-calc(100% - 90px); /* google, safari */
+    height: -moz-calc(100% - 90px); /* firefox */
+    width: 100%;
+    position: absolute;
+    left: 0px;
+    top: 25px;
+    padding: 0;
+    margin: 0;
+    margin-left: -8px;
+  
+    background-color: #dadada;
+    background-image: url(oe-logo.svg);
+    background-position: right bottom;
+    background-repeat: no-repeat;
+  
+}
+
+.content-box {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.text-field {
+  background-color: #fff;
+  border: 1px solid #adadad;
+  margin: 0 auto;
+  padding:5px;
+  font-size:15px;
+  text-decoration:none;
+  font-family: Tahoma, Geneva, sans-serif;
+}
+
 .login-box {
   float: left;
-  width: 50%;
-}
-.video-box {
-  float: right;
   width: 50%;
 }
 .login-box-inner {
   padding-top: 0px;
   width: 300px;
-  margin: 0 auto;
+}
+
+.video-box {
+  float: right;
 }
 .video-box-inner {
   padding-top: 50px;
   margin: 0 auto;
+}
+
+.user-data {
+  background-color: #fff;
+  border: 3px solid #CCC;
+  padding-right: 5px;
+  padding-left: 5px;
+  width: 220px;
 }
 
 .register-box {
@@ -220,20 +261,6 @@ body {
     height:100%;
     border-color:#c9c9c9;
     font-size:16px;
-}
-
-#container {
-    height: -o-calc(100% - 90px); /* opera */
-    height: -webkit-calc(100% - 90px); /* google, safari */
-    height: -moz-calc(100% - 90px); /* firefox */
-    width: 100%;
-    position: absolute;
-    left: 0px;
-    top: 25px;
-    padding: 0;
-    margin: 0;
-    margin-left: -8px;
-    background: none repeat scroll 0% 0% #dadada;
 }
 
 #file-list {
