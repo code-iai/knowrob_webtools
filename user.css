@@ -97,6 +97,11 @@ body {
 #reset-pw-button {
   margin-top: 14px;
 }
+#kb-button {
+  margin-top: 14px;
+  color: #fff;
+  width: 220px;
+}
 
 #forgot-password-link {
   margin-right: 15px;
