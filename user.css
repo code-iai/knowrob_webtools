@@ -8,22 +8,30 @@ body {
 }
 
 #container {
-    height: -o-calc(100% - 90px); /* opera */
-    height: -webkit-calc(100% - 90px); /* google, safari */
-    height: -moz-calc(100% - 90px); /* firefox */
+    height: -o-calc(100% - 94px); /* opera */
+    height: -webkit-calc(100% - 94px); /* google, safari */
+    height: -moz-calc(100% - 94px); /* firefox */
     width: 100%;
     position: absolute;
     left: 0px;
     top: 25px;
     padding: 0;
     margin: 0;
-    margin-left: -8px;
-  
     background-color: #dadada;
+    
+    padding-left:15px;
+    margin-top: 63px;
+    margin-left: -8px;
+}
+
+.container-bg {
     background-image: url(oe-logo.svg);
     background-position: right bottom;
     background-repeat: no-repeat;
-  
+    width: 100%;
+    height: -o-calc(100% - 10px); /* opera */
+    height: -webkit-calc(100% - 10px); /* google, safari */
+    height: -moz-calc(100% - 10px); /* firefox */
 }
 
 .content-box {
@@ -409,6 +417,22 @@ body {
 }
 .menu li ul li:hover {
     z-index: 5001;
+}
+
+.mega_menu {
+  position: absolute;
+  background: #ebebeb;
+  border: 1px solid #a9a9b2;
+  right: -67px;
+  width: 650px;
+  overflow-x: hidden;
+}
+.mega_menu_column {
+  top: 0px;
+  margin: 10px 0;
+  padding: 0 10px;
+  float: left;
+  margin-top: -10px;
 }
 
 

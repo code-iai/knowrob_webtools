@@ -1306,13 +1306,13 @@ div.show_code  { margin-top:-15px; margin-left:20px; margin-bottom:20px; }
 .menu_link.hover  { color: #FF00FF; }
 
 .fileButton {
-    background-image: url(images/file.png);
+    background-image: url(../images/file.png);
     background-repeat: no-repeat;
     background-position: left center;
     border:0px;
     color:#008800;
 }
 .directoryButton {
-    background-image: url(images/directory.png);
+    background-image: url(../images/directory.png);
     background-repeat: no-repeat;
 }
