@@ -29,9 +29,6 @@ function Knowrob(options){
     
     // File that contains example queries
     var libraryFile = options.library_file || 'queriesForRobohow.json'
-
-    // File that contains video query
-    var videoFile = options.video_file || 'video.json'
     
     // The topic where the canvas publishes snapshots
     var snapshotTopic;
@@ -59,19 +56,6 @@ function Knowrob(options){
     var background = options.background || '#ffffff';
     var near = options.near || 0.01;
     var far = options.far || 1000.0;
-
-    // configuration for video page
-    this.initQueryDiv = options.init_query_div || 'init_query'
-    this.userQueryDiv = options.user_video_query_div || 'user_query'
-    this.experimentSelect = options.experiment_select || 'experiment_select'
-    this.minTimeRange = options.min_time_range || 'start_time'
-    this.maxTimeRange = options.max_time_range || 'end_time'
-    this.summaryImageDiv = options.summary_image_div || 'summary'
-    this.summaryHeaderDiv = options.summary_image_div || 'summary_header'
-
-    // File that contains video query
-    this.videoFile = options.video_file || 'video.json'
-    var videoQuery;
     
     // Speech bubbles that are displayed
     this.speechBubbles = {};
@@ -131,7 +115,6 @@ function Knowrob(options){
       this.setup_query_field();
       
       this.populate_query_select(libraryDiv, libraryFile);
-      this.init_video_divs(that.experimentSelect,that.initQueryDiv,that.userQueryDiv,that.minTimeRange,that.maxTimeRange,that.videoFile);
       this.resize_canvas();
       
       set_inactive(document.getElementById(nextButtonDiv));
@@ -1168,88 +1151,6 @@ function Knowrob(options){
             select.appendChild(opt);
           }
         }
-      }
-      catch(e) {
-        console.warn(e);
-      }
-    };
-
-    this.init_video_divs = function (expSelect, firstId, secondId, firstTime, secondTime, url) {
-      try{
-        videoQuery = new XMLHttpRequest
-        videoQuery.open("GET", url, false);
-        videoQuery.send(null);
-        if(videoQuery.responseText == '' ||  videoQuery.responseText == null || videoQuery.status == 404 || videoQuery.status == 403)
-        {
-          videoQuery.open("GET", '/knowrob/static/experiments/video/video.json', false);
-          videoQuery.send(null);
-        }
-
-        var querylist = JSON.parse(videoQuery.responseText);
-        var expselect = document.getElementById(expSelect);
-        if (expselect !== null) {
-           for (var i = 0; i < querylist.video.length; i++) {
-            expselect.options[expselect.options.length] =new Option(querylist.video[i].name, i);
-          }
-        }
-      }
-      catch(e) {
-        console.warn(e);
-      }
-    };
-
-    // fill the video divs with json data from url
-    this.update_video_divs = function (expSelect, firstId, secondId, firstTime, secondTime, url, sumId, sumHeaderId) {
-      try{
-        var pictureUrl = '/knowrob/summary_data/' + url.replace('/knowrob/static/experiments/video/', '').replace('.json', '.jpg');
-        var querylist = JSON.parse(videoQuery.responseText);
-
-        var initdiv = document.getElementById(firstId);
-        var userdiv = document.getElementById(secondId);
-        var sumdiv = document.getElementById(sumId);
-        var sumheaderdiv = document.getElementById(sumHeaderId);
-        var firstrange = document.getElementById(firstTime);
-        var secondrange = document.getElementById(secondTime);
-        var expselect = document.getElementById(expSelect);
-        var selectedExperiment = expselect.options[expselect.selectedIndex].value;
-        if(selectedExperiment > -1){
-          if(initdiv !== null) {
-            ace.edit(firstId).setValue(querylist.video[selectedExperiment].init);
-          }
-          if(initdiv !== null && userdiv !== null) {
-            ace.edit(secondId).setValue(querylist.video[selectedExperiment].user);
-          }
-          if(firstrange !== null) {
-            firstrange.min = querylist.video[selectedExperiment].start;
-            firstrange.max = querylist.video[selectedExperiment].end;
-            firstrange.value = querylist.video[selectedExperiment].start;
-          }
-          if(secondrange !== null) {
-            secondrange.min = querylist.video[selectedExperiment].start;
-            secondrange.max = querylist.video[selectedExperiment].end;
-            secondrange.value = querylist.video[selectedExperiment].end;
-          }
-          $( "#currentRange" ).val(document.getElementById("start_time").value + " - " + document.getElementById("end_time").value )
-          if(sumdiv !== null && typeof(querylist.video[selectedExperiment].summary) != "undefined" ) {
-            var http = new XMLHttpRequest();
-            http.open('HEAD', pictureUrl, false);
-            http.send();
-            if (http.status !== 404){
-               sumheaderdiv.innerHTML = 'Summary';
-               sumdiv.innerHTML = '<img class="picture" src="'+pictureUrl+'" width="205" height="180"/>';
-            }
-            else if(typeof(querylist.video[selectedExperiment].summary) != "undefined" ){
-               var image_creator_prolog_engine = this.new_pl_client();
-               var regQuery = querylist.video[selectedExperiment].summary;
-               image_creator_prolog_engine.jsonQuery(regQuery, function(result) {
-                  sumheaderdiv.innerHTML = 'Summary';
-                  sumdiv.innerHTML = '<img class="picture" src="'+pictureUrl+'" width="205" height="180"/>'; 
-               }); 
-            }
-          }
-        }
-	
-	
       }
       catch(e) {
         console.warn(e);
