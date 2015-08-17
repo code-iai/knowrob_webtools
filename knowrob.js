@@ -28,7 +28,7 @@ function Knowrob(options){
     var keepAlive;
     
     // File that contains example queries
-    var libraryFile = options.library_file || 'queriesForRobohow.json'
+    var libraryFile = options.library_file;
     
     // The topic where the canvas publishes snapshots
     var snapshotTopic;
@@ -92,6 +92,15 @@ function Knowrob(options){
           , isSpinning: function() {
               return !that.isConnected || !that.isPrologConnected;
           }
+          , onhide: function() {
+              // Show overlay until an episode is selected
+                  console.log("onhide");
+                  console.log(libraryFile);
+              if(!libraryFile) {
+                  console.log("NO LIB!!!!");
+                that.showPageOverlay();
+              }
+          }
       });
       this.connect();
       
@@ -124,8 +133,6 @@ function Knowrob(options){
           var div = $('#'+pictureDiv);
           var image_width = that.imageWidth();
           var image_height = that.imageHeight();
-          console.log(image_width);
-          console.log(image_height);
           if(!image || image_width <= 0.0 || image_height <= 0.0) return true;
           
           var image_ratio = image_height/image_width;
@@ -534,11 +541,25 @@ function Knowrob(options){
         if(console) {
             var consoleOverlay = document.createElement("div");
             consoleOverlay.setAttribute("id", "console-overlay");
-            consoleOverlay.className = "ui-ios-overlay ios-overlay-hide";
+            consoleOverlay.className = "ui-ios-overlay ios-overlay-hide div-overlay";
             consoleOverlay.innerHTML += '<span class="title">Processing Query</span';
+            consoleOverlay.style.display = 'none';
             console.appendChild(consoleOverlay);
             var spinner = createSpinner();
             consoleOverlay.appendChild(spinner.el);
+        }
+        
+        // Create page iosOverlay
+        var page = document.getElementById('page');
+        if(page) {
+            var pageOverlay = document.createElement("div");
+            pageOverlay.setAttribute("id", "page-overlay");
+            pageOverlay.className = "ui-ios-overlay ios-overlay-hide div-overlay";
+            pageOverlay.innerHTML += '<span class="title">Please select an Episode</span';
+            pageOverlay.style.display = 'none';
+            page.appendChild(pageOverlay);
+            var spinner = createSpinner();
+            pageOverlay.appendChild(spinner.el);
         }
         
         return userQuery;
@@ -627,16 +648,34 @@ function Knowrob(options){
     this.showConsoleOverlay = function () {
       var consoleOverlay = document.getElementById('console-overlay');
       if(consoleOverlay) {
-        consoleOverlay.className = consoleOverlay.className.replace("hide","show");
-        consoleOverlay.style.pointerEvents = "auto";
+          consoleOverlay.style.display = 'block';
+          consoleOverlay.className = consoleOverlay.className.replace("hide","show");
+          consoleOverlay.style.pointerEvents = "auto";
       }
     };
-    
     this.hideConsoleOverlay = function () {
       var consoleOverlay = document.getElementById('console-overlay');
       if(consoleOverlay) {
-        consoleOverlay.className = consoleOverlay.className.replace("show","hide");
-        consoleOverlay.style.pointerEvents = "none";
+          //consoleOverlay.style.display = 'none';
+          consoleOverlay.className = consoleOverlay.className.replace("show","hide");
+          consoleOverlay.style.pointerEvents = "none";
+      }
+    };
+    
+    this.showPageOverlay = function () {
+      var pageOverlay = document.getElementById('page-overlay');
+      if(pageOverlay) {
+          pageOverlay.style.display = 'block';
+          pageOverlay.className = pageOverlay.className.replace("hide","show");
+          pageOverlay.style.pointerEvents = "auto";
+      }
+    };
+    this.hidePageOverlay = function () {
+      var pageOverlay = document.getElementById('page-overlay');
+      if(pageOverlay) {
+          //pageOverlay.style.display = 'none';
+          pageOverlay.className = pageOverlay.className.replace("show","hide");
+          pageOverlay.style.pointerEvents = "none";
       }
     };
 
@@ -1133,6 +1172,7 @@ function Knowrob(options){
 
     // fill the select with json data from url
     this.populate_query_select = function (id, url) {
+      if(!url) return; // No query file
       try{
         // url must point to a json-file containing an array named "query" with
         // the query strings to display in the select
