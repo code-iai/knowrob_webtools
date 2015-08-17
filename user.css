@@ -294,9 +294,15 @@ li:hover ul li.zero_size > div { top: 0px; }
   width: -webkit-calc(100% - 8px); /* google, safari */
   width: -moz-calc(100% - 8px); /* firefox */
   border: 1px solid #a9a9b2;
+  opacity: 1;
+  -webkit-transition: opacity 0.5s ease-in-out;
+  -moz-transition: opacity 0.5s ease-in-out;
+  -o-transition: opacity 0.5s ease-in-out;
+  -ms-transition: opacity 0.5s ease-in-out;
+  transition: opacity 0.5s ease-in-out;
 }
 .replay-box-hidden {
-  display: none;
+  opacity: 0;
 }
 .replay-box #init_query {
   height: 100px;
@@ -317,7 +323,7 @@ li:hover ul li.zero_size > div { top: 0px; }
 #replay-panel-box {
   padding-bottom: 10px;
 }
-#replay-configuration-form input {
+.replay-box input {
   border: none;
   background: none;
   width: 100%;
@@ -333,6 +339,12 @@ li:hover ul li.zero_size > div { top: 0px; }
   float: right;
   top: -46px;
 }
+#replay-progress-value {
+  position: relative;
+  float: right;
+  top: -46px;
+}
+
 #replay-fps {
   background: #fff !important;
   border: 1px solid #a9a9b2 !important;
