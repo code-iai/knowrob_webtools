@@ -27,8 +27,11 @@ function Knowrob(options){
     // keep aliva message publisher
     var keepAlive;
     
-    // File that contains example queries
-    var libraryFile = options.library_file;
+    // URL to JSON file that contains episode data
+    var episodeURL = options.episode_url;
+    
+    // Parsed episode data file
+    var episodeData = undefined;
     
     // The topic where the canvas publishes snapshots
     var snapshotTopic;
@@ -94,10 +97,7 @@ function Knowrob(options){
           }
           , onhide: function() {
               // Show overlay until an episode is selected
-                  console.log("onhide");
-                  console.log(libraryFile);
-              if(!libraryFile) {
-                  console.log("NO LIB!!!!");
+              if(!episodeURL) {
                 that.showPageOverlay();
               }
           }
@@ -123,7 +123,7 @@ function Knowrob(options){
       this.setup_history_field();
       this.setup_query_field();
       
-      this.populate_query_select(libraryDiv, libraryFile);
+      this.populate_query_select(libraryDiv);
       this.resize_canvas();
       
       set_inactive(document.getElementById(nextButtonDiv));
@@ -1169,32 +1169,38 @@ function Knowrob(options){
         spriteLayouter[i]();
       }
     };
+    
+    this.get_episode_data = function () {
+        if(!episodeData) {
+            try {
+                // url must point to a json-file containing an array named "query" with
+                // the query strings to display in the select
+                // FIXME: bad synchron request
+                var request = new XMLHttpRequest
+                request.open("GET", episodeURL, false);
+                request.send(null);
+                episodeData = JSON.parse(request.responseText);
+            }
+            catch(e) {
+                console.warn("Failed to load episode data.");
+            }
+        }
+        return episodeData;
+    };
 
     // fill the select with json data from url
-    this.populate_query_select = function (id, url) {
-      if(!url) return; // No query file
-      try{
-        // url must point to a json-file containing an array named "query" with
-        // the query strings to display in the select
-        var request = new XMLHttpRequest
-        request.open("GET", url, false);
-        request.send(null);
-
-        var querylist = JSON.parse(request.responseText);
-
+    this.populate_query_select = function (id) {
+        var episodeData = that.get_episode_data();
+        if(!episodeData) return;
         var select = document.getElementById(id);
         if(select !== null) {
-          for (var i = 0; i < querylist.query.length; i++) {
+          for (var i = 0; i < episodeData.query.length; i++) {
             var opt = document.createElement('option');
-            opt.value = querylist.query[i].q;
-            opt.innerHTML = querylist.query[i].text;
+            opt.value = episodeData.query[i].q;
+            opt.innerHTML = episodeData.query[i].text;
             select.appendChild(opt);
           }
         }
-      }
-      catch(e) {
-        console.warn(e);
-      }
     };
 
     this.highlight_element = function (name, type, highlight) {
