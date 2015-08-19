@@ -165,11 +165,17 @@ li:hover ul li.zero_size > div { top: 0px; }
 .menu .mega_menu_column a:hover { text-decoration: underline; }
 .mega_menu_column h4 {
   font-family: 'Oswald', sans-serif;
-  border-bottom: 2px dashed #777;
+  color: #346F98;
 }
 .mega_menu_column h3 {
   font-family: 'Oswald', sans-serif;
   width: 100%;
+  border-bottom: 2px dotted #144F78;
+  color: #144F78;
+}
+.category-episodes {
+  max-height: 250px;
+  overflow-y: auto;
 }
 
 /*****************************************/
