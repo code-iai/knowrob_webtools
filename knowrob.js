@@ -33,6 +33,8 @@ function Knowrob(options){
     // Parsed episode data file
     var episodeData = undefined;
     
+    var mngDBName = options.mngDBName;
+    
     // The topic where the canvas publishes snapshots
     var snapshotTopic;
 
@@ -473,6 +475,15 @@ function Knowrob(options){
             }
             else {
                 that.isPrologConnected = true;
+      
+                // Auto select the mongo database
+                if(mngDBName) {
+                    prolog = knowrob.new_pl_client();
+                    prolog.jsonQuery("mng_db('"+mngDBName+"').", function(result) {
+                        console.log("Selected mongo DB " + mngDBName);
+                        prolog.finishClient();
+                    });
+                }
             }
         });
     };
