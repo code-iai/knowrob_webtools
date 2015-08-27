@@ -743,16 +743,16 @@ function Knowrob(options){
     };
 
     // append the selected query to the user_query form
-    this.add_selected_to_queryform = function (selectid) {
+    this.add_selected_to_queryform = function (selectid, focus) {
       var select = document.getElementById(selectid);
-      this.set_query_value(select.options[select.selectedIndex].value);
+      this.set_query_value(select.options[select.selectedIndex].value, focus);
     };
 
     // set the value of the query editor and move the cursor to the end
-    this.set_query_value = function (val){
+    this.set_query_value = function (val, focus){
       var user_query = ace.edit(queryDiv);
       user_query.setValue(val, -1);
-      user_query.focus();
+      if(focus) user_query.focus();
       user_query.navigateFileEnd();
     };
 
@@ -1200,6 +1200,7 @@ function Knowrob(options){
             opt.innerHTML = episodeData.query[i].text;
             select.appendChild(opt);
           }
+          select.size = episodeData.query.length;
         }
     };
 
