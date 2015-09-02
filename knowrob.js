@@ -1182,7 +1182,7 @@ function Knowrob(options){
     };
     
     this.get_episode_data = function () {
-        if(!episodeData) {
+        if(!that.episodeData) {
             try {
                 // url must point to a json-file containing an array named "query" with
                 // the query strings to display in the select
@@ -1190,13 +1190,13 @@ function Knowrob(options){
                 var request = new XMLHttpRequest
                 request.open("GET", episodeURL, false);
                 request.send(null);
-                episodeData = JSON.parse(request.responseText);
+                that.episodeData = JSON.parse(request.responseText);
             }
             catch(e) {
                 console.warn("Failed to load episode data.");
             }
         }
-        return episodeData;
+        return that.episodeData;
     };
 
     // fill the select with json data from url
