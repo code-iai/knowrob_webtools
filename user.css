@@ -613,6 +613,13 @@ li:hover ul li.zero_size > div { top: 0px; }
 #mjpeg_image:-o-full-screen { transform:translate(0%,0%); -webkit-transform:translate(0%,0%); }
 #mjpeg_image:full-screen { transform:translate(0%,0%); -webkit-transform:translate(0%,0%); }
 
+#grid .k-grid-header {
+   padding: 0 !important;
+}
+#grid .k-grid-content {
+   overflow-y: visible;
+}
+
 .div-overlay {
   position: absolute;
   top: 0%;
