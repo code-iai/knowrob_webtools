@@ -641,6 +641,11 @@ li:hover ul li.zero_size > div { top: 0px; }
     border:medium none;
 }
 
+.k-button,
+.k-button:hover{
+  border: 1px solid #AAA !important;
+}
+
 li.zero_size,
 .zero_size {
   padding: 0 !important;
