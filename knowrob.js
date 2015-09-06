@@ -228,7 +228,8 @@ function Knowrob(options){
       });
       img_listener.subscribe(function(message) {
           var ext = message.data.substr(message.data.lastIndexOf('.') + 1);
-          var url;
+          var url = '/knowrob/knowrob_data/'+message.data;
+          /*
           if(message.data.substring(0,1) == '/') {
               url = '/knowrob'+message.data;
           }
@@ -238,6 +239,7 @@ function Knowrob(options){
           else {
               url = message.data;
           }
+          */
           
           var html = '';
           if(ext=='jpg' || ext =='png') {
@@ -673,9 +675,10 @@ function Knowrob(options){
       }
     };
     
+    var pageOverlayDisabled = false;
     this.showPageOverlay = function () {
       var pageOverlay = document.getElementById('page-overlay');
-      if(pageOverlay) {
+      if(pageOverlay && !pageOverlayDisabled) {
           pageOverlay.style.display = 'block';
           pageOverlay.className = pageOverlay.className.replace("hide","show");
           pageOverlay.style.pointerEvents = "auto";
@@ -683,13 +686,16 @@ function Knowrob(options){
     };
     this.hidePageOverlay = function () {
       var pageOverlay = document.getElementById('page-overlay');
-      if(pageOverlay) {
+      if(pageOverlay && !pageOverlayDisabled) {
           //pageOverlay.style.display = 'none';
           pageOverlay.className = pageOverlay.className.replace("show","hide");
           pageOverlay.style.pointerEvents = "none";
       }
     };
-
+    this.disablePageOverlay = function () {
+      pageOverlayDisabled = true;
+    };
+    
     this.query = function () {
       var query = ace.edit(queryDiv);
       var history = ace.edit(historyDiv);

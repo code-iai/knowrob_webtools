@@ -281,6 +281,10 @@ li:hover ul li.zero_size > div { top: 0px; }
 #forgot-password-box { width:400px; float: left; }
 #register-box { width:300px; float: left; }
 #sign-up-button { color: #fff; }
+a.btn {
+  border: none !important;
+  text-decoration: none !important;
+}
 
 /*****************************************/
 /********* Knowledge base page ***********/
@@ -644,6 +648,8 @@ li:hover ul li.zero_size > div { top: 0px; }
 .k-button,
 .k-button:hover{
   border: 1px solid #AAA !important;
+  min-width: 80px !important;
+  margin: 2px  !important;
 }
 
 li.zero_size,
