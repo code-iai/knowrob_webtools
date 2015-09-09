@@ -182,6 +182,7 @@ li:hover ul li.zero_size > div { top: 0px; }
 /*****************************************/
 
 /* Container holding the complete page (without menu and navbar) */
+#container,
 #page {
   height: -o-calc(100% - 94px); /* opera */
   height: -webkit-calc(100% - 94px); /* google, safari */
@@ -197,6 +198,7 @@ li:hover ul li.zero_size > div { top: 0px; }
   margin-top: 63px;
   margin-left: -8px;
 }
+.container-background,
 .page-background {
   background-image: url(oe-logo.svg);
   background-position: right bottom;
@@ -206,6 +208,7 @@ li:hover ul li.zero_size > div { top: 0px; }
   height: -webkit-calc(100% - 10px); /* google, safari */
   height: -moz-calc(100% - 10px); /* firefox */
 }
+.container-centered,
 .page-centered {
   width: 80%;
   margin: 0 auto;
