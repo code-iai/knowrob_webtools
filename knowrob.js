@@ -228,7 +228,8 @@ function Knowrob(options){
       });
       img_listener.subscribe(function(message) {
           var ext = message.data.substr(message.data.lastIndexOf('.') + 1);
-          var url = '/knowrob/knowrob_data/'+message.data;
+          var url = message.data;
+          if(!url.startsWith("/knowrob/")) url = '/knowrob/knowrob_data/'+url;
           /*
           if(message.data.substring(0,1) == '/') {
               url = '/knowrob'+message.data;
@@ -382,7 +383,7 @@ function Knowrob(options){
       // The topic where the canvas publishes snapshots
       snapshotTopic = new ROSLIB.Topic({
         ros : ros,
-        name : '/canvas/snapshot',
+        name : '/openease/video/frame',
         messageType : 'sensor_msgs/Image'
       });
 
@@ -839,7 +840,8 @@ function Knowrob(options){
     // This will be fixed after robohow
     this.publish_snapshot = function (frameNumber, fps) {
       console.log("Publishing canvas snapshot frame:" + frameNumber + " fps:" + fps);
-      /*var gl = rosViewer.renderer.getContext();
+      
+	  var gl = rosViewer.renderer.getContext();
       var width  = gl.drawingBufferWidth;
       var height = gl.drawingBufferHeight;
       
@@ -891,9 +893,9 @@ function Knowrob(options){
         data: pixels
       });
       
-      snapshotTopic.publish(msg);*/
+      snapshotTopic.publish(msg);
 
-      
+      /*
       $("svg").attr({ version: '1.1' , xmlns:"http://www.w3.org/2000/svg"});
 
       var svg = $("#tasktree").html();
@@ -924,9 +926,9 @@ function Knowrob(options){
         parentNode.appendChild(canvas);
       });
 
-      /*var b64 = btoa(svg); // or use btoa if supported
-      var img = '<img src="'+'data:image/svg+xml;base64,\n'+b64+'">'; 
-      document.getElementById('hidden_tasktree_img_div').innerHTML = img;*/
+      //var b64 = btoa(svg); // or use btoa if supported
+      //var img = '<img src="'+'data:image/svg+xml;base64,\n'+b64+'">'; 
+      //document.getElementById('hidden_tasktree_img_div').innerHTML = img;
       var img_png;
       html2canvas($('#tasktree'), {logging: true, profile: true, useCORS: true, allowTaint: true,
          onrendered: function (canvas) {
@@ -947,9 +949,9 @@ function Knowrob(options){
           }
       });
 
-      /*var tmp_canvas = rosViewer.renderer;
-      var img = tmp_canvas.toDataURL("image/png");
-      window.open(img);*/      
+      //var tmp_canvas = rosViewer.renderer;
+      //var img = tmp_canvas.toDataURL("image/png");
+      //window.open(img);
 
       var rosCtx = rosViewer.renderer.getContext('2d');
       rosCtx.webkitImageSmoothingEnabled = false;
@@ -957,9 +959,8 @@ function Knowrob(options){
       rosCtx.imageSmoothingEnabled = false;
       rosViewer.renderer.domElement.toBlob(function(blob) {   
           saveAs(blob, 'canvas_'+ frameNumber+'.png');
-      });      
-
-      
+      });
+      */
     };
     
     ///////////////////////////////
