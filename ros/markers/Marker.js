@@ -34,6 +34,7 @@ ROS3D.Marker = function(options) {
     this.msgScale = [1,1,1];
   }
   this.msgColor = [message.color.r, message.color.g, message.color.b, message.color.a];
+  this.colorMaterials = {};
   this.msgMesh = undefined;
 
   // set the pose and get the color
@@ -333,6 +334,7 @@ ROS3D.Marker.prototype.update = function(message) {
      message.color.b !== this.msgColor[2] ||
      message.color.a !== this.msgColor[3])
   {
+      var newColorMaterials = {};
       var colorMaterial = ROS3D.makeColorMaterial(
           message.color.r, message.color.g,
           message.color.b, message.color.a);
@@ -355,14 +357,19 @@ ROS3D.Marker.prototype.update = function(message) {
           });
           break;
       case ROS3D.MARKER_MESH_RESOURCE:
-          var meshColorMaterial = null;
+          var meshColorMaterial = undefined;
           if(message.color.r !== 0 || message.color.g !== 0 ||
              message.color.b !== 0 || message.color.a !== 0) {
-              meshColorMaterial = this.colorMaterial;
+              meshColorMaterial = colorMaterial;
           }
+          var that = this;
           this.traverse (function (child){
               if (child instanceof THREE.Mesh) {
-                  child.material = meshColorMaterial;
+                  newColorMaterials[child] = child.material;
+                  if(meshColorMaterial)
+                      child.material = meshColorMaterial;
+                  else // Reset highlight
+                      child.material = that.colorMaterials[child];
               }
           });
           break;
@@ -373,6 +380,8 @@ ROS3D.Marker.prototype.update = function(message) {
       default:
           return false;
       }
+      
+      this.colorMaterials = newColorMaterials;
       
       this.msgColor = [message.color.r, message.color.g,
             message.color.b, message.color.a];
