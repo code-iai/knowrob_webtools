@@ -134,6 +134,7 @@ ROS3D.Marker = function(options) {
   var path = options.path || '/';
   var message = options.message;
   var loader = options.loader || ROS3D.COLLADA_LOADER_2;
+  var that = this;
 
   // check for a trailing '/'
   if (path.substr(path.length - 1) !== '/') {
@@ -151,11 +152,42 @@ ROS3D.Marker = function(options) {
   this.msgColor = [message.color.r, message.color.g, message.color.b, message.color.a];
   this.colorMaterials = {};
   this.msgMesh = undefined;
+  this.msgText = message.text;
+    
+  this.spriteAlignments = [
+      THREE.SpriteAlignment.center,
+      THREE.SpriteAlignment.bottomLeft,
+      THREE.SpriteAlignment.topLeft,
+      THREE.SpriteAlignment.topRight,
+      THREE.SpriteAlignment.bottomRight,
+      THREE.SpriteAlignment.topCenter,
+      THREE.SpriteAlignment.centerLeft,
+      THREE.SpriteAlignment.centerRight,
+      THREE.SpriteAlignment.bottomCenter
+  ];
 
   // set the pose and get the color
   this.setPose(message.pose);
   var colorMaterial = ROS3D.makeColorMaterial(this.msgColor[0],
       this.msgColor[1], this.msgColor[2], this.msgColor[3]);
+  
+  var createSpriteMaterial = function(useScreenCoordinates) {
+      var alignment = Math.max(Math.min(Math.round(message.scale.z), that.spriteAlignments.length-1),0);
+      return new THREE.SpriteMaterial({
+          useScreenCoordinates: useScreenCoordinates,
+          alignment: that.spriteAlignments[alignment]
+      });
+  };
+  var createTexture = function(src) {
+      var image = new Image();
+      image.src = src;
+      var texture = new THREE.Texture();
+      texture.image = image;
+      image.onload = function() {
+        texture.needsUpdate = true;
+      };
+      return texture;
+  };
 
   // create the object based on the type
   switch (message.type) {
@@ -341,33 +373,6 @@ ROS3D.Marker = function(options) {
       // add the particle system
       this.add(new THREE.ParticleSystem(geometry, material));
       break;
-    case ROS3D.MARKER_TEXT_VIEW_FACING:
-      // only work on non-empty text
-      if (message.text.length > 0) {
-        // setup the text
-        console.log(message.scale);
-        var textGeo = new THREE.TextGeometry(message.text, {
-          size: message.scale.z * 0.2,
-          height: 0.04 * message.scale.z,
-          curveSegments: 4,
-          font: 'helvetiker', weight: "bold", style: "normal",
-          bevelThickness: 0.01, bevelSize: 0.005, bevelEnabled: false,
-          material: 0,
-          extrudeMaterial: 1
-        });
-        // XXX: artifacts when calling computeVertexNormals!
-        //textGeo.computeVertexNormals();
-        textGeo.computeBoundingBox();
-
-        // position the text and add it
-        var mesh = new THREE.Mesh(textGeo, colorMaterial);
-        var centerOffset = -0.5 * (textGeo.boundingBox.max.x - textGeo.boundingBox.min.x);
-        mesh.position.y = -centerOffset;
-        mesh.rotation.x = Math.PI * 0.5;
-        mesh.rotation.y = Math.PI * 1.5;
-        this.add(mesh);
-      }
-      break;
     case ROS3D.MARKER_MESH_RESOURCE:
       // load and add the mesh
       var meshColorMaterial = null;
@@ -400,20 +405,60 @@ ROS3D.Marker = function(options) {
       tri.scale = new THREE.Vector3(message.scale.x, message.scale.y, message.scale.z);
       this.add(tri);
       break;
-    // TODO(daniel): generic sprite marker that encodes texture in text property?
-    case ROS3D.MARKER_SPEECH:
-      var speechTexture = new TextTexture(message.text, {useBubble: true});
-      var material = new THREE.SpriteMaterial({
-          useScreenCoordinates: false,
-          alignment: THREE.SpriteAlignment.bottomLeft});
-      material.map = speechTexture.texture;
+    case ROS3D.MARKER_TEXT_VIEW_FACING:
+      // only work on non-empty text
+      if (message.text.length > 0) {
+        // setup the text
+        var textGeo = new THREE.TextGeometry(message.text, {
+          size: message.scale.z * 0.2,
+          height: 0.04 * message.scale.z,
+          curveSegments: 4,
+          font: 'helvetiker', weight: "bold", style: "normal",
+          bevelThickness: 0.01, bevelSize: 0.005, bevelEnabled: false,
+          material: 0,
+          extrudeMaterial: 1
+        });
+        // XXX: artifacts when calling computeVertexNormals!
+        //textGeo.computeVertexNormals();
+        textGeo.computeBoundingBox();
+
+        // position the text and add it
+        var mesh = new THREE.Mesh(textGeo, colorMaterial);
+        var centerOffset = -0.5 * (textGeo.boundingBox.max.x - textGeo.boundingBox.min.x);
+        mesh.position.y = -centerOffset;
+        mesh.rotation.x = Math.PI * 0.5;
+        mesh.rotation.y = Math.PI * 1.5;
+        this.add(mesh);
+      }
+      break;
+    case ROS3D.MARKER_IMAGE_HUD:
+    case ROS3D.MARKER_TEXT_HUD:
+      var material = createSpriteMaterial(true);
+      if(message.type==ROS3D.MARKER_IMAGE_HUD) {
+        material.map = createTexture(message.text);
+      }
+      else {
+        var textTexture = new TextTexture(message.text, {});
+        material.map = textTexture.texture;
+      }
+      var sprite = new THREE.Sprite( material );
+      sprite.scale.set(material.map.image.width, material.map.image.height, 1);
+      sprite.position.set(message.pose.position.x, message.pose.position.y, 0);
+      this.add(sprite);
+      break;
+    case ROS3D.MARKER_TEXT_SPRITE:
+    case ROS3D.MARKER_SPRITE:
+      var material = createSpriteMaterial(false);
+      if(message.type==ROS3D.MARKER_SPRITE) {
+        material.map = createTexture(message.text);
+      }
+      else {
+        var textTexture = new TextTexture(message.text, {useBubble: true});
+        material.map = textTexture.texture;
+      }
       var sprite = new THREE.Sprite(material);
-      // make sure text has the same dimensions for different texture sizes
-      var scale = speechTexture.texture.image.height/100.0;
-      sprite.scale.set(
-          scale*speechTexture.texture.image.width/speechTexture.texture.image.height,
-          scale,
-          1.0);
+      var ratio = material.map.image.width/material.map.image.height;
+      sprite.scale = new THREE.Vector3(message.scale.x*ratio, message.scale.y, 1.0);
       this.add(sprite);
       break;
     default:
@@ -455,105 +500,21 @@ ROS3D.Marker.prototype.setPose = function(pose) {
  * @return true on success otherwhise false is returned
  */
 ROS3D.Marker.prototype.update = function(message) {
-  // set the pose and get the color
-  this.setPose(message.pose);
-  
-  // Update color
-  if(message.color.r !== this.msgColor[0] ||
-     message.color.g !== this.msgColor[1] || 
-     message.color.b !== this.msgColor[2] ||
-     message.color.a !== this.msgColor[3])
-  {
-      var newColorMaterials = {};
-      var colorMaterial = ROS3D.makeColorMaterial(
-          message.color.r, message.color.g,
-          message.color.b, message.color.a);
-  
-      switch (message.type) {
-      case ROS3D.MARKER_LINE_STRIP:
-      case ROS3D.MARKER_LINE_LIST:
-      case ROS3D.MARKER_POINTS:
-          break;
-      case ROS3D.MARKER_ARROW:
-      case ROS3D.MARKER_CUBE:
-      case ROS3D.MARKER_SPHERE:
-      case ROS3D.MARKER_CYLINDER:
-      case ROS3D.MARKER_TRIANGLE_LIST:
-      case ROS3D.MARKER_TEXT_VIEW_FACING:
-          this.traverse (function (child){
-              if (child instanceof THREE.Mesh) {
-                  child.material = colorMaterial;
-              }
-          });
-          break;
-      case ROS3D.MARKER_MESH_RESOURCE:
-          var meshColorMaterial = undefined;
-          if(message.color.r !== 0 || message.color.g !== 0 ||
-             message.color.b !== 0 || message.color.a !== 0) {
-              meshColorMaterial = colorMaterial;
-          }
-          var that = this;
-          this.traverse (function (child){
-              if (child instanceof THREE.Mesh) {
-                  newColorMaterials[child] = child.material;
-                  if(meshColorMaterial)
-                      child.material = meshColorMaterial;
-                  else // Reset highlight
-                      child.material = that.colorMaterials[child];
-              }
-          });
-          break;
-      case ROS3D.MARKER_SPEECH:
-        var speechTexture = new TextTexture(message.text, {useBubble: true});
-        var sprite = this.children[0];
-        sprite.material.map = speechTexture.texture;
-        // make sure text has the same dimensions for different texture sizes
-        var scale = speechTexture.texture.image.height/100.0;
-        sprite.scale.set(
-            scale*speechTexture.texture.image.width/speechTexture.texture.image.height,
-            scale,
-            1.0);
-        break;
-      case ROS3D.MARKER_CUBE_LIST:
-      case ROS3D.MARKER_SPHERE_LIST:
-          // TODO support to update color for MARKER_CUBE_LIST & MARKER_SPHERE_LIST
-          return false;
-      default:
-          return false;
-      }
-      
-      this.colorMaterials = newColorMaterials;
-      
-      this.msgColor = [message.color.r, message.color.g,
-            message.color.b, message.color.a];
-  }
-  
-  // Update geometry
   var scaleChanged =
         Math.abs(this.msgScale[0] - message.scale.x) > 1.0e-6 ||
         Math.abs(this.msgScale[1] - message.scale.y) > 1.0e-6 ||
         Math.abs(this.msgScale[2] - message.scale.z) > 1.0e-6;
-  this.msgScale = [message.scale.x, message.scale.y, message.scale.z];
+  var colorChanged =
+        Math.abs(this.msgColor[0] - message.color.r) > 1.0e-6 ||
+        Math.abs(this.msgColor[1] - message.color.g) > 1.0e-6 ||
+        Math.abs(this.msgColor[1] - message.color.b) > 1.0e-6 ||
+        Math.abs(this.msgColor[2] - message.color.a) > 1.0e-6;
+  var newColorMaterials = {};
+  var colorMaterial = ROS3D.makeColorMaterial(
+      message.color.r, message.color.g,
+      message.color.b, message.color.a);
   
   switch (message.type) {
-    case ROS3D.MARKER_CUBE:
-    case ROS3D.MARKER_SPHERE:
-    case ROS3D.MARKER_CYLINDER:
-        if(scaleChanged) {
-            return false;
-        }
-        break;
-    case ROS3D.MARKER_TEXT_VIEW_FACING:
-        if(scaleChanged || this.text !== message.text) {
-            return false;
-        }
-        break;
-    case ROS3D.MARKER_MESH_RESOURCE:
-        var meshResource = message.mesh_resource.substr(10);
-        if(meshResource !== this.msgMesh) {
-            return false;
-        }
-        break;
     case ROS3D.MARKER_ARROW:
     case ROS3D.MARKER_LINE_STRIP:
     case ROS3D.MARKER_LINE_LIST:
@@ -563,9 +524,80 @@ ROS3D.Marker.prototype.update = function(message) {
     case ROS3D.MARKER_TRIANGLE_LIST:
         // TODO: We would have to check each point here but this slows down updating of markers
         return false;
-    default:
+    case ROS3D.MARKER_CUBE:
+    case ROS3D.MARKER_SPHERE:
+    case ROS3D.MARKER_CYLINDER:
+        if(scaleChanged) return false;
+        if(colorChanged) {
+            this.traverse (function (child){
+                if (child instanceof THREE.Mesh) {
+                    child.material = colorMaterial;
+                }
+            });
+        }
         break;
+    case ROS3D.MARKER_MESH_RESOURCE:
+        if(message.mesh_resource.substr(10) !== this.msgMesh) return false;
+        
+        if(colorChanged) {
+            var meshColorMaterial = undefined;
+            if(message.color.r !== 0 || message.color.g !== 0 ||
+               message.color.b !== 0 || message.color.a !== 0) {
+                meshColorMaterial = colorMaterial;
+            }
+            var that = this;
+            this.traverse (function (child){
+                if (child instanceof THREE.Mesh) {
+                    newColorMaterials[child] = child.material;
+                    if(meshColorMaterial)
+                        child.material = meshColorMaterial;
+                    else // Reset highlight
+                        child.material = that.colorMaterials[child];
+                }
+            });
+        }
+        break;
+    case ROS3D.MARKER_TEXT_VIEW_FACING:
+        if(scaleChanged || this.text !== message.text) {
+            return false;
+        }
+        if(colorChanged) {
+            this.traverse (function (child){
+                if (child instanceof THREE.Mesh) {
+                    child.material = colorMaterial;
+                }
+            });
+        }
+        break;
+    case ROS3D.MARKER_IMAGE_HUD:
+    case ROS3D.MARKER_TEXT_HUD:
+        var sprite = this.children[0];
+        if(this.msgText !== message.text) return false;
+        if(Math.abs(this.msgScale[2] - message.scale.z) > 1.0e-6) return false;
+        sprite.position.set(
+            message.pose.position.x,
+            message.pose.position.y,
+            0);
+        break;
+    case ROS3D.MARKER_SPRITE:
+    case ROS3D.MARKER_TEXT_SPRITE:
+        var sprite = this.children[0];
+        if(this.msgText !== message.text) return false;
+        if(Math.abs(this.msgScale[2] - message.scale.z) > 1.0e-6) return false;
+        if(scaleChanged) {
+            var ratio = sprite.material.map.image.width/sprite.material.map.image.height;
+            sprite.scale.set(message.scale.x*ratio, message.scale.y, 1.0);
+        }
+        break;
+    default:
+        return false;
   }
+  
+  this.msgText = message.text;
+  this.msgScale = [message.scale.x, message.scale.y, message.scale.z];
+  this.msgColor = [message.color.x, message.color.y, message.color.z];
+  this.colorMaterials = newColorMaterials;
+  this.setPose(message.pose);
   
   return true;
 }

@@ -396,6 +396,7 @@ function Knowrob(options){
         that.set_camera_pose(message);
       });
 
+      // TODO(daniel): deprecated
       var canvas_text_topic = new ROSLIB.Topic({
         ros : ros,
         name : '/canvas/text',
@@ -713,7 +714,7 @@ function Knowrob(options){
         history.navigateFileEnd();
         set_active(document.getElementById(nextButtonDiv));
         
-        prolog.jsonQuery(q, function(result) {
+        prolog.jsonQuery(q+", marker_publish", function(result) {
             that.hideConsoleOverlay();
             history.setValue(history.getValue() + prolog.format(result), -1);
             history.navigateFileEnd();
