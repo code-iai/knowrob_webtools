@@ -3,6 +3,121 @@
  * @author Russell Toris - rctoris@wpi.edu
  */
 
+function TextTexture(text, options){
+    var lines = text.split('\n');
+    var that = this;
+    // Font options
+    var font = options.font || "Bold 24px Monospace";
+    var useShadow = options.useShadow || false;
+    var useBubble = options.useBubble || false;
+    var margin = options.margin || [12, 12];
+    var lineHeight = 24;
+    // Create a canvas for 2D rendering
+    this.canvas = document.createElement('canvas');
+    
+    // Compute size of the canvas so that it fits the text.
+    // We need a special context for measuring the size.
+    var maxWidth = 0;
+    var heightSum = 0;
+    var measure_ctx = this.canvas.getContext('2d');
+    measure_ctx.font = font;
+    for(var i=0; i<lines.length; i++) {
+        var m = measure_ctx.measureText(lines[i]);
+        if(m.width>maxWidth) maxWidth = m.width;
+        heightSum += m.height;
+    }
+    // The text size
+    var tw = maxWidth;
+    var th = lineHeight*lines.length;
+    // The canvas size
+    var cw = tw + margin[0];
+    var ch = th + 0.5*margin[1];
+        
+    var bubbleRadius = 10;
+    var bubblePeak = [15, 20, 0]; // width, height, x-offset
+    if(useBubble) {
+        cw += bubbleRadius*2;
+        ch += bubbleRadius*2 + bubblePeak[1];
+    }
+        
+    // Create context with appropriate canvas size 
+    this.ctx = this.canvas.getContext('2d');
+    this.ctx.canvas.width  = cw;
+    this.ctx.canvas.height = ch;
+        
+    if(useBubble) {
+        this.ctx.beginPath();
+        this.ctx.strokeStyle="black";
+        this.ctx.lineWidth="1";
+        this.ctx.fillStyle="rgba(255, 255, 255, 0.8)";
+        
+        var ls = 1;
+        var w = tw + 2*bubbleRadius;
+        var h = th + 2*bubbleRadius;
+        var px=0, py=0;
+        
+        // TODO: is there really no "getPenPosition" method ?
+        var moveTo = function(x,y) {
+            that.ctx.moveTo(x,y);
+            px=x; py=y;
+        };
+        var lineTo = function(x,y) {
+            that.ctx.lineTo(x,y);
+            px=x; py=y;
+        };
+        var curveTo = function(x,y,maxx,maxy) {
+            var cx = (maxx ? Math.max(x,px) : Math.min(x,px));
+            var cy = (maxy ? Math.max(y,py) : Math.min(y,py));
+            that.ctx.quadraticCurveTo(cx,cy,x,y);
+            px=x; py=y;
+        };
+        
+        moveTo(w-bubbleRadius, h-ls);
+        // bottom right
+        curveTo(w-ls, h-bubbleRadius, 1, 1);
+        lineTo (w-ls, bubbleRadius);
+        // top right
+        curveTo(w-bubbleRadius, ls, 1, 0);
+        lineTo (  bubbleRadius, ls);
+        // top left
+        curveTo(ls, bubbleRadius, 0, 0);
+        lineTo (ls, h-bubbleRadius);
+        // bottom left
+        curveTo(bubbleRadius, h-ls, 0, 1);
+        // the peak
+        lineTo(bubbleRadius + bubblePeak[2], h-ls);
+        //lineTo(px + 0.5*bubblePeak[0], h-ls+bubblePeak[1]);
+        lineTo(1, h-ls+bubblePeak[1]);
+        lineTo(bubbleRadius + bubblePeak[2] + bubblePeak[0], h-ls);
+        lineTo(w-bubbleRadius, h-ls);
+        
+        this.ctx.fill();
+        this.ctx.stroke();
+        this.ctx.closePath();
+    }
+        
+    this.ctx.font = font;
+    // Configure text shadow
+    if(useShadow) {
+        this.ctx.shadowColor = options.shadowColor || "gray";
+        this.ctx.shadowOffsetX = options.shadowOffsetX || 4;
+        this.ctx.shadowOffsetY = options.shadowOffsetY || 4
+        this.ctx.shadowBlur = options.shadowBlur || 6;
+    }
+    // Configure text
+    this.ctx.fillStyle = options.fillStyle || "#144F78";
+    this.ctx.strokeStyle = options.strokeStyle || "#000000";
+    // Render text into 2D canvas
+    for(var i=0; i<lines.length; i++) {
+        //ctx.strokeText(lines[i], 0.5*margin[0], (i+1)*lineHeight);
+        this.ctx.fillText(lines[i], margin[0], 0.5*margin[1] + (i+1)*lineHeight);
+    }
+        
+    // Finally create texture from canvas
+    this.texture = new THREE.Texture(this.canvas);
+    this.texture.needsUpdate = true;
+};
+
 /**
  * A Marker can convert a ROS marker message into a THREE object.
  *
@@ -273,7 +388,6 @@ ROS3D.Marker = function(options) {
         loader : loader,
         scale : this.msgScale
       });
-	  
       this.add(meshResource);
       break;
     case ROS3D.MARKER_TRIANGLE_LIST:
@@ -285,6 +399,22 @@ ROS3D.Marker = function(options) {
       });
       tri.scale = new THREE.Vector3(message.scale.x, message.scale.y, message.scale.z);
       this.add(tri);
+      break;
+    // TODO(daniel): generic sprite marker that encodes texture in text property?
+    case ROS3D.MARKER_SPEECH:
+      var speechTexture = new TextTexture(message.text, {useBubble: true});
+      var material = new THREE.SpriteMaterial({
+          useScreenCoordinates: false,
+          alignment: THREE.SpriteAlignment.bottomLeft});
+      material.map = speechTexture.texture;
+      var sprite = new THREE.Sprite(material);
+      // make sure text has the same dimensions for different texture sizes
+      var scale = speechTexture.texture.image.height/100.0;
+      sprite.scale.set(
+          scale*speechTexture.texture.image.width/speechTexture.texture.image.height,
+          scale,
+          1.0);
+      this.add(sprite);
       break;
     default:
       console.error('Currently unsupported marker type: ' + message.type);
@@ -373,6 +503,17 @@ ROS3D.Marker.prototype.update = function(message) {
               }
           });
           break;
+      case ROS3D.MARKER_SPEECH:
+        var speechTexture = new TextTexture(message.text, {useBubble: true});
+        var sprite = this.children[0];
+        sprite.material.map = speechTexture.texture;
+        // make sure text has the same dimensions for different texture sizes
+        var scale = speechTexture.texture.image.height/100.0;
+        sprite.scale.set(
+            scale*speechTexture.texture.image.width/speechTexture.texture.image.height,
+            scale,
+            1.0);
+        break;
       case ROS3D.MARKER_CUBE_LIST:
       case ROS3D.MARKER_SPHERE_LIST:
           // TODO support to update color for MARKER_CUBE_LIST & MARKER_SPHERE_LIST

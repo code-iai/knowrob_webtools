@@ -407,6 +407,7 @@ function Knowrob(options){
           that.show_hud_text(lines, {});
       });
 
+      // TODO(daniel): deprecated
       var speech_topic = new ROSLIB.Topic({
         ros : ros,
         name : '/canvas/speech',
@@ -419,6 +420,7 @@ function Knowrob(options){
       this.waitForJsonProlog();
     };
     
+    // TODO(daniel): deprecated
     this.handleSpeechMessage = function (message) {
         // TODO(daniel): Make sprite handling more generic
         //    - Use marker messages?
@@ -995,6 +997,7 @@ function Knowrob(options){
     
     var hudTextMesh;
     
+    // TODO(daniel): deprecated
     this.draw_speech_bubble = function(text) {
         var maxCharacterPerLine = 15;
         var words = text.split(' ');
@@ -1023,6 +1026,7 @@ function Knowrob(options){
         });
     };
     
+    // TODO(daniel): deprecated
     this.draw_speech_bubble__ = function(ctx, tw, th, radius, peak) {
         ctx.beginPath();
         ctx.strokeStyle="black";
@@ -1074,6 +1078,7 @@ function Knowrob(options){
         ctx.closePath();
     };
     
+    // TODO(daniel): deprecated
     this.create_text_texture = function(textLines, options) {
         // Font options
         var font = options.font || "Bold 24px Monospace";
