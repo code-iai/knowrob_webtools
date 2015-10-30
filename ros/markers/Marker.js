@@ -12,6 +12,9 @@ function TextTexture(text, options){
     var useBubble = options.useBubble || false;
     var margin = options.margin || [12, 12];
     var lineHeight = 24;
+    var shadowOffsetX = (!isNaN(options.shadowOffsetX) && options.shadowOffsetX) || 4;
+    var shadowOffsetY = (!isNaN(options.shadowOffsetY) && options.shadowOffsetY) || 4;
+    var shadowBlur = (!isNaN(options.shadowBlur) && options.shadowBlur) || 6;
     // Create a canvas for 2D rendering
     this.canvas = document.createElement('canvas');
     
@@ -39,6 +42,10 @@ function TextTexture(text, options){
         cw += bubbleRadius*2;
         ch += bubbleRadius*2 + bubblePeak[1];
     }
+    if(useShadow) {
+        cw += shadowOffsetX + shadowBlur;
+        ch += shadowOffsetY + shadowBlur;
+    }
         
     // Create context with appropriate canvas size 
     this.ctx = this.canvas.getContext('2d');
@@ -47,9 +54,9 @@ function TextTexture(text, options){
         
     if(useBubble) {
         this.ctx.beginPath();
-        this.ctx.strokeStyle="black";
-        this.ctx.lineWidth="1";
-        this.ctx.fillStyle="rgba(255, 255, 255, 0.8)";
+        this.ctx.strokeStyle = options.bubbleBorderColor || "black";
+        this.ctx.lineWidth   = options.bubbleBorderWidth || "1";
+        this.ctx.fillStyle   = options.bubbleColor || "rgba(255, 255, 255, 0.8)";
         
         var ls = 1;
         var w = tw + 2*bubbleRadius;
@@ -100,9 +107,9 @@ function TextTexture(text, options){
     // Configure text shadow
     if(useShadow) {
         this.ctx.shadowColor = options.shadowColor || "gray";
-        this.ctx.shadowOffsetX = options.shadowOffsetX || 4;
-        this.ctx.shadowOffsetY = options.shadowOffsetY || 4
-        this.ctx.shadowBlur = options.shadowBlur || 6;
+        this.ctx.shadowOffsetX = shadowOffsetX;
+        this.ctx.shadowOffsetY = shadowOffsetY;
+        this.ctx.shadowBlur = shadowBlur;
     }
     // Configure text
     this.ctx.fillStyle = options.fillStyle || "#144F78";
@@ -187,6 +194,13 @@ ROS3D.Marker = function(options) {
         texture.needsUpdate = true;
       };
       return texture;
+  };
+  var htmlColor = function(c) {
+      return "rgba("+
+        Math.round(c[0]*255.0)+","+
+        Math.round(c[1]*255.0)+","+
+        Math.round(c[2]*255.0)+","+
+        Math.round(c[3]*255.0)+")";
   };
 
   // create the object based on the type
@@ -438,7 +452,19 @@ ROS3D.Marker = function(options) {
         material.map = createTexture(message.text);
       }
       else {
-        var textTexture = new TextTexture(message.text, {});
+        var textTexture = new TextTexture(message.text, {
+            fillStyle: htmlColor(this.msgColor),
+            font: $.cookie("hud-font"),
+            useShadow: $.cookie("hud-text-shadow")==='true',
+            shadowColor: $.cookie("hud-text-shadow-color"),
+            shadowOffsetX: parseInt($.cookie("hud-text-shadow-offset-y")),
+            shadowOffsetY: parseInt($.cookie("hud-text-shadow-offset-x")),
+            shadowBlur: parseInt($.cookie("hud-text-shadow-blur")),
+            useBubble: $.cookie("hud-text-bubble")!='false',
+            bubbleBorderColor: $.cookie("hud-text-bubble-border-color"),
+            bubbleBorderWidth: $.cookie("hud-text-bubble-border-width"),
+            bubbleColor: $.cookie("hud-text-bubble-color")
+        });
         material.map = textTexture.texture;
       }
       var sprite = new THREE.Sprite( material );
@@ -453,7 +479,19 @@ ROS3D.Marker = function(options) {
         material.map = createTexture(message.text);
       }
       else {
-        var textTexture = new TextTexture(message.text, {useBubble: true});
+        var textTexture = new TextTexture(message.text, {
+            fillStyle: htmlColor(this.msgColor),
+            font: $.cookie("sprite-font"),
+            useShadow: $.cookie("sprite-text-shadow")==='true',
+            shadowColor: $.cookie("sprite-text-shadow-color"),
+            shadowOffsetX: parseInt($.cookie("sprite-text-shadow-offset-y")),
+            shadowOffsetY: parseInt($.cookie("sprite-text-shadow-offset-x")),
+            shadowBlur: parseInt($.cookie("sprite-text-shadow-blur")),
+            useBubble: $.cookie("sprite-text-bubble")==='true',
+            bubbleBorderColor: $.cookie("sprite-text-bubble-border-color"),
+            bubbleBorderWidth: $.cookie("sprite-text-bubble-border-width"),
+            bubbleColor: $.cookie("sprite-text-bubble-color")
+        });
         material.map = textTexture.texture;
       }
       var sprite = new THREE.Sprite(material);
@@ -574,6 +612,7 @@ ROS3D.Marker.prototype.update = function(message) {
         var sprite = this.children[0];
         if(this.msgText !== message.text) return false;
         if(Math.abs(this.msgScale[2] - message.scale.z) > 1.0e-6) return false;
+        if(colorChanged) return false;
         sprite.position.set(
             message.pose.position.x,
             message.pose.position.y,
@@ -584,6 +623,7 @@ ROS3D.Marker.prototype.update = function(message) {
         var sprite = this.children[0];
         if(this.msgText !== message.text) return false;
         if(Math.abs(this.msgScale[2] - message.scale.z) > 1.0e-6) return false;
+        if(colorChanged) return false;
         if(scaleChanged) {
             var ratio = sprite.material.map.image.width/sprite.material.map.image.height;
             sprite.scale.set(message.scale.x*ratio, message.scale.y, 1.0);
