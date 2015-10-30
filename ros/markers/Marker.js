@@ -160,6 +160,7 @@ ROS3D.Marker = function(options) {
   this.colorMaterials = {};
   this.msgMesh = undefined;
   this.msgText = message.text;
+  this.isBackgroundMarker = false;
     
   this.spriteAlignments = [
       THREE.SpriteAlignment.center,
@@ -499,6 +500,19 @@ ROS3D.Marker = function(options) {
       sprite.scale = new THREE.Vector3(message.scale.x*ratio, message.scale.y, 1.0);
       this.add(sprite);
       break;
+    case ROS3D.MARKER_BACKGROUND_IMAGE:
+      var mesh = new THREE.Mesh(
+          new THREE.PlaneGeometry(2, 2, 0),
+          new THREE.MeshBasicMaterial({
+              map: createTexture(message.text)
+          })
+      );
+      mesh.material.depthTest = false;
+      mesh.material.depthWrite = false;
+      mesh.renderDepth = 0;
+      this.add(mesh);
+      this.isBackgroundMarker = true;
+      break;
     default:
       console.error('Currently unsupported marker type: ' + message.type);
       break;
@@ -628,6 +642,9 @@ ROS3D.Marker.prototype.update = function(message) {
             var ratio = sprite.material.map.image.width/sprite.material.map.image.height;
             sprite.scale.set(message.scale.x*ratio, message.scale.y, 1.0);
         }
+        break;
+    case ROS3D.MARKER_BACKGROUND_IMAGE:
+        if(this.msgText !== message.text) return false;
         break;
     default:
         return false;

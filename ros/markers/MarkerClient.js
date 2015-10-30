@@ -27,6 +27,7 @@ ROS3D.MarkerClient = function(options) {
   var topic = options.topic;
   this.tfClient = options.tfClient;
   this.rootObject = options.rootObject || new THREE.Object3D();
+  this.backgroundObject = options.backgroundObject || new THREE.Object3D();
   this.path = options.path || '/';
   this.loader = options.loader || ROS3D.COLLADA_LOADER_2;
 
@@ -41,22 +42,23 @@ ROS3D.MarkerClient = function(options) {
     compression : 'png'
   });
   rosTopic.subscribe(function(message) {
-    
     var newMarker = new ROS3D.Marker({
       message : message,
       path : that.path,
       loader : that.loader
     });
+    var scene = that.rootObject;
+    if(newMarker.isBackgroundMarker) { scene = that.backgroundObject; }
 
     // remove old marker from Three.Object3D children buffer
-    that.rootObject.remove(that.markers[message.ns + message.id]);
+    scene.remove(that.markers[message.ns + message.id]);
 
     that.markers[message.ns + message.id] = new ROS3D.SceneNode({
       frameID : message.header.frame_id,
       tfClient : that.tfClient,
       object : newMarker
     });
-    that.rootObject.add(that.markers[message.ns + message.id]);
+    scene.add(that.markers[message.ns + message.id]);
 
     that.emit('change');
   });

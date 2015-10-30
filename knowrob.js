@@ -175,7 +175,8 @@ function Knowrob(options){
         ros : ros,
         tfClient : tfClient,
         topic : '/visualization_marker',
-        rootObject : rosViewer.scene
+        rootObject : rosViewer.scene,
+        backgroundObject : rosViewer.backgroundScene
       });
 
       // Setup the marker array client.
@@ -184,6 +185,7 @@ function Knowrob(options){
         tfClient : tfClient,
         topic : '/visualization_marker_array',
         rootObject : rosViewer.scene,
+        backgroundObject : rosViewer.backgroundScene,
         markerClient : markerClient,
         path : meshPath
       });
