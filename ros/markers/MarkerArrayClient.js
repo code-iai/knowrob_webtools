@@ -44,7 +44,7 @@ ROS3D.MarkerArrayClient = function(options) {
   });
   
   var markerScene = function(m) {
-      if(m.isBackgroundMarker) { return that.backgroundObject; }
+      if(m && m.isBackgroundMarker) { return that.backgroundObject; }
       else { return that.rootObject; }
   };
   
