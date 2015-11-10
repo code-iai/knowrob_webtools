@@ -78,8 +78,10 @@ ROS3D.MarkerArrayClient = function(options) {
       }
       else if(message.action === 2) { // "DELETE"
         var m = that.markers[message.ns + message.id];
-        markerScene(m.object).remove(m);
-        delete that.markers[message.ns + message.id];
+        if(m) {
+            markerScene(m.object).remove(m);
+            delete that.markers[message.ns + message.id];
+        }
       }
       else if(message.action === 3) { // "DELETE ALL"
         for (var m in that.markers){

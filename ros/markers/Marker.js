@@ -157,10 +157,12 @@ ROS3D.Marker = function(options) {
     this.msgScale = [1,1,1];
   }
   this.msgColor = [message.color.r, message.color.g, message.color.b, message.color.a];
-  this.colorMaterials = {};
   this.msgMesh = undefined;
   this.msgText = message.text;
   this.isBackgroundMarker = false;
+  this.id = message.id;
+  this.ns = message.ns;
+  this.frame_id = message.header.frame_id;
     
   this.spriteAlignments = [
       THREE.SpriteAlignment.center,
@@ -561,7 +563,6 @@ ROS3D.Marker.prototype.update = function(message) {
         Math.abs(this.msgColor[1] - message.color.g) > 1.0e-6 ||
         Math.abs(this.msgColor[1] - message.color.b) > 1.0e-6 ||
         Math.abs(this.msgColor[2] - message.color.a) > 1.0e-6;
-  var newColorMaterials = {};
   var colorMaterial = ROS3D.makeColorMaterial(
       message.color.r, message.color.g,
       message.color.b, message.color.a);
@@ -590,7 +591,6 @@ ROS3D.Marker.prototype.update = function(message) {
         break;
     case ROS3D.MARKER_MESH_RESOURCE:
         if(message.mesh_resource.substr(10) !== this.msgMesh) return false;
-        
         if(colorChanged) {
             var meshColorMaterial = undefined;
             if(message.color.r !== 0 || message.color.g !== 0 ||
@@ -600,11 +600,11 @@ ROS3D.Marker.prototype.update = function(message) {
             var that = this;
             this.traverse (function (child){
                 if (child instanceof THREE.Mesh) {
-                    newColorMaterials[child] = child.material;
-                    if(meshColorMaterial)
+                    if(meshColorMaterial) {
                         child.material = meshColorMaterial;
-                    else // Reset highlight
-                        child.material = that.colorMaterials[child];
+                    } else { // Reset to default material
+                        child.material = child.default_material;
+                    }
                 }
             });
         }
@@ -652,8 +652,7 @@ ROS3D.Marker.prototype.update = function(message) {
   
   this.msgText = message.text;
   this.msgScale = [message.scale.x, message.scale.y, message.scale.z];
-  this.msgColor = [message.color.x, message.color.y, message.color.z];
-  this.colorMaterials = newColorMaterials;
+  this.msgColor = [message.color.r, message.color.g, message.color.b, message.color.a];
   this.setPose(message.pose);
   
   return true;

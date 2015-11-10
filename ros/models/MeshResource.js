@@ -62,7 +62,19 @@ ROS3D.MeshResource = function(options) {
       else {
         collada.scene.scale = new THREE.Vector3(scale[0], scale[1], scale[2]);
       }
-
+      
+      // Remember material defined in mesh in order to allow resetting
+      // highlight material to mesh material.
+      var setDefaultMaterial = function(node) {
+          node.default_material = node.material;
+          if (node.children) {
+              for (var i = 0; i < node.children.length; i++) {
+                  setDefaultMaterial(node.children[i]);
+              }
+          }
+      };
+      setDefaultMaterial(collada.scene);
+      
       if(material !== null) {
         var setMaterial = function(node, material) {
           // NOTE(daniel): node.material.map is defined even if loading failed.
@@ -77,7 +89,7 @@ ROS3D.MeshResource = function(options) {
             node.material = material;
             if (node.children) {
                 for (var i = 0; i < node.children.length; i++) {
-                setMaterial(node.children[i], material);
+                    setMaterial(node.children[i], material);
                 }
             }
           }
