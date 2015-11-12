@@ -163,6 +163,7 @@ ROS3D.Marker = function(options) {
   this.id = message.id;
   this.ns = message.ns;
   this.frame_id = message.header.frame_id;
+  this.marker_type = message.type;
     
   this.spriteAlignments = [
       THREE.SpriteAlignment.center,
@@ -566,6 +567,7 @@ ROS3D.Marker.prototype.update = function(message) {
   var colorMaterial = ROS3D.makeColorMaterial(
       message.color.r, message.color.g,
       message.color.b, message.color.a);
+  if(this.marker_type != message.type) return false;
   
   switch (message.type) {
     case ROS3D.MARKER_ARROW:
