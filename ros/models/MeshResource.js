@@ -26,6 +26,8 @@ ROS3D.MeshResource = function(options) {
   var material = options.material || null;
   this.warnings = options.warnings;
   var loaderType = options.loader || ROS3D.COLLADA_LOADER_2;
+  
+  this.options = options;
 
   THREE.Object3D.call(this);
 
@@ -52,6 +54,7 @@ ROS3D.MeshResource = function(options) {
     };
     
     loader.load(uri, function colladaReady(collada) {
+  
       // check for a scale factor in ColladaLoader2
       if(loaderType === ROS3D.COLLADA_LOADER_2 && collada.dae.asset.unit) {
         collada.scene.scale = new THREE.Vector3(
@@ -109,14 +112,18 @@ ROS3D.MeshResource = function(options) {
       }
     });
     loader.addEventListener( 'load', function ( event ) {
+  
       var geometry = event.content;
       geometry.computeFaceNormals();
-      var mesh;
-      if(material !== null) {
-        mesh = new THREE.Mesh( geometry, material );
-      } else {
-        mesh = new THREE.Mesh( geometry, new THREE.MeshBasicMaterial( { color: 0x999999 } ) );
+      
+      if(material == null) {
+          material = new THREE.MeshPhongMaterial({
+              color : 0x999999,
+              blending : THREE.NormalBlending
+          });
       }
+      var mesh = new THREE.Mesh( geometry, material );
+      mesh.default_material = material;
       that.add(mesh);
     } );
     loader.load(uri);
