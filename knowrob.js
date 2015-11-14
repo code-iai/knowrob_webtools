@@ -17,6 +17,7 @@ function Knowrob(options){
     
     var isConnected = false;
     var isPrologConnected = false;
+    var isRegistered = false;
 
     // global jsonprolog handle
     var prolog;
@@ -158,6 +159,9 @@ function Knowrob(options){
     };
     
     this.registerNodes = function () {
+      if(isRegistered) return;
+      isRegistered = true;
+      
       // Setup publisher that sends a dummy message in order to keep alive the socket connection
       keepAlive = new KeepAlivePublisher({ros : ros, interval : 30000});
       
