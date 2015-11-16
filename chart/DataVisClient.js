@@ -40,10 +40,11 @@ function DataVisClient(options) {
           handle: new DonutChart(options)
         });
 
-        chartHandle.find(function (element, index, array) {
+        var handle = chartHandle.find(function (element, index, array) {
             if(element.id == message.id) {return true} else {return false}
-          }, this)
-          .handle.update(message.values[0]);
+          }, this);
+        handle.handle.label = message.title;
+        handle.handle.update(message.values[0]);
 
       // Bar chart
       } else if (message.type == 1) {
@@ -53,10 +54,11 @@ function DataVisClient(options) {
           handle: new BarChart(options)
         });
 
-        chartHandle.find(function (element, index, array) {
+        var handle = chartHandle.find(function (element, index, array) {
             if(element.id == message.id) {return true} else {return false}
-          }, this)
-          .handle.update(message.values[0]);
+          }, this);
+        handle.handle.label = message.title;
+        handle.handle.update(message.values[0]);
 
       // Tree diagram
       } else if (message.type == 2) {
@@ -66,10 +68,11 @@ function DataVisClient(options) {
           handle: new TreeDiagram(options)
         });
         
-        chartHandle.find(function (element, index, array) {
+        var handle = chartHandle.find(function (element, index, array) {
           if(element.id == message.id) {return true} else {return false}
-        }, this)
-        .handle.update(message.values);
+        }, this);
+        handle.handle.label = message.title;
+        handle.handle.update(message.values);
 
       // Timeline (Gantt style)
       } else if (message.type == 3) {
@@ -79,10 +82,11 @@ function DataVisClient(options) {
           handle: new Timeline(options)
         });
         
-        chartHandle.find(function (element, index, array) {
+        var handle = chartHandle.find(function (element, index, array) {
           if(element.id == message.id) {return true} else {return false}
-        }, this)
-        .handle.update(message.values);
+        }, this);
+        handle.handle.label = message.title;
+        handle.handle.update(message.values);
       }
 
     } else if (message.values.length == 0) {//[0].value2.length == 0) {
@@ -97,15 +101,17 @@ function DataVisClient(options) {
 
     } else {
       if (message.type == 2) {
-        chartHandle.find(function (element, index, array) {
+        var handle = chartHandle.find(function (element, index, array) {
             if(element.id == message.id) {return true} else {return false}
-          }, this)
-          .handle.update(message.values);
+          }, this);
+        handle.handle.label = message.title;
+        handle.handle.update(message.values);
       } else {
-        chartHandle.find(function (element, index, array) {
+        var handle = chartHandle.find(function (element, index, array) {
             if(element.id == message.id) {return true} else {return false}
-          }, this)
-          .handle.update(message.values[0]);
+          }, this);
+        handle.handle.label = message.title;
+        handle.handle.update(message.values[0]);
       }
     }
     //console.log(chartHandle);

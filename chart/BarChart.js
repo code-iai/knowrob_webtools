@@ -4,9 +4,10 @@ function BarChart (options) {
   var h = options.height - 100 || 200;
   var data = options.data || [];
   var where = options.where;
-  var label = options.label;
   var fontsize = options.fontsize || "14px";
 
+  this.label = options.label;
+  
     //setup the svg
   var svg = d3.select(where).append("svg:svg")
     .attr("width", w+100)
@@ -29,7 +30,6 @@ function BarChart (options) {
   }
 
   this.update = function(data) {
-
     max = d3.max(data.value2, function(d) {return parseInt(d)});
 
     var sum = data.value2.reduce(function(a,b) { return parseInt(a) + parseInt(b) });
@@ -143,7 +143,7 @@ function BarChart (options) {
       .style("font-size", fontsize);
 
     total
-      .text(label + " (total: " + sum + ")");//Total "+sum);//function(d) { return d; });
+      .text(this.label + " (total: " + sum + ")");//Total "+sum);//function(d) { return d; });
 
     total.exit()
       .remove();
