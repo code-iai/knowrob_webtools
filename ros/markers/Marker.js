@@ -458,16 +458,8 @@ ROS3D.Marker = function(options) {
       else {
         var textTexture = new TextTexture(message.text, {
             fillStyle: htmlColor(this.msgColor),
-            font: $.cookie("hud-font"),
-            useShadow: $.cookie("hud-text-shadow")==='true',
-            shadowColor: $.cookie("hud-text-shadow-color"),
-            shadowOffsetX: parseInt($.cookie("hud-text-shadow-offset-y")),
-            shadowOffsetY: parseInt($.cookie("hud-text-shadow-offset-x")),
-            shadowBlur: parseInt($.cookie("hud-text-shadow-blur")),
-            useBubble: $.cookie("hud-text-bubble")!='false',
-            bubbleBorderColor: $.cookie("hud-text-bubble-border-color"),
-            bubbleBorderWidth: $.cookie("hud-text-bubble-border-width"),
-            bubbleColor: $.cookie("hud-text-bubble-color")
+            font: "Bold 24px Monospace",
+            useBubble: false
         });
         material.map = textTexture.texture;
       }
@@ -485,16 +477,8 @@ ROS3D.Marker = function(options) {
       else {
         var textTexture = new TextTexture(message.text, {
             fillStyle: htmlColor(this.msgColor),
-            font: $.cookie("sprite-font"),
-            useShadow: $.cookie("sprite-text-shadow")==='true',
-            shadowColor: $.cookie("sprite-text-shadow-color"),
-            shadowOffsetX: parseInt($.cookie("sprite-text-shadow-offset-y")),
-            shadowOffsetY: parseInt($.cookie("sprite-text-shadow-offset-x")),
-            shadowBlur: parseInt($.cookie("sprite-text-shadow-blur")),
-            useBubble: $.cookie("sprite-text-bubble")==='true',
-            bubbleBorderColor: $.cookie("sprite-text-bubble-border-color"),
-            bubbleBorderWidth: $.cookie("sprite-text-bubble-border-width"),
-            bubbleColor: $.cookie("sprite-text-bubble-color")
+            font: "Bold 24px Monospace",
+            useBubble: true
         });
         material.map = textTexture.texture;
       }
