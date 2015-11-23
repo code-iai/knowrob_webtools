@@ -281,58 +281,6 @@ function Knowrob(options){
       });
 
       /*
-      var background_listener = new ROSLIB.Topic({
-        ros : ros,
-        name : '/background_images',
-        messageType : 'sensor_msgs/Image'
-      });
-      background_listener.subscribe(function(message) {
-          //var imgUrl = message.data;
-          if(rosViewer) {
-              console.log('Received image message!');
-              console.log('width: ' + message.width);
-              console.log('height: ' + message.height);
-              //Object { encoding: "bgr8", height: 1024, header: Object, step: 3840, data: "...", width: 1280, is_bigendian: 0 }
-      
-      var buf = new Uint8Array(message.width * message.height * 3);
-      var pixelStride = 3; // 3 bytes per pixel (BGR)
-      var encodedData = message.data;
-      var index = 0;
-      for(var y=0; y<message.height; y++) {
-        for(var x=0; x<message.width; x++) {
-          buf[index+0] = encodedData[index+0];
-          buf[index+1] = encodedData[index+1];
-          buf[index+2] = encodedData[index+2];
-          index += 3;
-        }
-      }
-      var bgTexture = new THREE.DataTexture( buf,
-                                             message.width, message.height,
-                                             THREE.RGBFormat );
-      bgTexture.needsUpdate = true;
-              
-              // Read texture
-              //var bgTexture = that.loadTextureBinary( message.data );
-              console.log(bgTexture);
-              // Remove old mesh
-              if(that.backgroundMesh) {
-                  rosViewer.backgroundScene.remove(that.backgroundMesh);
-              }
-              
-              // TODO: Keep aspect ratio
-              
-              // Add new mesh
-              that.backgroundMesh = new THREE.Mesh(
-                  new THREE.PlaneGeometry(2, 2, 0),
-                  new THREE.MeshBasicMaterial({ map: bgTexture }));
-              that.backgroundMesh.material.depthTest = false;
-              that.backgroundMesh.material.depthWrite = false;
-              rosViewer.backgroundScene.add(that.backgroundMesh);
-          }
-      });
-      */
-
-      /*
       var camera_listener = new ROSLIB.Topic({
         ros : ros,
         name : '/scene_camera',
@@ -342,32 +290,6 @@ function Knowrob(options){
           
       });
       */
-      var background_listener = new ROSLIB.Topic({
-        ros : ros,
-        name : '/background_images',
-        messageType : 'std_msgs/String'
-      });
-      background_listener.subscribe(function(message) {
-          var imgUrl = message.data;
-          if(rosViewer) {
-              // Read texture
-              var bgTexture = THREE.ImageUtils.loadTexture( imgUrl );
-              // Remove old mesh
-              if(that.backgroundMesh) {
-                  rosViewer.backgroundScene.remove(that.backgroundMesh);
-              }
-              // Add new mesh
-              that.backgroundMesh = new THREE.Mesh(
-                  new THREE.PlaneGeometry(2, 2, 0),
-                  new THREE.MeshBasicMaterial({ map: bgTexture }));
-              that.backgroundMesh.material.depthTest = false;
-              that.backgroundMesh.material.depthWrite = false;
-              rosViewer.backgroundScene.add(that.backgroundMesh);
-              
-              // HACK
-              that.resize_canvas_(1280, 1024);
-          }
-      });
       
       var visCLient;
       if ($('#chart').length) {
@@ -386,7 +308,7 @@ function Knowrob(options){
           });
       };
     
-      // The topic where the canvas publishes snapshots
+      // The topic used for publishing canvas snapshots
       snapshotTopic = new ROSLIB.Topic({
         ros : ros,
         name : '/openease/video/frame',
@@ -1000,8 +922,6 @@ function Knowrob(options){
     //////////// HUD
     ///////////////////////////////
     
-    var spriteLayouter = [];
-    
     var hudTextMesh;
     
     // TODO(daniel): deprecated
@@ -1194,10 +1114,6 @@ function Knowrob(options){
       rosViewer.cameraOrtho.top = h / 2;
       rosViewer.cameraOrtho.bottom = - h / 2;
       rosViewer.cameraOrtho.updateProjectionMatrix();
-      
-      for(var i=0; i<spriteLayouter.length; i++) {
-        spriteLayouter[i]();
-      }
     };
     
     this.get_episode_data = function () {
