@@ -19,13 +19,13 @@ ROS3D.SceneNode = function(options) {
   var that = this;
   var tfClient = options.tfClient;
   var frameID = options.frameID;
-  var object = options.object;
+  this.object = options.object;
   this.pose = options.pose || new ROSLIB.Pose();
 
   THREE.Object3D.call(this);
 
   // add the model
-  this.add(object);
+  this.add(this.object);
 
   // set the inital pose
   this.updatePose(this.pose);

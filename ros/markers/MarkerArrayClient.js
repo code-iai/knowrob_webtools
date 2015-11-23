@@ -54,9 +54,10 @@ ROS3D.MarkerArrayClient = function(options) {
       if(message.action === 0) {
         var updated = false;
         if(message.ns + message.id in that.markers) { // MODIFY
-          updated = that.markers[message.ns + message.id].children[0].update(message);
+          var m = that.markers[message.ns + message.id];
+          updated = m.children[0].update(message);
           if(!updated) { // REMOVE
-              markerScene(updated.object).remove(that.markers[message.ns + message.id]);
+              markerScene(m.object).remove(m);
           }
         }
         if(!updated) { // "ADD"
