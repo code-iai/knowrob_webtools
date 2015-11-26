@@ -192,7 +192,9 @@ ROS3D.MouseHandler.prototype.notify = function(target, type, event3D) {
     // walk up
     event3D.currentTarget = event3D.currentTarget.parent;
   }
-  return false;
+  
+  this.fallbackTarget.dispatchEvent(event3D);
+  return true;
 };
 
 THREE.EventDispatcher.prototype.apply( ROS3D.MouseHandler.prototype );

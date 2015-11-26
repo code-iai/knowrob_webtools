@@ -63,6 +63,9 @@ function Knowrob(options){
     var near = options.near || 0.01;
     var far = options.far || 1000.0;
     
+    this.on_marker_dblclick = options.on_dblclick || this.on_marker_dblclick;
+    this.on_marker_contextmenu = options.on_contextmenu || this.on_marker_contextmenu;
+    
     // Speech bubbles that are displayed
     this.speechBubbles = {};
 
@@ -179,8 +182,9 @@ function Knowrob(options){
         ros : ros,
         tfClient : tfClient,
         topic : '/visualization_marker',
-        rootObject : rosViewer.scene,
-        backgroundObject : rosViewer.backgroundScene
+        sceneObjects : rosViewer.scene,
+        selectableObjects : rosViewer.selectableObjects,
+        backgroundObjects : rosViewer.backgroundScene
       });
 
       // Setup the marker array client.
@@ -188,10 +192,13 @@ function Knowrob(options){
         ros : ros,
         tfClient : tfClient,
         topic : '/visualization_marker_array',
-        rootObject : rosViewer.scene,
-        backgroundObject : rosViewer.backgroundScene,
+        sceneObjects : rosViewer.scene,
+        selectableObjects : rosViewer.selectableObjects,
+        backgroundObjects : rosViewer.backgroundScene,
         markerClient : markerClient,
-        path : meshPath
+        path : meshPath,
+        on_dblclick: that.on_marker_dblclick,
+        on_contextmenu: that.on_marker_contextmenu
       });
 
       var desig_listener = new ROSLIB.Topic({
@@ -892,6 +899,21 @@ function Knowrob(options){
           saveAs(blob, 'canvas_'+ frameNumber+'.png');
       });
       */
+    };
+    
+    ///////////////////////////////
+    //////////// Marker
+    ///////////////////////////////
+    
+    this.on_marker_dblclick = function(marker) {
+        var prolog = knowrob.new_pl_client();
+        prolog.jsonQuery(
+            "term_to_atom("+marker.ns+",MarkerName), marker_highlight_toggle(MarkerName), marker_publish.",
+            function(result) { prolog.finishClient(); });
+    };
+    
+    this.on_marker_contextmenu = function(marker) {
+        // TODO: show marker context menu
     };
     
     ///////////////////////////////

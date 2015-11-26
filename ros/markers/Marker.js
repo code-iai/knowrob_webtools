@@ -160,10 +160,14 @@ ROS3D.Marker = function(options) {
   this.msgMesh = undefined;
   this.msgText = message.text;
   this.isBackgroundMarker = false;
+  this.isSelectable = true;
   this.id = message.id;
   this.ns = message.ns;
   this.frame_id = message.header.frame_id;
   this.marker_type = message.type;
+  
+  this.on_dblclick = options.on_dblclick || function(_) { };
+  this.on_contextmenu = options.on_contextmenu || function(_) { };
     
   this.spriteAlignments = [
       THREE.SpriteAlignment.center,
@@ -210,6 +214,7 @@ ROS3D.Marker = function(options) {
   // create the object based on the type
   switch (message.type) {
     case ROS3D.MARKER_ARROW:
+      this.isSelectable = false;
       // get the sizes for the arrow
       var len = message.scale.x;
       var headLength = len * 0.23;
@@ -451,6 +456,7 @@ ROS3D.Marker = function(options) {
       break;
     case ROS3D.MARKER_IMAGE_HUD:
     case ROS3D.MARKER_TEXT_HUD:
+      this.isSelectable = false;
       var material = createSpriteMaterial(true);
       if(message.type==ROS3D.MARKER_IMAGE_HUD) {
         material.map = createTexture(message.text);
@@ -470,6 +476,7 @@ ROS3D.Marker = function(options) {
       break;
     case ROS3D.MARKER_TEXT_SPRITE:
     case ROS3D.MARKER_SPRITE:
+      this.isSelectable = false;
       var material = createSpriteMaterial(false);
       if(message.type==ROS3D.MARKER_SPRITE) {
         material.map = createTexture(message.text);
@@ -488,6 +495,8 @@ ROS3D.Marker = function(options) {
       this.add(sprite);
       break;
     case ROS3D.MARKER_BACKGROUND_IMAGE:
+      this.isBackgroundMarker = true;
+      this.isSelectable = false;
       var mesh = new THREE.Mesh(
           new THREE.PlaneGeometry(2, 2, 0),
           new THREE.MeshBasicMaterial({
@@ -498,12 +507,24 @@ ROS3D.Marker = function(options) {
       mesh.material.depthWrite = false;
       mesh.renderDepth = 0;
       this.add(mesh);
-      this.isBackgroundMarker = true;
       break;
     default:
       console.error('Currently unsupported marker type: ' + message.type);
       break;
   }
+  
+  this.traverse (function (child){
+    child.addEventListener('dblclick', function(ev){
+        if(that.lastEvent === ev) return;
+        that.on_dblclick(that);
+        that.lastEvent = ev;
+    });
+    child.addEventListener('contextmenu', function(ev){
+        if(that.lastEvent === ev) return;
+        that.on_contextmenu(that);
+        that.lastEvent = ev;
+    });
+  });
   
   //this.traverse (function (child){
   //    child.castShadow = true;
@@ -511,6 +532,8 @@ ROS3D.Marker = function(options) {
   //});
 };
 ROS3D.Marker.prototype.__proto__ = THREE.Object3D.prototype;
+
+ROS3D.Marker.selectedMarker = undefined;
 
 /**
  * Set the pose of this marker to the given values.

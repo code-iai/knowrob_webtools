@@ -46,18 +46,20 @@ ROS3D.Highlighter.prototype.onMouseOut = function(event) {
  * @param renderList - the list to add to
  */
 ROS3D.Highlighter.prototype.getWebglObjects = function(scene, objects, renderList) {
-  var objlist = scene.__webglObjects;
-  // get corresponding webgl objects
-  for ( var c = 0; c < objects.length; c++) {
-    if (objects[c]) {
-      for ( var o = objlist.length - 1; o >= 0; o--) {
-        if (objlist[o].object === objects[c]) {
-          renderList.push(objlist[o]);
-          break;
+  if(objects) {
+    var objlist = scene.__webglObjects;
+    // get corresponding webgl objects
+    for ( var c = 0; c < objects.length; c++) {
+        if (objects[c]) {
+        for ( var o = objlist.length - 1; o >= 0; o--) {
+            if (objlist[o].object === objects[c]) {
+            renderList.push(objlist[o]);
+            break;
+            }
         }
-      }
-      // recurse into children
-      this.getWebglObjects(scene, objects[c].children, renderList);
+        // recurse into children
+        this.getWebglObjects(scene, objects[c].children, renderList);
+        }
     }
   }
 };
@@ -76,6 +78,7 @@ ROS3D.Highlighter.prototype.renderHighlight = function(renderer, scene, camera) 
 
   // define highlight material
   scene.overrideMaterial = new THREE.MeshBasicMaterial({
+    color : '#ff0000',
     fog : false,
     opacity : 0.5,
     depthTest : true,
