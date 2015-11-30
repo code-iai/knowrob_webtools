@@ -96,10 +96,10 @@ ROS3D.OrbitControls = function(options) {
         moveStartIntersection = intersectViewPlane(event3D.mouseRay, moveStartCenter,
             moveStartNormal);
         break;
-      case 2:
-        state = STATE.ZOOM;
-        zoomStart.set(event.clientX, event.clientY);
-        break;
+      //case 2:
+      //  state = STATE.ZOOM;
+      //  zoomStart.set(event.clientX, event.clientY);
+      //  break;
     }
 
     this.showAxes();

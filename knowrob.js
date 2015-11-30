@@ -63,9 +63,6 @@ function Knowrob(options){
     var near = options.near || 0.01;
     var far = options.far || 1000.0;
     
-    this.on_marker_dblclick = options.on_dblclick || this.on_marker_dblclick;
-    this.on_marker_contextmenu = options.on_contextmenu || this.on_marker_contextmenu;
-    
     // Speech bubbles that are displayed
     this.speechBubbles = {};
 
@@ -121,7 +118,8 @@ function Knowrob(options){
         background : background,
         enableShadows: false,
         near: near,
-        far: far
+        far: far,
+        on_render: that.on_render
       });
       rosViewer.addObject(new ROS3D.Grid());
       
@@ -197,8 +195,9 @@ function Knowrob(options){
         backgroundObjects : rosViewer.backgroundScene,
         markerClient : markerClient,
         path : meshPath,
-        on_dblclick: that.on_marker_dblclick,
-        on_contextmenu: that.on_marker_contextmenu
+        on_dblclick: options.on_dblclick || that.on_marker_dblclick,
+        on_contextmenu: options.on_contextmenu || that.on_marker_contextmenu,
+        on_delete: options.on_marker_delete || that.on_marker_delete
       });
 
       var desig_listener = new ROSLIB.Topic({
@@ -905,15 +904,107 @@ function Knowrob(options){
     //////////// Marker
     ///////////////////////////////
     
+    this.on_render = function(camera,scene) {
+    };
+    
     this.on_marker_dblclick = function(marker) {
+        var operators = ["-->", ":-", "?-", ";", ",", "|", "->", "*->", ":=", "\+",
+           "<", "=", "=..", "=@=", "\=@=", "=:=", "=<", "==", "=\=", ">", ">=",
+           "@<", "@=<", "@>", "@>=", "\=", "\==", "as", "is", ">:<", ":<",
+           ":", "+", "-", "/\\", "\\/", "xor", "?", "*", "/", "//", "div", "rdiv",
+           "<<", ">>", "mod", "rem", "**", "^"];
+        
+        function parseQuery (query) {
+            var out = "";
+            if(query.term) {
+                var prefix = ""; var separator = ",";
+                if(operators.indexOf(query.term[0]) >= 0)
+                    separator = query.term[0];
+                else
+                    prefix = query.term[0];
+                out += prefix + "(";
+                for(var i=1; i<query.term.length; i++) {
+                    out += parseQuery(query.term[i]);
+                    if(i+1<query.term.length) out+=separator;
+                }
+                out += ")";
+            }
+            else if(Array.isArray(query)) {
+                out += "[";
+                for(var i=0; i<query.length; i++) {
+                    out += parseQuery(query[i]);
+                    if(i+1<query.length) out+=",";
+                }
+                out += "]";
+            }
+            else {
+                out += query;
+            }
+            return out;
+        };
+        
         var prolog = knowrob.new_pl_client();
-        prolog.jsonQuery(
-            "term_to_atom("+marker.ns+",MarkerName), marker_highlight_toggle(MarkerName), marker_publish.",
-            function(result) { prolog.finishClient(); });
+        prolog.jsonQuery("term_to_atom("+marker.ns+",MarkerName), "+
+            "marker_queries(MarkerName, MarkerQueries).",
+            function(result) {
+                prolog.finishClient();
+                
+                // parse query and add to category--queries map
+                var queryLibMap = {};
+                var queries = result.solution.MarkerQueries;
+                for(var i=0; i<queries.length; i++) {
+                    var category = queries[i][0];
+                    var title = queries[i][1];
+                    var query = parseQuery(queries[i][2]) + ".";
+                    
+                    if(queryLibMap[category]==undefined)
+                        queryLibMap[category]=[];
+                    queryLibMap[category].push({q: query, text: title});
+                }
+                
+                // flatten the map into queryLib array
+                var queryLib = [{q: "", text: marker.ns}];
+                var categories = Object.keys(queryLibMap);
+                categories.sort();
+                for(var i=0; i<categories.length; i++) {
+                    queryLib.push({q: "", text: ""});
+                    queryLib.push({q: "", text: "----- " + categories[i] + " -----"});
+                    queryLib.push.apply(queryLib, queryLibMap[categories[i]]);
+                }
+                
+                that.populate_query_select(libraryDiv, queryLib);
+            }
+        );
+        
+        that.selectMarker(marker);
+    };
+    
+    this.on_marker_delete = function(ns) {
+        if(that.selectedMarker != undefined && ns === that.selectedMarker) {
+            that.populate_query_select(libraryDiv);
+            that.unselectMarker();
+        }
     };
     
     this.on_marker_contextmenu = function(marker) {
-        // TODO: show marker context menu
+    };
+    
+    this.selectMarker = function(marker) {
+        if(that.selectedMarker) that.unselectMarker(that.selectedMarker);
+        that.selectedMarker = marker.ns;
+        
+        var prolog = knowrob.new_pl_client();
+        prolog.jsonQuery("term_to_atom("+marker.ns+",MarkerName), "+
+            "marker_highlight(MarkerName), marker_publish.",
+            function(result) { prolog.finishClient(); });
+    };
+    
+    this.unselectMarker = function() {
+        var prolog = knowrob.new_pl_client();
+        prolog.jsonQuery("term_to_atom("+that.selectedMarker+",MarkerName), "+
+            "marker_highlight_remove(MarkerName), marker_publish.",
+            function(result) { prolog.finishClient(); });
+        that.selectedMarker = undefined;
     };
     
     ///////////////////////////////
@@ -1157,18 +1248,24 @@ function Knowrob(options){
     };
 
     // fill the select with json data from url
-    this.populate_query_select = function (id) {
-        var episodeData = that.get_episode_data();
-        if(!episodeData) return;
+    this.populate_query_select = function (id, queries) {
+        if(queries == undefined) {
+            var episodeData = that.get_episode_data();
+            if(!episodeData) return;
+            queries = episodeData.query;
+        }
+        
         var select = document.getElementById(id);
         if(select !== null) {
-          for (var i = 0; i < episodeData.query.length; i++) {
+          while (select.firstChild) select.removeChild(select.firstChild);
+          
+          for (var i = 0; i < queries.length; i++) {
             var opt = document.createElement('option');
-            opt.value = episodeData.query[i].q;
-            opt.innerHTML = episodeData.query[i].text;
+            opt.value = queries[i].q;
+            opt.innerHTML = queries[i].text;
             select.appendChild(opt);
           }
-          select.size = episodeData.query.length;
+          select.size = queries.length;
         }
     };
 

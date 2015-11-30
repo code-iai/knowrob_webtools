@@ -29,6 +29,7 @@ ROS3D.Viewer = function(options) {
   var intensity = options.intensity || 0.2;
   var near = options.near || 0.1;
   var far = options.far || 1000;
+  var on_render = options.on_render || function(x,y) {};
   var cameraPosition = options.cameraPose || {
     x : 3,
     y : 3,
@@ -134,6 +135,8 @@ ROS3D.Viewer = function(options) {
   function draw() {
     // update the controls
     that.cameraControls.update();
+    
+    on_render(that.camera, that.scene);
 
     // put light to the top-left of the camera
     //that.directionalLight.position = that.camera.localToWorld(new THREE.Vector3(-1, 1, 0));

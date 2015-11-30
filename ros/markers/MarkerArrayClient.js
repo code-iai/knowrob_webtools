@@ -36,6 +36,7 @@ ROS3D.MarkerArrayClient = function(options) {
   this.loader = options.loader || ROS3D.COLLADA_LOADER_2;
   this.on_dblclick = options.on_dblclick || function(_) { };
   this.on_contextmenu = options.on_contextmenu || function(_) { };
+  this.on_delete = options.on_delete || function(_) { };
   
   // Markers that are displayed (Map ns+id--Marker)
   this.markers = {};
@@ -63,7 +64,6 @@ ROS3D.MarkerArrayClient = function(options) {
           var m = that.markers[message.ns + message.id];
           updated = m.children[0].update(message);
           if(!updated) { // REMOVE
-              m.unsubscribeTf();
               markerScene(m.object).remove(m);
           }
         }
@@ -87,17 +87,18 @@ ROS3D.MarkerArrayClient = function(options) {
         console.warn('Received marker message with deprecated action identifier "1"');
       }
       else if(message.action === 2) { // "DELETE"
+        that.on_delete(message.ns);
+        
         var m = that.markers[message.ns + message.id];
         if(m) {
-            m.unsubscribeTf();
             markerScene(m.object).remove(m);
             delete that.markers[message.ns + message.id];
         }
       }
       else if(message.action === 3) { // "DELETE ALL"
         for (var m in that.markers){
-          m.unsubscribeTf();
           markerScene(m.object).remove(m);
+          that.on_delete(m.ns);
         }
         that.markers = {};
       }
