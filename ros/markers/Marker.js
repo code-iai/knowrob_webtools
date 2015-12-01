@@ -617,6 +617,16 @@ ROS3D.Marker.prototype.update = function(message) {
                 }
             });
         }
+        if(scaleChanged) {
+            this.traverse (function (child){
+                if (child.scale_unit) {
+                    child.scale = new THREE.Vector3(
+                        message.scale.x*child.scale_unit,
+                        message.scale.y*child.scale_unit,
+                        message.scale.z*child.scale_unit);
+                }
+            });
+        }
         break;
     case ROS3D.MARKER_TEXT_VIEW_FACING:
         if(scaleChanged || this.text !== message.text) {

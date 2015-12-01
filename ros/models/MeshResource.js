@@ -65,6 +65,7 @@ ROS3D.MeshResource = function(options) {
       else {
         collada.scene.scale = new THREE.Vector3(scale[0], scale[1], scale[2]);
       }
+      collada.scene.scale_unit = collada.dae.asset.unit;
       
       // Remember material defined in mesh in order to allow resetting
       // highlight material to mesh material.
@@ -124,6 +125,8 @@ ROS3D.MeshResource = function(options) {
       }
       var mesh = new THREE.Mesh( geometry, material );
       mesh.default_material = material;
+      mesh.scale = new THREE.Vector3(scale[0], scale[1], scale[2]);
+      mesh.scale_unit = 1.0;
       that.add(mesh);
     } );
     loader.load(uri);

@@ -920,7 +920,7 @@ function Knowrob(options){
                 for(var i=0; i<queries.length; i++) {
                     var category = queries[i][0];
                     var title = queries[i][1];
-                    var query = queries[i][2];
+                    var query = queries[i][2]+"."; // TODO: check trailing dot
                     
                     if(queryLibMap[category]==undefined)
                         queryLibMap[category]=[];
