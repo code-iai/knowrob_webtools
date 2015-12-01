@@ -908,48 +908,6 @@ function Knowrob(options){
     };
     
     this.on_marker_dblclick = function(marker) {
-        var operators = ["-->", ":-", "?-", ";", ",", "|", "->", "*->", ":=", "\+",
-           "<", "=", "=..", "=@=", "\=@=", "=:=", "=<", "==", "=\=", ">", ">=",
-           "@<", "@=<", "@>", "@>=", "\=", "\==", "as", "is", ">:<", ":<",
-           ":", "+", "-", "/\\", "\\/", "xor", "?", "*", "/", "//", "div", "rdiv",
-           "<<", ">>", "mod", "rem", "**", "^"];
-        
-        function parseQuery (query) {
-            var out = "";
-            // write out newline character
-            if(query.term && query.term[0] == 'query_var') {
-                out += query.term[1];
-            }
-            else if(query.term) {
-                var prefix = ""; var separator = ",";
-                if(operators.indexOf(query.term[0]) >= 0)
-                    separator = query.term[0];
-                else
-                    prefix = query.term[0];
-                out += prefix + "(";
-                for(var i=1; i<query.term.length; i++) {
-                    out += parseQuery(query.term[i]);
-                    if(i+1<query.term.length) out+=separator;
-                }
-                out += ")";
-            }
-            else if(Array.isArray(query)) {
-                out += "[";
-                for(var i=0; i<query.length; i++) {
-                    out += parseQuery(query[i]);
-                    if(i+1<query.length) out+=",";
-                }
-                out += "]";
-            }
-            else if(query.indexOf("_")==0) {
-                out += query;
-            }
-            else {
-                out += "'"+query.replace("\n", "\\n")+"'";
-            }
-            return out;
-        };
-        
         var prolog = knowrob.new_pl_client();
         prolog.jsonQuery("term_to_atom("+marker.ns+",MarkerName), "+
             "marker_queries(MarkerName, MarkerQueries).",
@@ -962,7 +920,7 @@ function Knowrob(options){
                 for(var i=0; i<queries.length; i++) {
                     var category = queries[i][0];
                     var title = queries[i][1];
-                    var query = parseQuery(queries[i][2]) + ".";
+                    var query = queries[i][2];
                     
                     if(queryLibMap[category]==undefined)
                         queryLibMap[category]=[];
@@ -970,7 +928,7 @@ function Knowrob(options){
                 }
                 
                 // flatten the map into queryLib array
-                var queryLib = [{q: "", text: marker.ns}];
+                var queryLib = [];
                 var categories = Object.keys(queryLibMap);
                 categories.sort();
                 for(var i=0; i<categories.length; i++) {

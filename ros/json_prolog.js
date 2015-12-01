@@ -94,7 +94,7 @@ function JsonProlog(ros, options){
           var ret = parseSolution(solution, 0, "");
         }
 
-        callback({ value: ret, solution: solution });
+        callback({ value: ret, solution: solution, solution_raw: result.solution });
       }
     }, function(error) {
         callback({ status: "QUERY_FAILED", service: "next_solution", error: error });
