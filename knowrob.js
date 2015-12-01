@@ -916,7 +916,11 @@ function Knowrob(options){
         
         function parseQuery (query) {
             var out = "";
-            if(query.term) {
+            // write out newline character
+            if(query.term && query.term[0] == 'query_var') {
+                out += query.term[1];
+            }
+            else if(query.term) {
                 var prefix = ""; var separator = ",";
                 if(operators.indexOf(query.term[0]) >= 0)
                     separator = query.term[0];
@@ -937,8 +941,11 @@ function Knowrob(options){
                 }
                 out += "]";
             }
-            else {
+            else if(query.indexOf("_")==0) {
                 out += query;
+            }
+            else {
+                out += "'"+query.replace("\n", "\\n")+"'";
             }
             return out;
         };
@@ -990,20 +997,22 @@ function Knowrob(options){
     };
     
     this.selectMarker = function(marker) {
+        if(that.selectedMarker == marker.ns) return;
+        
         if(that.selectedMarker) that.unselectMarker(that.selectedMarker);
         that.selectedMarker = marker.ns;
         
-        var prolog = knowrob.new_pl_client();
+        var prolog = new JsonProlog(ros, {});
         prolog.jsonQuery("term_to_atom("+marker.ns+",MarkerName), "+
             "marker_highlight(MarkerName), marker_publish.",
-            function(result) { prolog.finishClient(); });
+            function(result) { prolog.finishClient(); console.info("FINISHED"); });
     };
     
     this.unselectMarker = function() {
-        var prolog = knowrob.new_pl_client();
+        var prolog = new JsonProlog(ros, {});
         prolog.jsonQuery("term_to_atom("+that.selectedMarker+",MarkerName), "+
             "marker_highlight_remove(MarkerName), marker_publish.",
-            function(result) { prolog.finishClient(); });
+            function(result) { prolog.finishClient(); console.info("FINISHED"); });
         that.selectedMarker = undefined;
     };
     
