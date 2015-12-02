@@ -119,7 +119,13 @@ function Knowrob(options){
         enableShadows: false,
         near: near,
         far: far,
-        on_render: that.on_render
+        on_render: that.on_render,
+        on_window_dblclick: function() {
+          if(that.selectedMarker) {
+              that.populate_query_select(libraryDiv);
+              that.unselectMarker();
+          }
+        }
       });
       rosViewer.addObject(new ROS3D.Grid());
       
@@ -963,14 +969,14 @@ function Knowrob(options){
         var prolog = new JsonProlog(ros, {});
         prolog.jsonQuery("term_to_atom("+marker.ns+",MarkerName), "+
             "marker_highlight(MarkerName), marker_publish.",
-            function(result) { prolog.finishClient(); console.info("FINISHED"); });
+            function(result) { prolog.finishClient(); });
     };
     
     this.unselectMarker = function() {
         var prolog = new JsonProlog(ros, {});
         prolog.jsonQuery("term_to_atom("+that.selectedMarker+",MarkerName), "+
             "marker_highlight_remove(MarkerName), marker_publish.",
-            function(result) { prolog.finishClient(); console.info("FINISHED"); });
+            function(result) { prolog.finishClient(); });
         that.selectedMarker = undefined;
     };
     

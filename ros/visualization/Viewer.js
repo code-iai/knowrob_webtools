@@ -30,6 +30,7 @@ ROS3D.Viewer = function(options) {
   var near = options.near || 0.1;
   var far = options.far || 1000;
   var on_render = options.on_render || function(x,y) {};
+  var on_window_dblclick = options.on_window_dblclick || function() {};
   var cameraPosition = options.cameraPose || {
     x : 3,
     y : 3,
@@ -117,7 +118,8 @@ ROS3D.Viewer = function(options) {
     renderer : this.renderer,
     camera : this.camera,
     rootObject : this.selectableObjects,
-    fallbackTarget : this.cameraControls
+    fallbackTarget : this.cameraControls,
+    on_window_dblclick : on_window_dblclick
   });
 
   // highlights the receiver of mouse events

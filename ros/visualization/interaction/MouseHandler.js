@@ -19,6 +19,7 @@ ROS3D.MouseHandler = function(options) {
   this.camera = options.camera;
   this.rootObject = options.rootObject;
   this.fallbackTarget = options.fallbackTarget;
+  this.on_window_dblclick = options.on_window_dblclick;
   this.lastTarget = this.fallbackTarget;
   this.dragging = false;
   this.projector = new THREE.Projector();
@@ -150,6 +151,10 @@ ROS3D.MouseHandler.prototype.processDomEvent = function(domEvent) {
         this.notify(this.lastTarget, 'touchend', event3D);
       }
     }
+  }
+  
+  if (domEvent.type === 'dblclick' && intersections.length==0) {
+      this.on_window_dblclick();
   }
 
   // pass through event
