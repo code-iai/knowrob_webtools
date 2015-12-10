@@ -1,40 +1,39 @@
+/* The following code makes use of the Google Visualization API, Licensed under Creative Commons 3
+More information can be found on https://developers.google.com/chart/
+*/
+
 function Timeline (options) {
   options = options || {};
-
-
+  var w = options.width - 100 || 200;
+  var h = options.height - 100 || 200;
+  var data = options.data || [];
+  var where = options.where;
+  var label = options.label;
+  var fontsize = options.fontsize || "12px";
+  
   this.update = function(data) {
-
       // TODO: Read data from the 'data' variable
-    
       var container = document.getElementById('chart');
-      
       var chart = new google.visualization.Timeline(container);
-      
       var dataTable = new google.visualization.DataTable();
       
       dataTable.addColumn({ type: 'string', id: 'Event' });
       dataTable.addColumn({ type: 'number', id: 'Start' });
       dataTable.addColumn({ type: 'number', id: 'End' });
       
-      dataTable.addRows([
-      [ 'ContactKitchenTableCup', 11414, 14437],
-      [ 'ContactKitchenTableCup', 21590, 35487],
-      [ 'ContactKitchenTableHand', 12662, 14379],
-      [ 'ContactKitchenTablePancakeMaker', 11414, 35487],
-      [ 'ContactKitchenTableSpatula', 11414, 25840],
-      [ 'ContactKitchenTableSpatula', 33192, 35487],
-      [ 'ContactPancakeMakerLiquidTangibleThing', 17817, 29449],
-      [ 'ContactPancakeMakerLiquidTangibleThing', 31467, 35487],
-      [ 'ContactPancakeMakerSpatula', 27629, 29444],
-      [ 'ContactSpatulaLiquidTangibleThing', 28285, 31378],
-      [ 'GraspCup', 13887, 21734],
-      [ 'GraspSpatula', 25427, 33833],
-      [ 'LiquidTransfer', 17566, 18930],
-      [ 'Main', 11413, 35487],
-      ]);
-      
+      // create arrays of data
+      // alert("creating data array!" + data[0]["value2"].length);
+      var data_array = [];
+      for(i=0; i<data[0]["value1"].length;i++) //note: should check that value1 and value2 have the same size
+      {
+        var times = data[0]["value2"][i].split("_"); //start and endtimes were concatenated with _
+        var cur_array=[data[0]["value1"][i], parseFloat(times[0])*1000, parseFloat(times[1])*1000];
+        data_array.push(cur_array)
+        // alert("inserting" + JSON.stringify(cur_array));
+      }
+      // alert(JSON.stringify(data_array));
+      dataTable.addRows(data_array);
+      // alert(JSON.stringify(dataTable));
       chart.draw(dataTable);
-
   }
-
 }
