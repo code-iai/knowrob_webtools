@@ -86,7 +86,7 @@ function DataVisClient(options) {
           if(element.id == message.id) {return true} else {return false}
         }, this);
         handle.handle.label = message.title;
-        handle.handle.update(message.values);
+        handle.handle.update(message.values[0]);
       }
 
     } else if (message.values.length == 0) {//[0].value2.length == 0) {
