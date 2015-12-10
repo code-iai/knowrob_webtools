@@ -1234,9 +1234,11 @@ function Knowrob(options){
           
           for (var i = 0; i < queries.length; i++) {
             var opt = document.createElement('option');
-            opt.value = queries[i].q;
-            opt.innerHTML = queries[i].text;
-            select.appendChild(opt);
+            if(queries[i].q !== undefined) {
+              opt.value = queries[i].q;
+              opt.innerHTML = queries[i].text;
+              select.appendChild(opt);
+            }
           }
           select.size = queries.length;
         }
