@@ -10,12 +10,17 @@ function Timeline (options) {
   var where = options.where;
   var label = options.label;
   var fontsize = options.fontsize || "12px";
-
   this.label = options.label;
+
+  var chart;
   
+  this.remove = function() {
+    chart.clearChart();
+  }
+
   this.update = function(data) {
       var container = document.getElementById('chart');
-      var chart = new google.visualization.Timeline(container);
+      chart = new google.visualization.Timeline(container);
       var dataTable = new google.visualization.DataTable();
       
       dataTable.addColumn({ type: 'string', id: 'Event' });
@@ -35,6 +40,7 @@ function Timeline (options) {
       
       dataTable.addRows(data_array);
       // alert(JSON.stringify(dataTable));
-      chart.draw(dataTable);
+      var view =  new google.visualization.DataView(dataTable);
+      chart.draw(view);
   }
 }
