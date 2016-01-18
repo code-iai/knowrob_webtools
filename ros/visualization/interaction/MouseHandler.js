@@ -52,8 +52,14 @@ ROS3D.MouseHandler.prototype.processDomEvent = function(domEvent) {
   var pos_x, pos_y;
 
   if(domEvent.type.indexOf('touch') !== -1) {
-	pos_x = domEvent.changedTouches[0].clientX;
-	pos_y = domEvent.changedTouches[0].clientY;
+    pos_x = 0;
+    pos_y = 0;
+    for(var i=0; i<domEvent.touches.length; ++i) {
+        pos_x += domEvent.touches[0].clientX;
+        pos_y += domEvent.touches[0].clientY;
+    }
+    pos_x /= domEvent.touches.length;
+    pos_y /= domEvent.touches.length;
   }
   else {
 	pos_x = domEvent.clientX;
@@ -197,9 +203,7 @@ ROS3D.MouseHandler.prototype.notify = function(target, type, event3D) {
     // walk up
     event3D.currentTarget = event3D.currentTarget.parent;
   }
-  
-  this.fallbackTarget.dispatchEvent(event3D);
-  return true;
+  return false;
 };
 
 THREE.EventDispatcher.prototype.apply( ROS3D.MouseHandler.prototype );
