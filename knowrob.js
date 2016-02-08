@@ -304,6 +304,7 @@ function Knowrob(options){
       */
       
       var visCLient;
+      var graphClient;
       if ($('#chart').length) {
           visClient = new DataVisClient({
              ros: ros,
@@ -311,6 +312,11 @@ function Knowrob(options){
              topic: 'data_vis_msgs'
              //width: 500,//210,
              //height: 500//210
+          });
+          graphClient = new TaskTreeVisClient({
+             ros: ros,
+             containerId: '#chart',
+             topic: 'task_tree_msgs'
           });
       } else if ($('#tasktree').length){
          visClient = new TaskTreeVisClient({
@@ -779,12 +785,10 @@ function Knowrob(options){
     ///////////////////////////////
     //////////// Snapshots
     ///////////////////////////////
-    //todo(Asil): Currently snapshots of canvas and task tree are not published via ROS Topic rather prompts browser user to download them.
-    // This will be fixed after robohow
     this.publish_snapshot = function (frameNumber, fps) {
       console.log("Publishing canvas snapshot frame:" + frameNumber + " fps:" + fps);
       
-	  var gl = rosViewer.renderer.getContext();
+      var gl = rosViewer.renderer.getContext();
       var width  = gl.drawingBufferWidth;
       var height = gl.drawingBufferHeight;
       
@@ -837,73 +841,6 @@ function Knowrob(options){
       });
       
       snapshotTopic.publish(msg);
-
-      /*
-      $("svg").attr({ version: '1.1' , xmlns:"http://www.w3.org/2000/svg"});
-
-      var svg = $("#tasktree").html();
-      var nodesToRecover = [];
-      var nodesToRemove = [];
-
-      var svgElem = $("#tasktree").find('svg');
-
-      svgElem.each(function(index, node) {
-        var parentNode = node.parentNode;
-        var svg = parentNode.innerHTML;
-
-        var canvas = document.createElement('canvas');
-
-        canvg(canvas, svg);
-
-        nodesToRecover.push({
-            parent: parentNode,
-            child: node
-        });
-        parentNode.removeChild(node);
-
-        nodesToRemove.push({
-            parent: parentNode,
-            child: canvas
-        });
-
-        parentNode.appendChild(canvas);
-      });
-
-      //var b64 = btoa(svg); // or use btoa if supported
-      //var img = '<img src="'+'data:image/svg+xml;base64,\n'+b64+'">'; 
-      //document.getElementById('hidden_tasktree_img_div').innerHTML = img;
-      var img_png;
-      html2canvas($('#tasktree'), {logging: true, profile: true, useCORS: true, allowTaint: true,
-         onrendered: function (canvas) {
-            var ctx = canvas.getContext('2d');
-            ctx.webkitImageSmoothingEnabled = false;
-            ctx.mozImageSmoothingEnabled = false;
-            ctx.imageSmoothingEnabled = false;
-            canvas.toBlob(function(blob) {
-                nodesToRemove.forEach(function(pair) {
-                    pair.parent.removeChild(pair.child);
-                });
-
-                nodesToRecover.forEach(function(pair) {
-                    pair.parent.appendChild(pair.child);
-                });
-                saveAs(blob, 'taskTree_'+ frameNumber+'.png');
-            });
-          }
-      });
-
-      //var tmp_canvas = rosViewer.renderer;
-      //var img = tmp_canvas.toDataURL("image/png");
-      //window.open(img);
-
-      var rosCtx = rosViewer.renderer.getContext('2d');
-      rosCtx.webkitImageSmoothingEnabled = false;
-      rosCtx.mozImageSmoothingEnabled = false;
-      rosCtx.imageSmoothingEnabled = false;
-      rosViewer.renderer.domElement.toBlob(function(blob) {   
-          saveAs(blob, 'canvas_'+ frameNumber+'.png');
-      });
-      */
     };
     
     ///////////////////////////////
