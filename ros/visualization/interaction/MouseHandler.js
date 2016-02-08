@@ -62,8 +62,8 @@ ROS3D.MouseHandler.prototype.processDomEvent = function(domEvent) {
     pos_y /= domEvent.touches.length;
   }
   else {
-	pos_x = domEvent.clientX;
-	pos_y = domEvent.clientY;
+    pos_x = domEvent.clientX;
+    pos_y = domEvent.clientY;
   }
   var left = pos_x - rect.left - target.clientLeft + target.scrollLeft;
   var top = pos_y - rect.top - target.clientTop + target.scrollTop;
@@ -85,15 +85,17 @@ ROS3D.MouseHandler.prototype.processDomEvent = function(domEvent) {
     intersection : this.lastIntersection
   };
 
-  // if the mouse leaves the dom element, stop everything
+  // if the mouse leaves the dom element (and is not dragging), stop everything
   if (domEvent.type === 'mouseout') {
-    if (this.dragging) {
-      this.notify(this.lastTarget, 'mouseup', event3D);
-      this.dragging = false;
+    //if (this.dragging) {
+    //  this.notify(this.lastTarget, 'mouseup', event3D);
+    //  this.dragging = false;
+    //}
+    if (!this.dragging) {
+      this.notify(this.lastTarget, 'mouseout', event3D);
+      this.lastTarget = null;
+      return;
     }
-    this.notify(this.lastTarget, 'mouseout', event3D);
-    this.lastTarget = null;
-    return;
   }
 
   // if the touch leaves the dom element, stop everything
