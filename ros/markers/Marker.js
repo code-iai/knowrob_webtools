@@ -589,7 +589,13 @@ ROS3D.Marker.prototype.update = function(message) {
     case ROS3D.MARKER_CUBE:
     case ROS3D.MARKER_SPHERE:
     case ROS3D.MARKER_CYLINDER:
-        if(scaleChanged) return false;
+        if(scaleChanged) {
+            this.traverse (function (child){
+                if (child instanceof THREE.Mesh) {
+                    child.scale = new THREE.Vector3(message.scale.x, message.scale.z, message.scale.y);
+                }
+            });
+        }
         if(colorChanged) {
             this.traverse (function (child){
                 if (child instanceof THREE.Mesh) {
