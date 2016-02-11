@@ -45,6 +45,6 @@ google.visualization.Version = '1.0';
 google.visualization.JSHash = 'dee027d0b48a2e0a0a0375d00d7dd635';
 google.visualization.LoadArgs = 'file\75visualization\46v\0751\46packages\75timeline';
 }
-google.loader.writeLoadTag("css", google.loader.ServiceBase + "/api/visualization/1.0/dee027d0b48a2e0a0a0375d00d7dd635/ui+en.css", false);
-google.loader.writeLoadTag("script", google.loader.ServiceBase + "/api/visualization/1.0/dee027d0b48a2e0a0a0375d00d7dd635/dygraph,format+en,default+en,ui+en,timeline+en.I.js", false);
+google.loader.writeLoadTag("css", "/static/lib/chart/ui+en.css", false);
+google.loader.writeLoadTag("script", "/static/lib/chart/dygraph,format+en,default+en,ui+en,timeline+en.I.js", false);
 }

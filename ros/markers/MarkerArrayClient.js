@@ -65,9 +65,10 @@ ROS3D.MarkerArrayClient = function(options) {
           updated = m.children[0].update(message);
           if(!updated) { // REMOVE
               markerScene(m.object).remove(m);
+              delete that.markers[message.ns + message.id];
           }
         }
-        if(!updated) { // "ADD"
+        if(!updated) { // ADD
           var newMarker = new ROS3D.Marker({
             message : message,
             path : that.path,
