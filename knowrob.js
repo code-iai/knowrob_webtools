@@ -28,13 +28,12 @@ function Knowrob(options){
     // keep aliva message publisher
     var keepAlive;
     
-    // URL to JSON file that contains episode data
-    var episodeURL = options.episode_url;
+    this.category = options.category;
+    
+    this.episode = options.episode;
     
     // Parsed episode data file
     var episodeData = undefined;
-    
-    var mngDBName = options.mngDBName;
     
     // The topic where the canvas publishes snapshots
     var snapshotTopic;
@@ -100,8 +99,8 @@ function Knowrob(options){
           }
           , onhide: function() {
               // Show overlay until an episode is selected
-              if(!episodeURL) {
-                that.showPageOverlay();
+              if(!that.episode || that.episode=='None') {
+                parent.showPageOverlay();
               }
           }
       });
@@ -416,6 +415,17 @@ function Knowrob(options){
         }
     };
     
+    this.selectMongoDB = function () {
+        // Auto select the mongo database
+        if(that.category && that.episode) {
+            prolog = knowrob.new_pl_client();
+            prolog.jsonQuery("mng_db('"+that.category+"_"+that.episode+"').", function(result) {
+                console.info("Selected mongo DB " + that.category+"_"+that.episode);
+                prolog.finishClient();
+            });
+        }
+    };
+    
     this.waitForJsonProlog = function () {
         var client = new JsonProlog(ros, {});
         client.jsonQuery("true", function(result) {
@@ -427,15 +437,7 @@ function Knowrob(options){
             }
             else {
                 that.isPrologConnected = true;
-      
-                // Auto select the mongo database
-                if(mngDBName) {
-                    prolog = knowrob.new_pl_client();
-                    prolog.jsonQuery("mng_db('"+mngDBName+"').", function(result) {
-                        console.log("Selected mongo DB " + mngDBName);
-                        prolog.finishClient();
-                    });
-                }
+                that.selectMongoDB();
             }
         });
     };
@@ -513,9 +515,10 @@ function Knowrob(options){
         }
         
         // Create page iosOverlay
-        var page = document.getElementById('page');
+        /*
+        var page = parent.document.getElementById('page');
         if(page) {
-            var pageOverlay = document.createElement("div");
+            var pageOverlay = parent.document.createElement("div");
             pageOverlay.setAttribute("id", "page-overlay");
             pageOverlay.className = "ui-ios-overlay ios-overlay-hide div-overlay";
             pageOverlay.innerHTML += '<span class="title">Please select an Episode</span';
@@ -524,6 +527,7 @@ function Knowrob(options){
             var spinner = createSpinner();
             pageOverlay.appendChild(spinner.el);
         }
+        */
         
         return userQuery;
     };
@@ -625,27 +629,6 @@ function Knowrob(options){
       }
     };
     
-    var pageOverlayDisabled = false;
-    this.showPageOverlay = function () {
-      var pageOverlay = document.getElementById('page-overlay');
-      if(pageOverlay && !pageOverlayDisabled) {
-          pageOverlay.style.display = 'block';
-          pageOverlay.className = pageOverlay.className.replace("hide","show");
-          pageOverlay.style.pointerEvents = "auto";
-      }
-    };
-    this.hidePageOverlay = function () {
-      var pageOverlay = document.getElementById('page-overlay');
-      if(pageOverlay && !pageOverlayDisabled) {
-          //pageOverlay.style.display = 'none';
-          pageOverlay.className = pageOverlay.className.replace("show","hide");
-          pageOverlay.style.pointerEvents = "none";
-      }
-    };
-    this.disablePageOverlay = function () {
-      pageOverlayDisabled = true;
-    };
-    
     this.query = function () {
       var query = ace.edit(queryDiv);
       var history = ace.edit(historyDiv);
@@ -743,7 +726,7 @@ function Knowrob(options){
             if(then) {
                 then.call(that);
             }
-        })
+        });
     };
     
     ///////////////////////////////
@@ -1139,45 +1122,55 @@ function Knowrob(options){
       rosViewer.cameraOrtho.updateProjectionMatrix();
     };
     
-    this.get_episode_data = function () {
+    this.set_episode = function (category, episode) {
+        if(category==that.category && episode==that.episode) return;
+        that.episodeData = undefined;
+        that.category = category;
+        that.episode = episode;
+        that.populate_query_select(libraryDiv);
+        that.selectMongoDB();
+        // TODO: clear canvas??
+    };
+    
+    this.get_episode_data = function (handler) {
         if(!that.episodeData) {
-            try {
-                // url must point to a json-file containing an array named "query" with
-                // the query strings to display in the select
-                // FIXME: bad synchron request
-                var request = new XMLHttpRequest
-                request.open("GET", episodeURL, false);
-                request.send(null);
-                that.episodeData = JSON.parse(request.responseText);
-            }
-            catch(e) {
-                console.warn("Failed to load episode data.");
-            }
+            $.ajax({
+                url: "/episode_queries",
+                type: "GET",
+                contentType: "application/json",
+                dataType: "json"
+            }).done( function (request) {
+                that.episodeData = request.query;
+                if(handler) handler(that.episodeData);
+            });
         }
-        return that.episodeData;
+        else if(handler) handler(that.episodeData);
     };
 
     // fill the select with json data from url
     this.populate_query_select = function (id, queries) {
-        if(queries == undefined) {
-            var episodeData = that.get_episode_data();
-            if(!episodeData) return;
-            queries = episodeData.query;
-        }
-        
-        var select = document.getElementById(id);
-        if(select !== null) {
-          while (select.firstChild) select.removeChild(select.firstChild);
-          
-          for (var i = 0; i < queries.length; i++) {
-            var opt = document.createElement('option');
-            if(queries[i].q !== undefined) {
-              opt.value = queries[i].q;
-              opt.innerHTML = queries[i].text;
-              select.appendChild(opt);
+        function load_queries(query_lib) {
+            var select = document.getElementById(id);
+            if(select !== null && query_lib) {
+                while (select.firstChild) select.removeChild(select.firstChild);
+                
+                for (var i = 0; i < query_lib.length; i++) {
+                    var opt = document.createElement('option');
+                    if(query_lib[i].q !== undefined) {
+                        opt.value = query_lib[i].q;
+                        opt.innerHTML = query_lib[i].text;
+                        select.appendChild(opt);
+                    }
+                }
+                select.size = query_lib.length;
             }
-          }
-          select.size = queries.length;
+        };
+        
+        if(queries == undefined) {
+            that.get_episode_data(load_queries);
+        }
+        else {
+            load_queries(queries);
         }
     };
 

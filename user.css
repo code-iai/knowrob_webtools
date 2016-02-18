@@ -43,6 +43,14 @@ a.navbar-tool-brand {
   height: 40px;
 }
 
+.content-frame {
+    border-style: none;
+    border-color: inherit;
+    border-width: 0px;
+    height:100%;
+    width:100%;
+}
+
 /*****************************************/
 /************** Menu Bar *****************/
 /*****************************************/
@@ -60,7 +68,7 @@ a.navbar-tool-brand {
   margin: 0;
   padding: 0;
   border: none;
-  outline: none;
+  outline: 0;
 }
 .menu {
   height: 25px;
@@ -106,6 +114,10 @@ a.navbar-tool-brand {
   -o-transition: color 0.5s ease-in-out;
   -ms-transition: color 0.5s ease-in-out;
   transition: color 0.5s ease-in-out;
+  outline: 0;
+}
+.menu li a:focus{
+    outline:0; /*removes the dotted border*/
 }
 .menu li:hover > a { color: #47C; }
 .menu li:first-child a { border-left: none; padding-left: 0px; }
@@ -114,9 +126,9 @@ a.navbar-tool-brand {
 .submenu li:last-child a { padding-right: 4px; }
 .submenu li.zero_size:first-child a { padding-left: 0px; }
 .submenu li.zero_size:last-child a { padding-right: 0px; }
-#static-menu-left { margin-left: 28px; }
-#static-menu-left a:hover { text-decoration: none; }
-#static-menu-left li:first-child a { padding-left: 4px; }
+#frame-menu-left { margin-left: 28px; }
+#frame-menu-left a:hover { text-decoration: none; }
+#frame-menu-left li:first-child a { padding-left: 4px; }
 /* Submenus */
 .menu ul li {
   pointer-events: none;
@@ -444,6 +456,17 @@ a.btn {
 }
 .ui-layout-east {
     border: 0px none;
+}
+
+.content-frame {
+  display: block;
+}
+.selected-menu {
+  font-weight: bold;
+  text-transform: uppercase;
+  text-shadow: 1px 1px #abc;
+}
+.selected-frame {
 }
 
 #markers {
