@@ -302,7 +302,7 @@ function Knowrob(options){
       });
       */
       
-      var visCLient;
+      var visClient;
       var graphClient;
       if ($('#chart').length) {
           visClient = new DataVisClient({
@@ -340,79 +340,8 @@ function Knowrob(options){
       camera_topic.subscribe(function(message) {
         that.set_camera_pose(message);
       });
-
-      // TODO(daniel): deprecated
-      var canvas_text_topic = new ROSLIB.Topic({
-        ros : ros,
-        name : '/canvas/text',
-        messageType : 'std_msgs/String'
-      });
-      canvas_text_topic.subscribe(function(message) {
-          var msgStr = message.data;
-          var lines = msgStr.split('\n');
-          that.show_hud_text(lines, {});
-      });
-
-      // TODO(daniel): deprecated
-      var speech_topic = new ROSLIB.Topic({
-        ros : ros,
-        name : '/canvas/speech',
-        messageType : 'data_vis_msgs/Speech'
-      });
-      speech_topic.subscribe(function(message) {
-          that.handleSpeechMessage(message);
-      });
       
       this.waitForJsonProlog();
-    };
-    
-    // TODO(daniel): deprecated
-    this.handleSpeechMessage = function (message) {
-        // TODO(daniel): Make sprite handling more generic
-        //    - Use marker messages?
-        //    - clear_canvas predicate should also remove bubbles
-        var bubble = that.speechBubbles[message.id];
-        var bubbleTexture = that.draw_speech_bubble(message.text);
-        
-        if(message.text.length==0) {
-            if(bubble) {
-                rosViewer.scene.remove(bubble);
-                delete that.speechBubbles[message.id];
-            }
-        }
-        else if(!bubble) {
-            var material = new THREE.SpriteMaterial({
-                useScreenCoordinates: false,
-                alignment: THREE.SpriteAlignment.bottomLeft});
-            material.map = bubbleTexture;
-            
-            bubble = new THREE.Sprite(material);
-            rosViewer.scene.add(bubble);
-            that.speechBubbles[message.id] = bubble;
-        }
-        else {
-            bubble.material.map = bubbleTexture;
-        }
-        if(bubble) {
-            // make sure text has the same dimensions for different texture sizes
-            var scale = bubbleTexture.image.height/100.0;
-            // make sure text is not stretched
-            bubble.scale.set(
-                scale*bubbleTexture.image.width/bubbleTexture.image.height,
-                scale,
-                1.0);
-            bubble.position.set(message.position.x, message.position.y, message.position.z);
-            
-            if(message.duration>0) {
-                // TODO(daniel): Fade-out bubble ?
-                window.setTimeout(function(){
-                    if(that.speechBubbles[message.id]) {
-                        rosViewer.scene.remove(bubble);
-                        delete that.speechBubbles[message.id];
-                    }
-              }, message.duration*1000);
-            }
-        }
     };
     
     this.selectMongoDB = function () {
@@ -513,21 +442,6 @@ function Knowrob(options){
             var spinner = createSpinner();
             consoleOverlay.appendChild(spinner.el);
         }
-        
-        // Create page iosOverlay
-        /*
-        var page = parent.document.getElementById('page');
-        if(page) {
-            var pageOverlay = parent.document.createElement("div");
-            pageOverlay.setAttribute("id", "page-overlay");
-            pageOverlay.className = "ui-ios-overlay ios-overlay-hide div-overlay";
-            pageOverlay.innerHTML += '<span class="title">Please select an Episode</span';
-            pageOverlay.style.display = 'none';
-            page.appendChild(pageOverlay);
-            var spinner = createSpinner();
-            pageOverlay.appendChild(spinner.el);
-        }
-        */
         
         return userQuery;
     };
@@ -929,159 +843,6 @@ function Knowrob(options){
     ///////////////////////////////
     
     var hudTextMesh;
-    
-    // TODO(daniel): deprecated
-    this.draw_speech_bubble = function(text) {
-        var maxCharacterPerLine = 15;
-        var words = text.split(' ');
-        var lines = [];
-        var line = '';
-        for(var i=0; i<words.length; i++) {
-            var l0 = line.length;
-            var l1 = words[i].length;
-            if(l0 == 0) {
-                line = words[i];
-            }
-            else if(l0+l1 < maxCharacterPerLine) {
-                line += ' ' + words[i];
-            }
-            else {
-                lines.push(line);
-                line = words[i];
-            }
-        }
-        if(line.length>0) {
-            lines.push(line);
-        }
-        
-        return that.create_text_texture(lines, {
-            useBubble: true
-        });
-    };
-    
-    // TODO(daniel): deprecated
-    this.draw_speech_bubble__ = function(ctx, tw, th, radius, peak) {
-        ctx.beginPath();
-        ctx.strokeStyle="black";
-        ctx.lineWidth="1";
-        ctx.fillStyle="rgba(255, 255, 255, 0.8)";
-        
-        var ls = 1;
-        var w = tw + 2*radius;
-        var h = th + 2*radius;
-        var px=0, py=0;
-        
-        // TODO: is there really no "getPenPosition" method ?
-        var moveTo = function(x,y) {
-            ctx.moveTo(x,y);
-            px=x; py=y;
-        };
-        var lineTo = function(x,y) {
-            ctx.lineTo(x,y);
-            px=x; py=y;
-        };
-        var curveTo = function(x,y,maxx,maxy) {
-            var cx = (maxx ? Math.max(x,px) : Math.min(x,px));
-            var cy = (maxy ? Math.max(y,py) : Math.min(y,py));
-            ctx.quadraticCurveTo(cx,cy,x,y);
-            px=x; py=y;
-        };
-        
-        moveTo(w-radius, h-ls);
-        // bottom right
-        curveTo(w-ls, h-radius, 1, 1);
-        lineTo (w-ls, radius);
-        // top right
-        curveTo(w-radius, ls, 1, 0);
-        lineTo (  radius, ls);
-        // top left
-        curveTo(ls, radius, 0, 0);
-        lineTo (ls, h-radius);
-        // bottom left
-        curveTo(radius, h-ls, 0, 1);
-        // the peak
-        lineTo(radius + peak[2], h-ls);
-        //lineTo(px + 0.5*peak[0], h-ls+peak[1]);
-        lineTo(1, h-ls+peak[1]);
-        lineTo(radius + peak[2] + peak[0], h-ls);
-        lineTo(w-radius, h-ls);
-        
-        ctx.fill();
-        ctx.stroke();
-        ctx.closePath();
-    };
-    
-    // TODO(daniel): deprecated
-    this.create_text_texture = function(textLines, options) {
-        // Font options
-        var font = options.font || "Bold 24px Monospace";
-        var useShadow = options.useShadow || false;
-        var useBubble = options.useBubble || false;
-        var margin = options.margin || [12, 12];
-        var lineHeight = 24;
-        
-        // Create a canvas for 2D rendering
-        var canvas  = document.createElement('canvas');
-        
-        // Compute size of the canvas so that it fits the text.
-        // We need a special context for measuring the size.
-        var maxWidth = 0;
-        var heightSum = 0;
-        var measure_ctx = canvas.getContext('2d');
-        measure_ctx.font = font;
-        for(var i=0; i<textLines.length; i++) {
-            var m = measure_ctx.measureText(textLines[i]);
-            if(m.width>maxWidth) maxWidth = m.width;
-            heightSum += m.height;
-        }
-        
-        // The text size
-        var tw = maxWidth;
-        var th = lineHeight*textLines.length;
-        // The canvas size
-        var cw = tw + margin[0];
-        var ch = th + 0.5*margin[1];
-        
-        var bubbleRadius = 10;
-        var bubblePeak = [15, 20, 0]; // width, height, x-offset
-        
-        if(useBubble) {
-            cw += bubbleRadius*2;
-            ch += bubbleRadius*2 + bubblePeak[1];
-        }
-        
-        // Create context with appropriate canvas size 
-        var ctx = canvas.getContext('2d');
-        ctx.canvas.width  = cw;
-        ctx.canvas.height = ch;
-        
-        if(useBubble) {
-            this.draw_speech_bubble__(ctx, tw, th, bubbleRadius, bubblePeak);
-        }
-        
-        ctx.font = font;
-        // Configure text shadow
-        if(useShadow) {
-            ctx.shadowColor = options.shadowColor || "gray";
-            ctx.shadowOffsetX = options.shadowOffsetX || 4;
-            ctx.shadowOffsetY = options.shadowOffsetY || 4
-            ctx.shadowBlur = options.shadowBlur || 6;
-        }
-        // Configure text
-        ctx.fillStyle = options.fillStyle || "#144F78";
-        ctx.strokeStyle = options.strokeStyle || "#000000";
-        // Render text into 2D canvas
-        for(var i=0; i<textLines.length; i++) {
-            //ctx.strokeText(textLines[i], 0.5*margin[0], (i+1)*lineHeight);
-            ctx.fillText(textLines[i], margin[0], 0.5*margin[1] + (i+1)*lineHeight);
-        }
-        
-        // Finally create texture from canvas
-        var texture = new THREE.Texture(canvas);
-        texture.needsUpdate = true;
-        
-        return texture;
-    };
     
     this.show_hud_text = function(textLines, options) {
         var texture = this.create_text_texture(textLines, options);
