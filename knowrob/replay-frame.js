@@ -35,7 +35,7 @@ function KnowrobReplayUI(client, options) {
     this.initVideoDivs = function() {
         var episodeSelect = document.getElementById('replay-episode-list');
         if (episodeSelect !== null && client.episode.hasEpisode()) {
-            if(that.episodeData().video.length > 0) {
+            if(that.episodeData().video != null && that.episodeData().video.length > 0) {
                for (var i = 0; i < that.episodeData().video.length; i++) {
                   that.addVideoItem(that.episodeData().video[i].name);
                }
@@ -50,10 +50,13 @@ function KnowrobReplayUI(client, options) {
             opt.value = 0;
             opt.innerHTML = 'Choose an experiment time interval';
             select.appendChild(opt);
-            for (var i = 0; i < that.episodeData().time_intervals.length; i++) {
-                that.addTimeInterval(i + 1,
+            if(that.episodeData().time_intervals != null)
+            {
+                for (var i = 0; i < that.episodeData().time_intervals.length; i++) {
+                    that.addTimeInterval(i + 1,
                          that.episodeData().time_intervals[i].start,
                          that.episodeData().time_intervals[i].end);
+                }
             }      
         }
     };
@@ -74,8 +77,15 @@ function KnowrobReplayUI(client, options) {
             //var select = document.getElementById('time-sequence-dropdown');
             //var string_value = select.options[select.selectedIndex].text;
             //var string_array = string_value.split("--");
-            var start = that.episodeData().time_intervals[i-1].start;
-            var end = that.episodeData().time_intervals[i-1].end;
+            var start = 0;
+            var end = 20000000;
+            
+            if(that.episodeData().time_intervals != null)
+            {
+                start = that.episodeData().time_intervals[i-1].start;
+                end = that.episodeData().time_intervals[i-1].end;
+            }
+
 
             firstrange.min = start;
             firstrange.max = end;
@@ -128,8 +138,12 @@ function KnowrobReplayUI(client, options) {
 
     this.selectedVideoEpisode = function() {
         var selectedEpisode = document.getElementById('replay-episode-value').innerHTML;
-        for(var i=0; i<that.episodeData().video.length; i++) {
-            if(that.episodeData().video[i].name == selectedEpisode) return that.episodeData().video[i];
+
+        if(that.episodeData().video != null)
+        {
+            for(var i=0; i<that.episodeData().video.length; i++) {
+               if(that.episodeData().video[i].name == selectedEpisode) return that.episodeData().video[i];
+            }
         }
         return undefined;
     }
