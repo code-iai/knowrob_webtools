@@ -29,9 +29,9 @@ function KnowrobClient(options){
     
     var pageOverlayDisabled = false;
     // true iff connection to ROS master is established
-    var isConnected = false;
+    this.isConnected = false;
     // true iff json_prolog is connected
-    var isPrologConnected = false;
+    this.isPrologConnected = false;
     // true iff registerNodes was called before
     var isRegistered = false;
     // Names of prolog predicates and modules for auto completion
@@ -116,6 +116,7 @@ function KnowrobClient(options){
           } else {
               // No authentication requested, call registerNodes directly
               that.registerNodes();
+              that.waitForJsonProlog();
           }
       });
       that.ros.on('close', function() {

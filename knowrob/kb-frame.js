@@ -402,7 +402,7 @@ function KnowrobUI(client, options) {
           history.navigateFileEnd();
           if( ! result.value ) setInactive(document.getElementById(nextButtonDiv));
       });
-      user_query.focus();
+      ace.edit(queryDiv).focus();
     };
     
     function setActive(div) {
