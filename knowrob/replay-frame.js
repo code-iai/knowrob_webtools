@@ -34,6 +34,8 @@ function KnowrobReplayUI(client, options) {
     
     this.initVideoDivs = function() {
         var episodeSelect = document.getElementById('replay-episode-list');
+        episodeSelect.innerHTML = "";
+        
         if (episodeSelect !== null && client.episode.hasEpisode()) {
             if(that.episodeData().video && that.episodeData().video.length > 0) {
                for (var i = 0; i < that.episodeData().video.length; i++) {
@@ -50,8 +52,7 @@ function KnowrobReplayUI(client, options) {
             opt.value = 0;
             opt.innerHTML = 'Choose an experiment time interval';
             select.appendChild(opt);
-            if(that.episodeData().time_intervals != null)
-            {
+            if(that.episodeData().time_intervals != null) {
                 for (var i = 0; i < that.episodeData().time_intervals.length; i++) {
                     that.addTimeInterval(i + 1,
                          that.episodeData().time_intervals[i].start,
@@ -80,8 +81,7 @@ function KnowrobReplayUI(client, options) {
             var start = 0;
             var end = 20000000;
             
-            if(that.episodeData().time_intervals != null)
-            {
+            if(that.episodeData().time_intervals != null) {
                 start = that.episodeData().time_intervals[i-1].start;
                 end = that.episodeData().time_intervals[i-1].end;
             }
@@ -145,9 +145,7 @@ function KnowrobReplayUI(client, options) {
 
     this.selectedVideoEpisode = function() {
         var selectedEpisode = document.getElementById('replay-episode-value').innerHTML;
-
-        if(that.episodeData().video != null)
-        {
+        if(that.episodeData().video) {
             for(var i=0; i<that.episodeData().video.length; i++) {
                if(that.episodeData().video[i].name == selectedEpisode) return that.episodeData().video[i];
             }
@@ -255,14 +253,10 @@ function KnowrobReplayUI(client, options) {
     };
     
     this.stopStreaming = function() {
-        if(isStreaming)
-        {
-           //var t0  = parseInt(document.getElementById("replay-start-time").value, 10);
-           //var t1  = parseInt(document.getElementById("replay-end-time").value, 10);
+        if(isStreaming) {
            var prolog = client.newProlog();
            prolog.jsonQuery('openease_video_stop.', function(result) {
               console.log(prolog.format(result));
-              //setTimeout(function(){ that.streamRange(t0,t1); }, 500);
            }, mode=1);
         }
 
@@ -325,7 +319,6 @@ function KnowrobReplayUI(client, options) {
     
     this.updateHUDText = function(t, handler) {
         var hudtextLines = [];
-        var prolog = client.newProlog();
         // TODO: Use prolog to build task tree
         var infoQuery = "_T = 'timepoint_" + t.toString() + "', " +
               "task(_Task, _T), " +
@@ -342,6 +335,7 @@ function KnowrobReplayUI(client, options) {
               "( ObjectActedOn \\= '' ; Perception \\= '' ; Designator \\= '' ; Goal \\= '')," +
               "findall(_TaskDetail, (task(_TaskId), subtask(_ParentTaskId, _TaskId), task_type(_TaskId, _Type), rdf_has(_TaskId, knowrob:'taskContext', literal(type(_,_TaskContext))), (rdf_has(_TaskId, knowrob:'goalContext', literal(type(_,_TaskGoal))); _TaskGoal = ''), atomic_list_concat([_TaskContext, _TaskGoal], ' ', _TaskTip), term_to_atom(_TaskId, _TaskIdAtom), term_to_atom(_ParentTaskId, _ParentTaskIdAtom), term_to_atom(_TaskTip, _TaskAtom), term_to_atom(_Type, _TypeAtom), jpl_new( '[Ljava.lang.String;', [_TaskAtom, _TaskIdAtom, _ParentTaskIdAtom, _TypeAtom], _TaskDetail)), _TaskDetails), jpl_new( '[[Ljava.lang.String;', _TaskDetails, _Tasks), findall(_TaskAtom, (task(__TaskId, _T), term_to_atom(__TaskId, _TaskAtom)), _HighlightedTaskDetails), jpl_new( '[Ljava.lang.String;', _HighlightedTaskDetails, _HighlightedTasks), jpl_new( '[Ljava.lang.String;', ['\\'http://knowrob.org/kb/knowrob.owl#CRAMAction\\'', '\\'http://knowrob.org/kb/knowrob.owl#ArmMovement\\''], _Types), update_task_tree(_Tasks, _HighlightedTasks, _Types).";
         
+        var prolog = client.newProlog();
         function processInfo(result) {            
            if(result.solution) {
                 var solutionString = result.solution['Task'];
@@ -406,8 +400,7 @@ function KnowrobReplayUI(client, options) {
     };
     
     this.saveVideoSettings = function() {
-        if(isNewVideo == true)
-        {
+        if(isNewVideo == true) {
             that.episodeData().video.push({
                 name: document.getElementById('name-text').value,
                 start: document.getElementById('replay-start-time').value,
@@ -421,8 +414,7 @@ function KnowrobReplayUI(client, options) {
             that.replayEpisodeSelected();
             isNewVideo = false;
         }
-        else
-        {
+        else {
             var selectedEpisode = document.getElementById('replay-episode-value').innerHTML;
             var videoSequence = [{
                 name: selectedEpisode,
