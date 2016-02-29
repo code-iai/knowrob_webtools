@@ -35,7 +35,7 @@ function KnowrobReplayUI(client, options) {
     this.initVideoDivs = function() {
         var episodeSelect = document.getElementById('replay-episode-list');
         if (episodeSelect !== null && client.episode.hasEpisode()) {
-            if(that.episodeData().video != null && that.episodeData().video.length > 0) {
+            if(that.episodeData().video && that.episodeData().video.length > 0) {
                for (var i = 0; i < that.episodeData().video.length; i++) {
                   that.addVideoItem(that.episodeData().video[i].name);
                }
@@ -117,10 +117,17 @@ function KnowrobReplayUI(client, options) {
     
     this.setupVideoQuery = function() {
         var userQuery = ace.edit('user_query');
-        userQuery.commands.removeCommand('send_query');
-        userQuery.commands.removeCommand('next_result');
-        userQuery.commands.removeCommand('next_history');
-        userQuery.commands.removeCommand('previous_history');
+        userQuery.resize(true);
+        userQuery.setTheme("ace/theme/solarized_light");
+        userQuery.getSession().setMode("ace/mode/prolog");
+        userQuery.getSession().setUseWrapMode(true);
+        userQuery.setOptions({
+            showGutter: false,
+            printMarginColumn: false,
+            highlightActiveLine: false,
+            highlightGutterLine: false,
+            enableBasicAutocompletion: true
+        });
         
         var initQuery = ace.edit('init_query');
         initQuery.resize(true);
@@ -235,7 +242,7 @@ function KnowrobReplayUI(client, options) {
     };
     this.updateTimeValues = function() {
         that.updateStartTime();
-        that.pdateEndTime();
+        that.updateEndTime();
     };
     
     this.formatInitialQuery = function(t) {
@@ -250,10 +257,12 @@ function KnowrobReplayUI(client, options) {
     this.stopStreaming = function() {
         if(isStreaming)
         {
+           //var t0  = parseInt(document.getElementById("replay-start-time").value, 10);
+           //var t1  = parseInt(document.getElementById("replay-end-time").value, 10);
            var prolog = client.newProlog();
            prolog.jsonQuery('openease_video_stop.', function(result) {
               console.log(prolog.format(result));
-              setTimeout(function(){ that.streamRange(t0,t1); }, 500);
+              //setTimeout(function(){ that.streamRange(t0,t1); }, 500);
            }, mode=1);
         }
 

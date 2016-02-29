@@ -1,5 +1,11 @@
+/**
+ * JS class that represents the openEASE menu bar.
+ * Menu bar can be dynamically created using this class based on following layout:
+ * [ L FL .... FR R ], where L is the 'left-menu', FL is the 'frame-menu-left'.
+ * Frame menus are used to display menu items for the active frame.
+ **/
 
-function KnowrobMenu(client){
+function KnowrobMenu(user, user_interfaces){
     var that = this;
     
     this.createMenuItem = function(item) {
@@ -49,13 +55,22 @@ function KnowrobMenu(client){
     };
     
     this.addCommonMenuItems = function(left_menu, right_menu) {
-        if(left_menu && client.isLoggedIn()) {
-            that.addMenuItem(left_menu, { id:"kb-menu", text: 'Knowledge Base', href: "/#kb" });
-            that.addMenuItem(left_menu, { id:"replay-menu", text: 'Episode Replay', href: "/#replay" });
-            that.addMenuItem(left_menu, { id:"editor-menu", text: 'Text Editor', href: "/#editor" });
-            that.addMenuItem(left_menu, { id:"tutorials-menu", text: 'Tutorials', href: "/#tutorials" });
-            that.addMenuItem(left_menu, { id:"logs-menu", text: 'Log', href: "/#logs" });
-            if(client.isAdmin()) {
+        if(left_menu && user.isLoggedIn()) {
+            // openEASe user interfaces
+            for(var i in user_interfaces) {
+                that.addMenuItem(left_menu, {
+                    id:user_interfaces[i].id+"-menu",
+                    text: user_interfaces[i].name,
+                    href: "/#"+user_interfaces[i].id
+                });
+            };
+        }
+        if(left_menu) {
+            that.addMenuItem(left_menu, { id:"tutorials-menu", text: 'Tutorials', href: "/tutorials" });
+        }
+        if(left_menu && user.isLoggedIn()) {
+            // admin pages
+            if(user.isAdmin()) {
                 that.handleWebappMenu(left_menu, {
                     text: 'Admin',
                     submenu: [
@@ -96,12 +111,12 @@ function KnowrobMenu(client){
                         }
                     ]
                 });
-            */
+                */
             }
         }
         if(right_menu) {
             that.addMenuItem(right_menu, {
-                text: "Logout "+client.username,
+                text: "Logout "+user.username,
                 href: "/user/sign-out"
             });
         }

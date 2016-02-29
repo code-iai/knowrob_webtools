@@ -17,13 +17,11 @@ function KnowrobClient(options){
     // The selected episode
     this.episode;
     // The openEASE menu that allows to activate episodes/ui/..
-    this.menu;
+    this.menu = options.menu;
     // global jsonprolog handle
     var prolog;
     
-    // TODO: use option parameter
-    //var userInterfaceNames=["kb", "replay", "editor", "tutorials", "logs"];
-    var userInterfaceNames=["kb", "replay", "editor", "logs"];
+    var user_interfaces = options.user_interfaces || [];
     // Query parameters encoded in URL
     // E.g., localhost/#foo&bar=1 yields in:
     //    URL_QUERY = {foo: undefined, bar: 1}
@@ -51,16 +49,6 @@ function KnowrobClient(options){
     this.snapshotTopic = undefined;
     
     this.selectedMarker = undefined;
-    
-    this.isLoggedIn = function() {
-        // TODO: implement !!!!
-        return true;
-    };
-    
-    this.isAdmin = function() {
-        // TODO: implement !!!!
-        return true;
-    };
     
     // Redirects incomming marker messages to currently active canvas.
     function CanvasProxy(scene) {
@@ -98,15 +86,11 @@ function KnowrobClient(options){
         that.connect();
         
         that.episode = new KnowrobEpisode(that);
-        that.menu = new KnowrobMenu(that);
-        if(options.category && options.episode) {
+        if(options.category && options.episode)
             that.episode.setEpisode(options.category, options.episode);
-            that.hidePageOverlay();
-        }
         
         that.initAutoCompletion();
         that.createOverlay();
-        that.updateMenu();
       
         setInterval(containerRefresh, 570000);
         containerRefresh();
@@ -319,8 +303,8 @@ function KnowrobClient(options){
           that.getActiveFrame().on_camera_pose_received(message);
       });
       
-      for(var i = 0; i < userInterfaceNames.length; i++) {
-          var frame = document.getElementById(userInterfaceNames[i]+"-frame");
+      for(var i in user_interfaces) {
+          var frame = document.getElementById(user_interfaces[i].id+"-frame");
           if(frame && frame.contentWindow.on_register_nodes)
               frame.contentWindow.on_register_nodes();
       }
@@ -459,24 +443,16 @@ function KnowrobClient(options){
     };
     
     ///////////////////////////////
-    //////////// Menu
-    ///////////////////////////////
-    
-    this.updateMenu = function() {
-        that.menu.updateMenu();
-    };
-    
-    ///////////////////////////////
     //////////// Frames
     ///////////////////////////////
     
     function showFrame(name, fading) {
         // Hide inactive frames
-        for(var i = 0; i < userInterfaceNames.length; i++) {
-            if(userInterfaceNames[i] == name) continue;
-            $("#"+userInterfaceNames[i]+"-frame").hide();
-            $("#"+userInterfaceNames[i]+"-frame").removeClass("selected-frame");
-            $("#"+userInterfaceNames[i]+"-menu").removeClass("selected-menu");
+        for(var i in user_interfaces) {
+            if(user_interfaces[i].id == name) continue;
+            $("#"+user_interfaces[i].id+"-frame").hide();
+            $("#"+user_interfaces[i].id+"-frame").removeClass("selected-frame");
+            $("#"+user_interfaces[i].id+"-menu").removeClass("selected-menu");
         }
         // Show selected frame
         $("#"+name+"-frame").show();
@@ -491,8 +467,8 @@ function KnowrobClient(options){
     };
     
     function getActiveFrameName() {
-      for(var i = 0; i < userInterfaceNames.length; i++) {
-        if(urlQuery[userInterfaceNames[i]]) return userInterfaceNames[i];
+      for(var i in user_interfaces) {
+        if(urlQuery[user_interfaces[i].id]) return user_interfaces[i].id;
       }
       return "kb";
     };
