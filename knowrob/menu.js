@@ -10,7 +10,7 @@ function KnowrobMenu(user, user_interfaces){
     
     this.createMenuItem = function(item) {
         var a = document.createElement("a");
-        a.href = item.href ? item.href : '#';
+        if(item.href) a.href = item.href;
         var x = '';
         x += item.text;
         // TODO handle item.icon and item.shortcut
