@@ -16,6 +16,7 @@ function KnowrobEpisode(client){
         that.episodeData = undefined;
         that.category = category;
         that.episode = episode;
+        // Auto select the mongo database
         that.selectMongoDB();
         
         $.ajax({
@@ -44,7 +45,6 @@ function KnowrobEpisode(client){
     };
     
     this.selectMongoDB = function () {
-        // Auto select the mongo database
         if(that.category && that.episode) {
             var prolog = new JsonProlog(client.ros, {});
             prolog.jsonQuery("mng_db('"+that.category+"_"+that.episode+"').", function(result) {

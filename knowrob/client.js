@@ -5,7 +5,8 @@
 
 function KnowrobClient(options){
     var that = this;
-    this.username = options.username;
+    // Object that holds user information
+    this.flask_user = options.flask_user;
     // ROS handle
     this.ros = undefined;
     // URL for ROS server
@@ -21,6 +22,7 @@ function KnowrobClient(options){
     // global jsonprolog handle
     var prolog;
     
+    // User interface names (e.g., editor, memory replay, ...)
     var user_interfaces = options.user_interfaces || [];
     // Query parameters encoded in URL
     // E.g., localhost/#foo&bar=1 yields in:
@@ -40,6 +42,7 @@ function KnowrobClient(options){
     var meshPath  = options.meshPath || '/';
     // Block the interface until an episode was selected?
     var requireEpisode = options.require_episode;
+    var globalViewer = options.global_viewer;
     
     // ROS messages
     var tfClient = undefined;
@@ -55,6 +58,10 @@ function KnowrobClient(options){
     // Redirects incomming marker messages to currently active canvas.
     function CanvasProxy(scene) {
         this.viewer = function() {
+            if(globalViewer) {
+                var w = globalViewer();
+                if(w) return w;
+            }
             var ui = that.getActiveFrame().ui; if(!ui) return undefined;
             var v = ui.rosViewer; if(!v) return undefined;
             return v.rosViewer;
@@ -308,7 +315,7 @@ function KnowrobClient(options){
       
       for(var i in user_interfaces) {
           var frame = document.getElementById(user_interfaces[i].id+"-frame");
-          if(frame && frame.contentWindow.on_register_nodes)
+          if(frame && frame.contentWindow && frame.contentWindow.on_register_nodes)
               frame.contentWindow.on_register_nodes();
       }
     };

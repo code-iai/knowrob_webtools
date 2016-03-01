@@ -56,7 +56,7 @@ function KnowrobMenu(user, user_interfaces){
     
     this.addCommonMenuItems = function(left_menu, right_menu) {
         if(left_menu && user.isLoggedIn()) {
-            // openEASe user interfaces
+            // openEASE user interfaces
             for(var i in user_interfaces) {
                 that.addMenuItem(left_menu, {
                     id:user_interfaces[i].id+"-menu",

@@ -130,4 +130,18 @@ function TutorialUI(client, options) {
       div.style.backgroundColor = "#cfcfcf";
       div.style.color = "#adadad";
     };
+
+    // append the selected query to the user_query form
+    this.addSelectedToQueryform = function (selectid, focus) {
+      var select = document.getElementById(selectid);
+      this.setQueryValue(select.options[select.selectedIndex].value, focus);
+    };
+
+    // set the value of the query editor and move the cursor to the end
+    this.setQueryValue = function (val, focus){
+      var user_query = ace.edit(queryDiv);
+      user_query.setValue(val, -1);
+      if(focus) user_query.focus();
+      user_query.navigateFileEnd();
+    };
 };
