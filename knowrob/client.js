@@ -38,6 +38,8 @@ function KnowrobClient(options){
     var prologNames;
     // Prefix for mesh GET URL's
     var meshPath  = options.meshPath || '/';
+    // Block the interface until an episode was selected?
+    var requireEpisode = options.require_episode;
     
     // ROS messages
     var tfClient = undefined;
@@ -78,7 +80,7 @@ function KnowrobClient(options){
           }
           , onhide: function() {
               // Show overlay until an episode is selected
-              if(!that.episode.hasEpisode()) {
+              if(requireEpisode && !that.episode.hasEpisode()) {
                 that.showPageOverlay();
               }
           }
