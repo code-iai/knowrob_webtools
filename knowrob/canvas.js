@@ -1,10 +1,10 @@
 /**
  * WebGL canvas for marker visualization.
  **/
-
 function KnowrobCanvas(client, options){
     var that = this;
     
+    // The canvas object
     this.rosViewer = new ROS3D.Viewer({
         divID : options.divID,
         width : 800,
@@ -21,10 +21,11 @@ function KnowrobCanvas(client, options){
     this.rosViewer.scene.add(new ROS3D.Grid());
     
     this.resize = function (w,h) {
+      // update perspective projection
       this.rosViewer.renderer.setSize(w, h);
       this.rosViewer.camera.aspect = w/h;
       this.rosViewer.camera.updateProjectionMatrix();
-      
+      // update orthographic projection
       this.rosViewer.cameraOrtho.left = - w / 2;
       this.rosViewer.cameraOrtho.right = w / 2;
       this.rosViewer.cameraOrtho.top = h / 2;
@@ -33,7 +34,7 @@ function KnowrobCanvas(client, options){
     };
     
     /**
-     * Creatre a image snapshot of this canvas, create a ROS image message
+     * Create an image snapshot of this canvas, create a ROS image message
      * and send that message via dedicated topic to the server.
      **/
     this.snapshot = function (frameNumber, fps) {

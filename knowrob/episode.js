@@ -1,4 +1,9 @@
-
+/**
+ * The selected manipulation task episodic memory.
+ * Episodes are organized in categories.
+ * Continous log data is saved in a mongo DB that is named
+ * based on category and episode name.
+ **/
 function KnowrobEpisode(client){
     var that = this;
     

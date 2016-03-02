@@ -1,8 +1,6 @@
 /**
- * This module is used to establish connection to a ROS master
- * via websocket.
+ * Establishes connection to a ROS master via websocket.
  **/
-
 function KnowrobClient(options){
     var that = this;
     // Object that holds user information
@@ -42,7 +40,10 @@ function KnowrobClient(options){
     var meshPath  = options.meshPath || '/';
     // Block the interface until an episode was selected?
     var requireEpisode = options.require_episode;
+    // Viewer used by tutorial page
     var globalViewer = options.global_viewer;
+    // The selected marker object or undefined
+    this.selectedMarker = undefined;
     
     // ROS messages
     var tfClient = undefined;
@@ -52,8 +53,6 @@ function KnowrobClient(options){
     var imageClient = undefined;
     var cameraPoseClient = undefined;
     this.snapshotTopic = undefined;
-    
-    this.selectedMarker = undefined;
     
     // Redirects incomming marker messages to currently active canvas.
     function CanvasProxy(scene) {
@@ -154,7 +153,6 @@ function KnowrobClient(options){
                 console.warn("Lost connection to ROS master.");
                 return;
             }
-            
             console.log("Sending auth token");
             that.ros.authenticate(request.mac,
                              request.client,
