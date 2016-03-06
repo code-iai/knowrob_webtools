@@ -10,7 +10,7 @@ function KnowrobClient(options){
     // URL for ROS server
     var rosURL = options.ros_url || 'ws://localhost:9090';
     // Use rosauth?
-    var authentication  = options.authentication === '' ? true : options.authentication === 'true';
+    var authentication  = options.authentication === '' ? true : options.authentication === 'True';
     // URL for rosauth token retrieval
     var authURL  = options.auth_url || '/wsauth/v1.0/by_session';
     // The selected episode
