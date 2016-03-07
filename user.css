@@ -679,6 +679,18 @@ a.btn {
     padding-bottom:10px;
 }
 
+.tut_cat_link,
+.tut_cat_link:hover {
+  font-family: 'Oswald', sans-serif;
+  color: #000 !important;
+  text-decoration: none;
+  font-size: 18px !important;
+  cursor: pointer;
+}
+.tut_cat_link:hover {
+  color: #3333aa !important;
+}
+
 .k-button,
 .k-button:hover{
   border: 1px solid #AAA !important;
