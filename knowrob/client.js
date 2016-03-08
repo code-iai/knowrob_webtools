@@ -57,10 +57,10 @@ function KnowrobClient(options){
     // Redirects incomming marker messages to currently active canvas.
     function CanvasProxy(scene) {
         this.viewer = function() {
-            if(globalViewer) {
-                var w = globalViewer();
-                if(w) return w;
-            }
+            //if(globalViewer) {
+            //    var w = globalViewer();
+            //    if(w) return w;
+            //}
             var ui = that.getActiveFrame().ui; if(!ui) return undefined;
             var v = ui.rosViewer; if(!v) return undefined;
             return v.rosViewer;
@@ -316,6 +316,8 @@ function KnowrobClient(options){
           if(frame && frame.contentWindow && frame.contentWindow.on_register_nodes)
               frame.contentWindow.on_register_nodes();
       }
+      if(!document.getElementById(getActiveFrameName()+"-frame"))
+          that.getActiveFrame().on_register_nodes();
     };
     
     this.waitForJsonProlog = function () {
@@ -418,23 +420,27 @@ function KnowrobClient(options){
     };
     
     this.on_render = function(camera,scene) {
-        that.getActiveFrame().on_render(camera,scene);
+        if(that.getActiveFrame())
+            that.getActiveFrame().on_render(camera,scene);
     };
     
     this.on_marker_dblclick = function(marker) {
         that.selectMarker(marker);
-        that.getActiveFrame().on_marker_dblclick(marker);
+        if(that.getActiveFrame())
+            that.getActiveFrame().on_marker_dblclick(marker);
     };
     
     this.on_marker_delete = function(ns) {
         if(ns === that.selectedMarker) {
             that.unselectMarker();
         }
-        that.getActiveFrame().on_marker_delete(ns);
+        if(that.getActiveFrame())
+            that.getActiveFrame().on_marker_delete(ns);
     };
     
     this.on_marker_contextmenu = function(marker) {
-        that.getActiveFrame().on_marker_contextmenu(marker);
+        if(that.getActiveFrame())
+            that.getActiveFrame().on_marker_contextmenu(marker);
     };
     
     ///////////////////////////////
@@ -446,7 +452,8 @@ function KnowrobClient(options){
     };
     
     this.on_episode_selected = function(library) {
-        that.getActiveFrame().on_episode_selected(library);
+        if(that.getActiveFrame())
+            that.getActiveFrame().on_episode_selected(library);
         that.hidePageOverlay();
     };
     
@@ -471,7 +478,10 @@ function KnowrobClient(options){
     };
     
     this.getActiveFrame = function() {
-      return document.getElementById(getActiveFrameName()+"-frame").contentWindow;
+        var frame = document.getElementById(getActiveFrameName()+"-frame");
+        if(frame) return frame.contentWindow;
+        else return window;
+        //else return undefined;
     };
     
     function getActiveFrameName() {
