@@ -7,7 +7,7 @@ function IndicatorSprite(html, options, then){
     // Font options
     var useBubble = options.useBubble || false;
     var margin = options.margin || [6, 6];
-    var bubbleRadius = 6;
+    var bubbleRadius = 12;
     var bubblePeak = [15, 20, 0]; // width, height, x-offset
     // Create a canvas for 2D rendering
     this.canvas = document.createElement('canvas');
@@ -46,8 +46,8 @@ function IndicatorSprite(html, options, then){
     this.drawBubble = function (img) {
         that.ctx.beginPath();
         that.ctx.strokeStyle = options.bubbleBorderColor || "black";
-        that.ctx.lineWidth   = options.bubbleBorderWidth || "1";
-        that.ctx.fillStyle   = options.bubbleColor || "rgba(255, 255, 255, 0.8)";
+        that.ctx.lineWidth   = options.bubbleBorderWidth || "2";
+        that.ctx.fillStyle   = options.bubbleColor || "rgba(210, 210, 210, 0.8)";
         
         var ls = 1;
         var w = img.width + 2*margin[0];

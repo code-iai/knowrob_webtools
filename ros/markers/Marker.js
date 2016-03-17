@@ -3,6 +3,7 @@
  * @author Russell Toris - rctoris@wpi.edu
  */
 
+// XXX: not used anymore, use indicator.js instead
 function TextTexture(text, options){
     var lines = text.split('\n');
     var that = this;
@@ -137,6 +138,7 @@ function TextTexture(text, options){
  *                         ROS3D.COLLADA_LOADER_2) -- defaults to ROS3D.COLLADA_LOADER_2
  */
 ROS3D.Marker = function(options) {
+  var that = this;
   options = options || {};
   var path = options.path || '/';
   var message = options.message;
@@ -203,12 +205,39 @@ ROS3D.Marker = function(options) {
       };
       return texture;
   };
+  var createSprite = function(texture,useScreenCoordinates) {
+      var material = createSpriteMaterial(useScreenCoordinates);
+      material.map = texture;
+      var sprite = new THREE.Sprite(material);
+      if(useScreenCoordinates) {
+          sprite.scale.set(material.map.image.width, material.map.image.height, 1);
+          sprite.position.set(message.pose.position.x, message.pose.position.y, 0);
+      } else {
+          sprite.scale = new THREE.Vector3(
+              message.scale.x*material.map.image.width/100.0,
+              message.scale.y*material.map.image.height/100.0, 1.0);
+      }
+      that.add(sprite);
+      return sprite;
+  };
   var htmlColor = function(c) {
       return "rgba("+
         Math.round(c[0]*255.0)+","+
         Math.round(c[1]*255.0)+","+
         Math.round(c[2]*255.0)+","+
         Math.round(c[3]*255.0)+")";
+  };
+  var addEventListener = function(child){
+    child.addEventListener('dblclick', function(ev){
+        if(that.lastEvent === ev) return;
+        that.on_dblclick(that);
+        that.lastEvent = ev;
+    });
+    child.addEventListener('contextmenu', function(ev){
+        if(that.lastEvent === ev) return;
+        that.on_contextmenu(that);
+        that.lastEvent = ev;
+    });
   };
 
   // create the object based on the type
@@ -457,42 +486,34 @@ ROS3D.Marker = function(options) {
     case ROS3D.MARKER_IMAGE_HUD:
     case ROS3D.MARKER_TEXT_HUD:
       this.isSelectable = false;
-      var material = createSpriteMaterial(true);
       if(message.type==ROS3D.MARKER_IMAGE_HUD) {
-        material.map = createTexture(message.text);
+          createSprite(createTexture(message.text), true);
       }
       else {
-        var textTexture = new TextTexture(message.text, {
-            fillStyle: htmlColor(this.msgColor),
-            font: "Bold 24px Monospace",
-            useBubble: false
-        });
-        material.map = textTexture.texture;
+          new IndicatorSprite(message.text,
+              { useBubble: false },
+              function(sprite) {
+                  var sprite = createSprite(sprite.texture,true);
+                  addEventListener(sprite);
+              }
+          );
       }
-      var sprite = new THREE.Sprite( material );
-      sprite.scale.set(material.map.image.width, material.map.image.height, 1);
-      sprite.position.set(message.pose.position.x, message.pose.position.y, 0);
-      this.add(sprite);
       break;
     case ROS3D.MARKER_TEXT_SPRITE:
     case ROS3D.MARKER_SPRITE:
       this.isSelectable = false;
-      var material = createSpriteMaterial(false);
       if(message.type==ROS3D.MARKER_SPRITE) {
-        material.map = createTexture(message.text);
+          createSprite(createTexture(message.text), false);
       }
       else {
-        var textTexture = new TextTexture(message.text, {
-            fillStyle: htmlColor(this.msgColor),
-            font: "Bold 24px Monospace",
-            useBubble: true
-        });
-        material.map = textTexture.texture;
+          new IndicatorSprite(message.text,
+              { useBubble: true },
+              function(sprite) {
+                  var sprite = createSprite(sprite.texture,false);
+                  addEventListener(sprite);
+              }
+          );
       }
-      var sprite = new THREE.Sprite(material);
-      var ratio = material.map.image.width/material.map.image.height;
-      sprite.scale = new THREE.Vector3(message.scale.x*ratio, message.scale.y, 1.0);
-      this.add(sprite);
       break;
     case ROS3D.MARKER_BACKGROUND_IMAGE:
       this.isBackgroundMarker = true;
@@ -513,23 +534,7 @@ ROS3D.Marker = function(options) {
       break;
   }
   
-  this.traverse (function (child){
-    child.addEventListener('dblclick', function(ev){
-        if(that.lastEvent === ev) return;
-        that.on_dblclick(that);
-        that.lastEvent = ev;
-    });
-    child.addEventListener('contextmenu', function(ev){
-        if(that.lastEvent === ev) return;
-        that.on_contextmenu(that);
-        that.lastEvent = ev;
-    });
-  });
-  
-  //this.traverse (function (child){
-  //    child.castShadow = true;
-  //    child.receiveShadow = true;
-  //});
+  this.traverse (addEventListener);
 };
 ROS3D.Marker.prototype.__proto__ = THREE.Object3D.prototype;
 
