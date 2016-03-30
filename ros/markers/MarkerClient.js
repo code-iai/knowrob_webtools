@@ -31,6 +31,7 @@ ROS3D.MarkerClient = function(options) {
   this.selectableObjects = options.selectableObjects || new THREE.Object3D();
   this.sceneObjects = options.sceneObjects || new THREE.Object3D();
   this.backgroundObjects = options.backgroundObjects || new THREE.Object3D();
+  this.orthogonalObjects = options.orthogonalObjects || new THREE.Object3D();
   this.path = options.path || '/';
   this.loader = options.loader || ROS3D.COLLADA_LOADER_2;
 
@@ -40,6 +41,7 @@ ROS3D.MarkerClient = function(options) {
   var markerScene = function(m) {
       if(m.isBackgroundMarker) { return that.backgroundObjects; }
       else if(m.isSelectable) { return that.selectableObjects; }
+      else if(m.isSceneOrtho) { return that.orthogonalObjects; }
       else { return that.sceneObjects; }
   };
 

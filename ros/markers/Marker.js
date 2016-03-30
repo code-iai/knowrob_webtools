@@ -1,9 +1,3 @@
-/**
- * @author David Gossow - dgossow@willowgarage.com
- * @author Russell Toris - rctoris@wpi.edu
- */
-
-// XXX: not used anymore, use indicator.js instead
 function TextTexture(text, options){
     var lines = text.split('\n');
     var that = this;
@@ -11,7 +5,7 @@ function TextTexture(text, options){
     var font = options.font || "Bold 24px Monospace";
     var useShadow = options.useShadow || false;
     var useBubble = options.useBubble || false;
-    var margin = options.margin || [12, 12];
+    var margin = options.margin || [5, 5];
     var lineHeight = 24;
     var shadowOffsetX = (!isNaN(options.shadowOffsetX) && options.shadowOffsetX) || 4;
     var shadowOffsetY = (!isNaN(options.shadowOffsetY) && options.shadowOffsetY) || 4;
@@ -28,11 +22,11 @@ function TextTexture(text, options){
     for(var i=0; i<lines.length; i++) {
         var m = measure_ctx.measureText(lines[i]);
         if(m.width>maxWidth) maxWidth = m.width;
-        heightSum += m.height;
+        heightSum += lineHeight;
     }
     // The text size
     var tw = maxWidth;
-    var th = lineHeight*lines.length;
+    var th = heightSum + lineHeight / 2;
     // The canvas size
     var cw = tw + margin[0];
     var ch = th + 0.5*margin[1];
@@ -118,7 +112,7 @@ function TextTexture(text, options){
     // Render text into 2D canvas
     for(var i=0; i<lines.length; i++) {
         //ctx.strokeText(lines[i], 0.5*margin[0], (i+1)*lineHeight);
-        this.ctx.fillText(lines[i], margin[0], 0.5*margin[1] + (i+1)*lineHeight);
+        this.ctx.fillText(lines[i], margin[0], margin[1] + (i+1)*lineHeight);
     }
         
     // Finally create texture from canvas
@@ -142,6 +136,7 @@ ROS3D.Marker = function(options) {
   options = options || {};
   var path = options.path || '/';
   var message = options.message;
+  var knowrobClient = options.knowrobClient;
   var loader = options.loader || ROS3D.COLLADA_LOADER_2;
   var that = this;
 
@@ -163,6 +158,7 @@ ROS3D.Marker = function(options) {
   this.msgText = message.text;
   this.isBackgroundMarker = false;
   this.isSelectable = true;
+  this.isSceneOrtho = false;
   this.id = message.id;
   this.ns = message.ns;
   this.frame_id = message.header.frame_id;
@@ -518,6 +514,7 @@ ROS3D.Marker = function(options) {
     case ROS3D.MARKER_IMAGE_HUD:
     case ROS3D.MARKER_TEXT_HUD:
       this.isSelectable = false;
+      this.isSceneOrtho = true;
       if(message.type==ROS3D.MARKER_IMAGE_HUD) {
           createSprite(createTexture(message.text), true);
       }
@@ -533,6 +530,7 @@ ROS3D.Marker = function(options) {
       break;
     case ROS3D.MARKER_TEXT_SPRITE:
     case ROS3D.MARKER_SPRITE:
+    case ROS3D.MARKER_TEXT_SPRITE_SCALED:
       this.isSelectable = false;
       if(message.type==ROS3D.MARKER_SPRITE) {
           createSprite(createTexture(message.text), false);
@@ -543,9 +541,17 @@ ROS3D.Marker = function(options) {
               function(sprite) {
                   var sprite = createSprite(sprite.texture,false);
                   addEventListener(sprite);
+                  if(message.type==ROS3D.MARKER_TEXT_SPRITE_SCALED) {
+                      knowrobClient.register_on_render(function(camera) {
+                          var v = new THREE.Vector3();
+                          var scale_factor = 4;
+                          sprite.scale.x = sprite.scale.y = v.subVectors( sprite.position, camera.camera.position ).length() / scale_factor;
+                      }, that);
+                  }
               }
           );
       }
+      
       break;
     case ROS3D.MARKER_BACKGROUND_IMAGE:
       this.isBackgroundMarker = true;
@@ -696,6 +702,7 @@ ROS3D.Marker.prototype.update = function(message) {
         break;
     case ROS3D.MARKER_SPRITE:
     case ROS3D.MARKER_TEXT_SPRITE:
+    case ROS3D.MARKER_TEXT_SPRITE_SCALED:
         var sprite = this.children[0];
         if(this.msgText !== message.text) return false;
         if(Math.abs(this.msgScale[2] - message.scale.z) > 1.0e-6) return false;

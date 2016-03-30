@@ -32,6 +32,7 @@ ROS3D.MarkerArrayClient = function(options) {
   this.selectableObjects = options.selectableObjects || new THREE.Object3D();
   this.sceneObjects = options.sceneObjects || new THREE.Object3D();
   this.backgroundObjects = options.backgroundObjects || new THREE.Object3D();
+  this.orthogonalObjects = options.orthogonalObjects || new THREE.Object3D();
   this.path = options.path || '/';
   this.loader = options.loader || ROS3D.COLLADA_LOADER_2;
   this.on_dblclick = options.on_dblclick || function(_) { };
@@ -52,6 +53,7 @@ ROS3D.MarkerArrayClient = function(options) {
   var markerScene = function(m) {
       if(m.isBackgroundMarker) { return that.backgroundObjects; }
       else if(m.isSelectable) { return that.selectableObjects; }
+      else if(m.isSceneOrtho) { return that.orthogonalObjects; }
       else { return that.sceneObjects; }
   };
   
@@ -74,7 +76,8 @@ ROS3D.MarkerArrayClient = function(options) {
             path : that.path,
             loader : that.loader,
             on_dblclick: that.on_dblclick,
-            on_contextmenu: that.on_contextmenu
+            on_contextmenu: that.on_contextmenu,
+            knowrobClient: options.knowrobClient
           });
           that.markers[message.ns + message.id] = new ROS3D.SceneNode({
             frameID : message.header.frame_id,

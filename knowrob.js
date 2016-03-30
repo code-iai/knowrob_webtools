@@ -66,6 +66,11 @@ function Knowrob(options){
     // Speech bubbles that are displayed
     this.speechBubbles = {};
 
+    // sprite markers and render events
+    var sprites = [];
+    var render_event;
+
+
     this.connect = function () {
       ros = new ROSLIB.Ros({url : rosURL});
       ros.on('connection', function() {
@@ -163,6 +168,8 @@ function Knowrob(options){
           };
           if(imageResizer()) window.setTimeout(timeout, 10);
       });
+
+      render_event = new CustomEvent('render', {'camera': null});
     };
     
     this.registerNodes = function () {
@@ -187,6 +194,7 @@ function Knowrob(options){
         tfClient : tfClient,
         topic : '/visualization_marker',
         sceneObjects : rosViewer.scene,
+        orthogonalObjects : that.sceneOrtho,
         selectableObjects : rosViewer.selectableObjects,
         backgroundObjects : rosViewer.backgroundScene
       });
@@ -197,13 +205,15 @@ function Knowrob(options){
         tfClient : tfClient,
         topic : '/visualization_marker_array',
         sceneObjects : rosViewer.scene,
+        orthogonalObjects : that.sceneOrtho,
         selectableObjects : rosViewer.selectableObjects,
         backgroundObjects : rosViewer.backgroundScene,
         markerClient : markerClient,
         path : meshPath,
         on_dblclick: options.on_dblclick || that.on_marker_dblclick,
         on_contextmenu: options.on_contextmenu || that.on_marker_contextmenu,
-        on_delete: options.on_marker_delete || that.on_marker_delete
+        on_delete: options.on_marker_delete || that.on_marker_delete,
+        knowrobClient: that
       });
 
       var desig_listener = new ROSLIB.Topic({
@@ -414,6 +424,11 @@ function Knowrob(options){
               }, message.duration*1000);
             }
         }
+    };
+
+    this.register_on_render = function (fn, sprite) {
+       sprite.addEventListener('render', fn, false);
+       sprites.push(sprite);
     };
     
     this.waitForJsonProlog = function () {
@@ -848,6 +863,14 @@ function Knowrob(options){
     ///////////////////////////////
     
     this.on_render = function(camera,scene) {
+        var index;
+        for(index = 0; index < sprites.length; index++) {
+            //sprites[index].camera = camera;
+            //render_event.target = sprites[index];
+            render_event.camera = camera;
+            sprites[index].dispatchEvent(render_event);
+        }
+
     };
     
     this.on_marker_dblclick = function(marker) {
