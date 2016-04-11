@@ -393,9 +393,9 @@ function KnowrobClient(options){
     this.newCanvas = function(options) {
         var x = new KnowrobCanvas(that, options);
         // connect to render event, dispatch to marker clients
-        x.rosViewer.addEventListener("render", function(e) {
-            that.markerClient.dispatchEvent(e);
-            that.markerArrayClient.dispatchEvent(e);
+        x.rosViewer.on('render', function(e) {
+            if(that.markerClient)      that.markerClient.emit('render', e);
+            if(that.markerArrayClient) that.markerArrayClient.emit('render', e);
         });
         return x;
     };
