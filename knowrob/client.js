@@ -47,8 +47,8 @@ function KnowrobClient(options){
     
     // ROS messages
     var tfClient = undefined;
-    var markerClient = undefined;
-    var markerArrayClient = undefined;
+    this.markerClient = undefined;
+    this.markerArrayClient = undefined;
     var designatorClient = undefined;
     var imageClient = undefined;
     var cameraPoseClient = undefined;
@@ -75,6 +75,7 @@ function KnowrobClient(options){
     this.scene             = new CanvasProxy('scene');
     this.selectableObjects = new CanvasProxy('selectableObjects');
     this.backgroundScene   = new CanvasProxy('backgroundScene');
+    this.orthoScene        = new CanvasProxy('orthogonalScene');
     
     this.init = function() {
         // Connect to ROS.
@@ -204,24 +205,26 @@ function KnowrobClient(options){
       });
 
       // Setup the marker client.
-      markerClient = new ROS3D.MarkerClient({
+      that.markerClient = new ROS3D.MarkerClient({
         ros : that.ros,
         tfClient : tfClient,
         topic : '/visualization_marker',
         sceneObjects : that.scene,
+        orthogonalObjects : that.orthoScene,
         selectableObjects : that.selectableObjects,
         backgroundObjects : that.backgroundScene
       });
 
       // Setup the marker array client.
-      markerArrayClient = new ROS3D.MarkerArrayClient({
+      that.markerArrayClient = new ROS3D.MarkerArrayClient({
         ros : that.ros,
         tfClient : tfClient,
         topic : '/visualization_marker_array',
         sceneObjects : that.scene,
+        orthogonalObjects : that.orthoScene,
         selectableObjects : that.selectableObjects,
         backgroundObjects : that.backgroundScene,
-        markerClient : markerClient,
+        markerClient : that.markerClient,
         path : meshPath,
         on_dblclick: options.on_dblclick || that.on_marker_dblclick,
         on_contextmenu: options.on_contextmenu || that.on_marker_contextmenu,
@@ -388,7 +391,13 @@ function KnowrobClient(options){
     };
     
     this.newCanvas = function(options) {
-        return new KnowrobCanvas(that, options);
+        var x = new KnowrobCanvas(that, options);
+        // connect to render event, dispatch to marker clients
+        x.rosViewer.addEventListener("render", function(e) {
+            that.markerClient.dispatchEvent(e);
+            that.markerArrayClient.dispatchEvent(e);
+        });
+        return x;
     };
     
     this.newDataVis = function(options) {
