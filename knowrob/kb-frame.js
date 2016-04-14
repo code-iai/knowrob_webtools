@@ -13,7 +13,7 @@ function KnowrobUI(client, options) {
     var designatorDiv = options.designator_div || 'designator';
     var pictureDiv    = options.picture_div || 'mjpeg';
     var historyDiv    = options.history_div || 'history';
-    var libraryDiv    = options.library_div || 'examplequery';
+    var libraryDiv    = options.library_div || 'library';
     var queryDiv      = options.query_div || 'user_query';
     var nextButtonDiv = options.next_button_div || 'btn_query_next';
     
@@ -69,20 +69,35 @@ function KnowrobUI(client, options) {
     
     this.initQueryLibrary = function (queries) {
         function loadQueries(query_lib) {
-            var select = document.getElementById(libraryDiv);
-            if(select !== null && query_lib) {
-                while (select.firstChild) select.removeChild(select.firstChild);
+            var lib_div = document.getElementById(libraryDiv);
+            if(lib_div !== null && query_lib) {
+                lib_div.innerHTML = '';
                 
                 var query = query_lib.query || query_lib;
                 for (var i = 0; i < query.length; i++) {
-                    var opt = document.createElement('option');
+                    var x = document.createElement('button');
                     if(query[i].q !== undefined) {
-                        opt.value = query[i].q;
-                        opt.innerHTML = query[i].text;
-                        select.appendChild(opt);
+                        x.type = 'button';
+                        x.className = 'query_lib_button show_code';
+                        x.value = query[i].q;
+                        if(client.flask_user.isAdmin()) {
+                            x.ondblclick = "ui.setQueryText()";
+                        }
+                        //x.onchange = "ui.console.setQueryValue("+x.value+")";
+                        
+                        if(query[i].text.startsWith('-----')) {
+                            x.innerHTML = '<div class="query_lib_header">'+
+                                query[i].text.split("-----")[1].trim()+'</div>';
+                        }
+                        else {
+                            x.innerHTML = query[i].text;
+                        }
+                        
+                        lib_div.appendChild(x);
+                        lib_div.appendChild(document.createElement('br'));
+                        lib_div.appendChild(document.createElement('hr'));
                     }
                 }
-                select.size = query.length;
             }
         };
         
