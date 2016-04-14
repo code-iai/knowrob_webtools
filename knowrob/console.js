@@ -10,12 +10,16 @@ function PrologConsole(client, options) {
     var nextButtonDiv = options.next_button_div || 'btn_query_next';
     var historyDiv    = options.history_div || 'history';
     var queryDiv      = options.query_div || 'user_query';
+    
+    // Names of prolog predicates and modules for auto completion
+    var prologNames;
   
     // The index to the currently active history item
     // history items are saved on the server and queried using AJAX
     var historyIndex = -1;
 
     this.init = function () {
+        ace.require("ace/ext/language_tools");
         var userQuery = ace.edit(queryDiv);
         userQuery.resize(true);
         userQuery.setTheme("ace/theme/solarized_light");
@@ -26,7 +30,8 @@ function PrologConsole(client, options) {
             printMarginColumn: false,
             highlightActiveLine: false,
             highlightGutterLine: false,
-            enableBasicAutocompletion: true
+            enableBasicAutocompletion: true,
+            enableLiveAutocompletion: true
         });
         userQuery.commands.addCommand({
             name: 'send_query', readOnly: false,
@@ -59,6 +64,8 @@ function PrologConsole(client, options) {
             exec: function(editor) { that.previousHistoryItem(); }
         });
         
+        this.initAutoCompletion();
+        
         // Create console iosOverlay
         var console = document.getElementById('console');
         if(console) {
@@ -85,6 +92,46 @@ function PrologConsole(client, options) {
         });
         
         setInactive(document.getElementById(nextButtonDiv));
+    };
+    
+    this.queryPredicateNames = function() {
+      if( ! prologNames ) {
+        prolog = this.newProlog();
+        prologNames = [];
+        // Query for predicates/modules and collect all results
+        prolog.jsonQuery("findall(X, current_predicate(X/_);current_module(X), L)", function(x) {
+          if (x.value) {
+            // Parse each value
+            var lines = x.value.split("\n");
+            for(i=1; i<lines.length-1; ++i) {
+              var tmp = lines[i].split(" = ");
+              if(tmp.length==2) {
+                prologNames.push(tmp[1].trim());
+              }
+            }
+            prologNames.sort();
+          }
+          else {
+            console.warn("Unable to query prolog names.");
+            console.warn(x);
+          }
+        }, mode=0);
+      }
+      return prologNames;
+    };
+    
+    this.initAutoCompletion = function() {
+        // Add completer for prolog code
+        ace.require("ace/ext/language_tools").addCompleter({
+            getCompletions: function(editor, session, pos, prefix, callback) {
+                var names = that.queryPredicateNames();
+                if( names ) {
+                  callback(null, names.map(function(x) {
+                      return {name: x, value: x, score: 100, meta: "pl"};
+                  }));
+                }
+            }
+        });
     };
     
     this.showConsoleOverlay = function () {

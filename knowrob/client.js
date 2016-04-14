@@ -34,8 +34,6 @@ function KnowrobClient(options){
     this.isPrologConnected = false;
     // true iff registerNodes was called before
     var isRegistered = false;
-    // Names of prolog predicates and modules for auto completion
-    var prologNames;
     // Prefix for mesh GET URL's
     var meshPath  = options.meshPath || '/';
     // Block the interface until an episode was selected?
@@ -98,7 +96,6 @@ function KnowrobClient(options){
         if(options.category && options.episode)
             that.episode.setEpisode(options.category, options.episode);
         
-        that.initAutoCompletion();
         that.createOverlay();
       
         setInterval(containerRefresh, 570000);
@@ -334,50 +331,6 @@ function KnowrobClient(options){
             else {
                 that.isPrologConnected = true;
                 that.episode.selectMongoDB();
-            }
-        });
-    };
-    
-    ///////////////////////////////
-    //////////// Auto Completion for Prolog Predicates
-    ///////////////////////////////
-    
-    this.queryPredicateNames = function() {
-      if( ! prologNames ) {
-        prolog = this.newProlog();
-        prologNames = [];
-        // Query for predicates/modules and collect all results
-        prolog.jsonQuery("findall(X, current_predicate(X/_);current_module(X), L)", function(x) {
-          if (x.value) {
-            // Parse each value
-            var lines = x.value.split("\n");
-            for(i=1; i<lines.length-1; ++i) {
-              var tmp = lines[i].split(" = ");
-              if(tmp.length==2) {
-                prologNames.push(tmp[1].trim());
-              }
-            }
-            prologNames.sort();
-          }
-          else {
-            console.warn("Unable to query prolog names.");
-            console.warn(x);
-          }
-        }, mode=0);
-      }
-      return prologNames;
-    };
-    
-    this.initAutoCompletion = function() {
-        // Add completer for prolog code
-        ace.require("ace/ext/language_tools").addCompleter({
-            getCompletions: function(editor, session, pos, prefix, callback) {
-                var names = that.queryPredicateNames();
-                if( names ) {
-                  callback(null, names.map(function(x) {
-                      return {name: x, value: x, score: 100, meta: "pl"};
-                  }));
-                }
             }
         });
     };
