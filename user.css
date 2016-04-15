@@ -501,25 +501,35 @@ a.btn {
   overflow: auto;
 }
 
-#library hr {
-  margin-top: 4px;
-  margin-bottom: 4px;
-  border-width: 2px 0px 0px;
-  border-style: solid none none;
-  border-color: #ccc;
-}
-
 .query_lib_button {
-  width: auto;
+  width: 100%;
   text-align: left;
   border: 0px none;
+  padding: 4px;
+}
+.query_lib_button:focus {
+  background-color: #346F98;
+  color: white;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  padding-left: 4px;
+  padding-right: 4px;
+  border-top: 1px solid #013C65;
+  border-bottom: 1px solid #013C65;
 }
 
 .query_lib_header {
-  width: auto;
+  width: 100%;
   text-align: left;
   border: 0px none;
   font-weight:bold;
+  padding-left: 4px;
+  padding-right: 4px;
+  color: #013C65;
+}
+
+.query_lib_space {
+  height: 20px;
 }
 
 #history {

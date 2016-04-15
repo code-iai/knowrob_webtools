@@ -75,30 +75,43 @@ function KnowrobUI(client, options) {
                 
                 var query = query_lib.query || query_lib;
                 for (var i = 0; i < query.length; i++) {
-                    var x = document.createElement('button');
-                    if(query[i].q !== undefined) {
-                        x.type = 'button';
-                        x.className = 'query_lib_button show_code';
-                        x.value = query[i].q;
-                        if(client.flask_user.isAdmin()) {
-                            x.ondblclick = "ui.setQueryText()";
-                        }
-                        //x.onchange = "ui.console.setQueryValue("+x.value+")";
-                        
-                        if(query[i].text.startsWith('-----')) {
-                            x.innerHTML = '<div class="query_lib_header">'+
-                                query[i].text.split("-----")[1].trim()+'</div>';
-                        }
-                        else {
-                            x.innerHTML = query[i].text;
+                    var text = query[i].text.trim();
+                    if(text.length==0) continue;
+                    
+                    // TODO: buttons for editable queries!
+                    if(text.startsWith('-----')) {
+                        // insert space between sections
+                        if(i>0) {
+                            var x = document.createElement('div');
+                            x.className = 'query_lib_space';
+                            lib_div.appendChild(x);
                         }
                         
+                        var x = document.createElement('div');
+                        x.className = 'query_lib_header';
+                        x.innerHTML = text.split("-----")[1].trim();
                         lib_div.appendChild(x);
-                        lib_div.appendChild(document.createElement('br'));
-                        lib_div.appendChild(document.createElement('hr'));
+                    }
+                    else if(query[i].q) {
+                        var x = document.createElement('button');
+                        x.type = 'button';
+                        x.value = query[i].q;
+                        x.className = 'query_lib_button show_code';
+                        x.innerHTML = text;
+                        if(client.flask_user.isAdmin()) {
+                            x.ondblclick = function(e) {
+                                that.setQueryText();
+                            };
+                        }
+                        lib_div.appendChild(x);
                     }
                 }
             }
+            
+            $( "button.query_lib_button" ).focus(function( event ) {
+                ui.console.setQueryValue( $(this)['0'].value );
+                event.preventDefault();
+            });
         };
         
         if(queries == undefined) {
@@ -109,12 +122,41 @@ function KnowrobUI(client, options) {
         }
     };
     
+    $("#library").keydown(function(e) {
+        var button = $(".query_lib_button:focus");
+        if (e.keyCode == 40) { // down
+            for(var next=button.next(); next.length>0; next=next.next()) {
+                if(next.hasClass('query_lib_button')) {
+                    next.focus();
+                    next.click();
+                    break;
+                }
+            }
+            e.preventDefault();
+        }
+        else if (e.keyCode == 38) { // up
+            for(var prev=button.prev(); prev.length>0; prev=prev.prev()) {
+                if(prev.hasClass('query_lib_button')) {
+                    prev.focus();
+                    prev.click();
+                    break;
+                }
+            }
+            e.preventDefault();
+        }
+        else if (e.keyCode == 32) { // space
+            e.preventDefault();
+            that.console.query();
+        }
+    });
+    
     ///////////////////////////////
     //////////// Editable Query Library
     ///////////////////////////////
     // FIXME(daniel): object query library not editable yet!
     
     function ensureSelected() {
+        // FIXME broken
         if(document.getElementById("examplequery").selectedIndex<1) {
             window.alert("Please select a query.");
             return false;
@@ -125,10 +167,12 @@ function KnowrobUI(client, options) {
     };
     
     function selectedQueryIndex() {
+        // FIXME broken
         return document.getElementById("examplequery").selectedIndex;
     };
     
     function selectedQueryText() {
+        // FIXME broken
         var x = document.getElementById("examplequery");
         if(!ensureSelected()) return None;
         return x.options[x.selectedIndex].firstChild.data;
@@ -138,18 +182,21 @@ function KnowrobUI(client, options) {
         var text = window.prompt("Please enter natural language "+
             "representation for the Prolog query",selectedQueryText());
         if(text) {
+        // FIXME broken
             var x = document.getElementById("examplequery");
             x.options[x.selectedIndex].firstChild.data = text;
         }
     };
     
     function selectedQueryCode() {
+        // FIXME broken
         var x = document.getElementById("examplequery");
         if(!ensureSelected()) return None;
         return x.options[x.selectedIndex].value;
     };
     
     function addQuery() {
+        // FIXME broken
         var x = document.getElementById("examplequery");
         var i = selectedQueryIndex()+1;
         var text = window.prompt("Please enter natural language "+
@@ -170,6 +217,7 @@ function KnowrobUI(client, options) {
     function deleteQuery() {
         if(!ensureSelected()) return;
         if(window.confirm('Do you really want to delete the query "'+selectedQueryText()+'"')) {
+        // FIXME broken
             var x = document.getElementById("examplequery");
             x.removeChild( x.options[x.selectedIndex] );
         }
@@ -178,11 +226,13 @@ function KnowrobUI(client, options) {
     function saveQuery() {
         if(!ensureSelected()) return;
         var x = document.getElementById("examplequery");
+        // FIXME broken
         x.options[x.selectedIndex].value = ace.edit('user_query').getValue();
     };
     
     function queryMove(increment) {
         if(!ensureSelected()) return;
+        // FIXME broken
         var x = document.getElementById("examplequery");
         var selIndex = x.selectedIndex;
         if(selIndex + increment <= 0) return;
@@ -200,6 +250,7 @@ function KnowrobUI(client, options) {
     function saveQueries() {
         var experimentData = { query: [] };
         var x = document.getElementById("examplequery");
+        // FIXME broken
         for(var i=0; i<x.options.length; i++) {
             experimentData.query.push({
                 q: x.options[i].value,
