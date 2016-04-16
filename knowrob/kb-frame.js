@@ -12,6 +12,7 @@ function KnowrobUI(client, options) {
     var imageHeight = function() { return 0.0; };
     
     var libraryData;
+    var editorSkipUpdate = false;
     
     this.rosViewer = undefined;
     this.console = undefined;
@@ -40,10 +41,8 @@ function KnowrobUI(client, options) {
         });
     
         var editor = document.getElementById('library-editor');
-        var span = document.getElementsByClassName("close")[0];
-        span.onclick = function() {
-            editor.style.display = "none";
-        };
+        document.getElementsByClassName("icon_close")[0].onclick = that.hideLibraryEditor;
+        document.getElementsByClassName("icon_add")[0].onclick = that.addQuery;
         window.onclick = function(event) {
             if (event.target == editor) {
                 editor.style.display = "none";
@@ -104,8 +103,7 @@ function KnowrobUI(client, options) {
                         lib_div.appendChild(x);
                     }
                 }
-                
-                that.update_library_editor(query);
+                that.updateLibraryEditor(query);
             }
             
             $( "button.query_lib_button" )
@@ -154,7 +152,12 @@ function KnowrobUI(client, options) {
     //////////// Editable Query Library
     ///////////////////////////////
     
-    this.update_library_editor = function(query_lib) {
+    function textEditor(container, options) {
+        $('<textarea class="library_textarea" data-bind="value: ' + options.field + '"></textarea>').appendTo(container);
+    };
+    
+    this.updateLibraryEditor = function(query_lib) {
+        if(editorSkipUpdate) return;
         libraryData = new kendo.data.DataSource({
             data: query_lib,
             schema: {
@@ -172,28 +175,54 @@ function KnowrobUI(client, options) {
         $("#library-editor-content").kendoGrid({
             dataSource: libraryData,
             columns: [
-                { field: "text", title: "Natural language query" },
-                { field: "q", title: "Prolog encoded query" },
-                { command: ["edit"], title: "&nbsp;", width: 100 }
+                { field: "text", title: "Natural language query", editor: textEditor },
+                { field: "q", title: "Prolog encoded query", editor: textEditor },
+                { command: ["edit", "destroy"], title: "&nbsp;", width: 100 }
             ],
+            cancel:function(e) {
+                // HACK: For some reasons rows disappear when editing is canceled
+                $('#library-editor-content').data('kendoGrid').dataSource.read();
+                $('#library-editor-content').data('kendoGrid').refresh();
+            },
             save: function(e) {
+                editorSkipUpdate = true;
                 that.initQueryLibrary(libraryData._data);
+                editorSkipUpdate = false;
+            },
+            remove: function(e) {
+                editorSkipUpdate = true;
+                that.initQueryLibrary(libraryData._data);
+                editorSkipUpdate = false;
             },
             editable: "inline",
             selectable: true,
-            sortable: false
+            sortable: false,
+            scrollable: false
         });
     };
     
-    this.show_library_editor = function() {
+    this.showLibraryEditor = function() {
         document.getElementById('library-editor').style.display = "block";
     };
     
-    this.hide_library_editor = function() {
+    this.hideLibraryEditor = function() {
         document.getElementById('library-editor').style.display = "none";
     };
     
+    this.addQuery = function() {
+        var grid = $("#library-editor-content").data("kendoGrid");
+        if (grid) {
+            //this logic creates a new item in the datasource/datagrid
+            var dataSource = grid.dataSource;
+            var total = dataSource.data().length;
+            dataSource.insert(total, {});
+            dataSource.page(dataSource.totalPages());
+            grid.editRow(grid.tbody.children().last());
+        }
+    };
+    
     this.saveQueries = function() {
+        // FIXME(daniel): object queries can not be saved like this
         var experimentData = { query: libraryData._data };
         $.ajax({
             url: "/knowrob/exp_save",

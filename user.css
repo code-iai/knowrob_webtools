@@ -521,9 +521,31 @@ a.btn {
 }
 
 #library-editor-content {
-  overflow: hidden;
-  margin-right: 30px;
-  height: 100%;
+  overflow: auto;
+  margin-top: 40px;
+  height: 93%;
+}
+
+.library_textarea {
+  width:100%;
+  height:500px;
+  resize:none;
+  border:medium none;
+  background-color: #bbb;
+  color: #333;
+  border: 1px solid #013C65;
+}
+
+.library-editor-button {
+    float: right;
+    height: 30px;
+    width: 30px;
+    opacity: 0.2;
+}
+.library-editor-button:hover,
+.library-editor-button:focus {
+    opacity: 1.0;
+    cursor: pointer;
 }
 
 .query_lib_header {
@@ -782,7 +804,7 @@ li.zero_size,
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
     z-index: 999; /* Sit on top */
-    padding-top: 100px; /* Location of the box */
+    padding-top: 10px; /* Location of the box */
     left: 0;
     top: 0;
     width: 100%; /* Full width */
@@ -803,22 +825,8 @@ li.zero_size,
     height: 90%;
 }
 
-/* The Close Button */
-.close {
-    color: #aaaaaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-    color: #000;
-    text-decoration: none;
-    cursor: pointer;
-}
-
 .icon_bookmark  { background: url("/static/icons/theme/bookmark-new.png") center / 24px no-repeat; }
+.icon_close     { background: url("/static/icons/theme/window-close.png") center / 24px no-repeat; }
 .icon_camera    { background: url("/static/icons/theme/camera-web.png") center / 24px no-repeat; }
 .icon_cloud     { background: url("/static/icons/theme/cloud.png") center / 24px no-repeat; }
 .icon_error     { background: url("/static/icons/theme/dialog-error.png") center / 24px no-repeat; }
@@ -866,3 +874,15 @@ li.zero_size,
 .icon_zoom_in   { background: url("/static/icons/theme/zoom-in.png") center / 24px no-repeat; }
 .icon_zoom_orig { background: url("/static/icons/theme/zoom-original.png") center / 24px no-repeat; }
 .icon_zoom_out  { background: url("/static/icons/theme/zoom-out.png") center / 24px no-repeat; }
+
+/** Kendo grid **/
+
+.k-grid tbody tr {
+    cursor: move;
+}
+
+.placeholder {
+  outline-style: dashed;
+  outline-width: 1px;
+  outline-color: red;
+}
