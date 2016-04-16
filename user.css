@@ -520,6 +520,12 @@ a.btn {
   background-color:#dadada;
 }
 
+#library-editor-content {
+  overflow: hidden;
+  margin-right: 30px;
+  height: 100%;
+}
+
 .query_lib_header {
   width: 100%;
   text-align: left;
@@ -770,6 +776,47 @@ li.zero_size,
 
 .aligned-left { float: left; }
 .aligned-right { float: right; }
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 999; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    margin-top: 8px;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    height: 90%;
+}
+
+/* The Close Button */
+.close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
 
 .icon_bookmark  { background: url("/static/icons/theme/bookmark-new.png") center / 24px no-repeat; }
 .icon_camera    { background: url("/static/icons/theme/camera-web.png") center / 24px no-repeat; }

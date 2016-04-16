@@ -11,6 +11,8 @@ function KnowrobUI(client, options) {
     var imageWidth = function() { return 0.0; };
     var imageHeight = function() { return 0.0; };
     
+    var libraryData;
+    
     this.rosViewer = undefined;
     this.console = undefined;
 
@@ -36,6 +38,17 @@ function KnowrobUI(client, options) {
             var timeout = function(){ if(that.resizeImage()) window.setTimeout(timeout, 10); };
             if(that.resizeImage()) window.setTimeout(timeout, 10);
         });
+    
+        var editor = document.getElementById('library-editor');
+        var span = document.getElementsByClassName("close")[0];
+        span.onclick = function() {
+            editor.style.display = "none";
+        };
+        window.onclick = function(event) {
+            if (event.target == editor) {
+                editor.style.display = "none";
+            }
+        };
     };
 
     this.resizeImage = function () {
@@ -91,6 +104,8 @@ function KnowrobUI(client, options) {
                         lib_div.appendChild(x);
                     }
                 }
+                
+                that.update_library_editor(query);
             }
             
             $( "button.query_lib_button" )
@@ -139,8 +154,57 @@ function KnowrobUI(client, options) {
     //////////// Editable Query Library
     ///////////////////////////////
     
-    this.editQueries = function() {
-        window.alert("Not implemented yet.");
+    this.update_library_editor = function(query_lib) {
+        libraryData = new kendo.data.DataSource({
+            data: query_lib,
+            schema: {
+              model: {
+                id: "name",
+                fields: {
+                    text: { editable: true },
+                    q: { editable: true }
+                }
+              }
+            }
+        });
+        libraryData.read();
+
+        $("#library-editor-content").kendoGrid({
+            dataSource: libraryData,
+            columns: [
+                { field: "text", title: "Natural language query" },
+                { field: "q", title: "Prolog encoded query" },
+                { command: ["edit"], title: "&nbsp;", width: 100 }
+            ],
+            save: function(e) {
+                that.initQueryLibrary(libraryData._data);
+            },
+            editable: "inline",
+            selectable: true,
+            sortable: false
+        });
+    };
+    
+    this.show_library_editor = function() {
+        document.getElementById('library-editor').style.display = "block";
+    };
+    
+    this.hide_library_editor = function() {
+        document.getElementById('library-editor').style.display = "none";
+    };
+    
+    this.saveQueries = function() {
+        var experimentData = { query: libraryData._data };
+        $.ajax({
+            url: "/knowrob/exp_save",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(experimentData),  
+            dataType: "json",
+            success: function (data) {
+                window.alert("Query library saved successfully!");
+            }
+        }).done( function (request) {});
     };
     
     this.uploadQueries = function() {
@@ -149,25 +213,5 @@ function KnowrobUI(client, options) {
     
     this.downloadQueries = function() {
         window.alert("Not implemented yet.");
-    };
-    
-    this.saveQueries = function() {
-        var experimentData = { query: [] };
-        var x = document.getElementById("examplequery");
-        // FIXME broken
-        for(var i=0; i<x.options.length; i++) {
-            experimentData.query.push({
-                q: x.options[i].value,
-                text: x.options[i].text
-            });
-        };
-        $.ajax({
-            url: "/knowrob/exp_save",
-            type: "POST",
-            contentType: "application/json",
-            data: JSON.stringify(experimentData),  
-            dataType: "json",
-            success: function (data) {}
-        }).done( function (request) {});
     };
 };
