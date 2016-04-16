@@ -214,16 +214,18 @@ function PrologConsole(client, options) {
       ace.edit(queryDiv).focus();
     };
     
+    // TODO(daniel): better use CSS class / disabled selector
     function setActive(div) {
       div.style.pointerEvents = "auto";
       div.style.backgroundColor = "#dadada";
       div.style.color = "#606060";
+      div.style.opacity = "1.0";
     };
-    
     function setInactive(div) {
       div.style.pointerEvents = "none";
       div.style.backgroundColor = "#cfcfcf";
       div.style.color = "#adadad";
+      div.style.opacity = "0.2";
     };
 
     // append the selected query to the user_query form

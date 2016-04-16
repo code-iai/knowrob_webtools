@@ -229,6 +229,7 @@ li:hover ul li.zero_size > div { top: 0px; }
 /* Area at the top of the page */
 .headline { margin-top: 10px !important; }
 /* Area below headlines */
+#page-content { width:100%; height:100%; }
 #page-body { margin-top: 20px !important; }
 
 .content-box {
@@ -482,30 +483,66 @@ a.btn {
 
 #console_top {
   width: 100%;
-  height: -o-calc(100% - 25px); /* opera */
-  height: -webkit-calc(100% - 25px); /* google, safari */
-  height: -moz-calc(100% - 25px); /* firefox */
+  height: -o-calc(100% - 30px); /* opera */
+  height: -webkit-calc(100% - 30px); /* google, safari */
+  height: -moz-calc(100% - 30px); /* firefox */
 }
-
 #console_bottom {
   position: relative;
   width: 100%;
-  height: 25px;
+  height: 30px;
 }
 
 #library {
   padding: 0px;
   width: 100%;
-  font-size:20px;
   border: 0px none;
+}
+#library_top {
+  width: 100%;
+  height: -o-calc(100% - 30px); /* opera */
+  height: -webkit-calc(100% - 30px); /* google, safari */
+  height: -moz-calc(100% - 30px); /* firefox */
   overflow: auto;
+}
+#library_bottom {
+  position: relative;
+  width: 100%;
+  height: 30px;
+}
+#library_content {
+  width: 100%;
+  overflow: auto;
+}
+#library_buttons {
+  width:100%;
+  height:100%;
+  background-color:#dadada;
+}
+
+.query_lib_header {
+  width: 100%;
+  text-align: left;
+  border: 0px none;
+  font-weight:bold;
+  font-size:20px;
+  padding-left: 4px;
+  padding-right: 4px;
+  color: #013C65;
+}
+
+.query_lib_space {
+  height: 20px;
 }
 
 .query_lib_button {
   width: 100%;
-  text-align: left;
   border: 0px none;
   padding: 4px;
+  border: 0px none;
+  font-family: 'Tahoma';
+  font-size: 15px;
+  text-align: left;
 }
 .query_lib_button:focus {
   background-color: #346F98;
@@ -516,20 +553,6 @@ a.btn {
   padding-right: 4px;
   border-top: 1px solid #013C65;
   border-bottom: 1px solid #013C65;
-}
-
-.query_lib_header {
-  width: 100%;
-  text-align: left;
-  border: 0px none;
-  font-weight:bold;
-  padding-left: 4px;
-  padding-right: 4px;
-  color: #013C65;
-}
-
-.query_lib_space {
-  height: 20px;
 }
 
 #history {
@@ -543,11 +566,6 @@ a.btn {
   width:100%;
   height:100%;
   background-color:#dadada;
-}
-#query_admin_buttons {
-  width:100%;
-  background-color: #dadada;
-  border-bottom: 1px solid #BBB;
 }
 .query_button_group {
   list-style-type:none;
@@ -576,8 +594,9 @@ a.btn {
 .query_button {
   display:block;
   background-color:#dadada;
-  width:100px;
+  width:30px;
   padding:7px;
+  height: 30px;
 }
 
 #user_query {
@@ -751,3 +770,52 @@ li.zero_size,
 
 .aligned-left { float: left; }
 .aligned-right { float: right; }
+
+.icon_bookmark  { background: url("/static/icons/theme/bookmark-new.png") center / 24px no-repeat; }
+.icon_camera    { background: url("/static/icons/theme/camera-web.png") center / 24px no-repeat; }
+.icon_cloud     { background: url("/static/icons/theme/cloud.png") center / 24px no-repeat; }
+.icon_error     { background: url("/static/icons/theme/dialog-error.png") center / 24px no-repeat; }
+.icon_question  { background: url("/static/icons/theme/dialog-question.png") center / 24px no-repeat; }
+.icon_warning   { background: url("/static/icons/theme/dialog-warning") center / 24px no-repeat; }
+.icon_open      { background: url("/static/icons/theme/document-open.png") center / 24px no-repeat; }
+.icon_save      { background: url("/static/icons/theme/document-save.png") center / 24px no-repeat; }
+.icon_send      { background: url("/static/icons/theme/document-send.png") center / 24px no-repeat; }
+.icon_edit      { background: url("/static/icons/theme/edit.png") center / 24px no-repeat; }
+.icon_clear     { background: url("/static/icons/theme/edit-clear.png") center / 24px no-repeat; }
+.icon_copy      { background: url("/static/icons/theme/edit-copy.png") center / 24px no-repeat; }
+.icon_cut       { background: url("/static/icons/theme/edit-cut.png") center / 24px no-repeat; }
+.icon_delete    { background: url("/static/icons/theme/edit-delete.png") center / 24px no-repeat; }
+.icon_find      { background: url("/static/icons/theme/edit-find.png") center / 24px no-repeat; }
+.icon_paste     { background: url("/static/icons/theme/edit-paste.png") center / 24px no-repeat; }
+.icon_redo      { background: url("/static/icons/theme/edit-redo.png") center / 24px no-repeat; }
+.icon_select    { background: url("/static/icons/theme/edit-select-all.png") center / 24px no-repeat; }
+.icon_undo      { background: url("/static/icons/theme/edit-undo.png") center / 24px no-repeat; }
+.icon_docs      { background: url("/static/icons/theme/emblem-documents.png") center / 24px no-repeat; }
+.icon_important { background: url("/static/icons/theme/emblem-important.png") center / 24px no-repeat; }
+.icon_shared    { background: url("/static/icons/theme/emblem-shared.png") center / 24px no-repeat; }
+.icon_folder    { background: url("/static/icons/theme/folder.png") center / 24px no-repeat; }
+.icon_download  { background: url("/static/icons/theme/folder-download.png") center / 24px no-repeat; }
+.icon_upload    { background: url("/static/icons/theme/folder-upload.png") center / 24px no-repeat; }
+.icon_remote    { background: url("/static/icons/theme/folder-remote.png") center / 24px no-repeat; }
+.icon_down      { background: url("/static/icons/theme/go-down.png") center / 24px no-repeat; }
+.icon_next      { background: url("/static/icons/theme/go-next.png") center / 24px no-repeat; }
+.icon_prev      { background: url("/static/icons/theme/go-previous.png") center / 24px no-repeat; }
+.icon_up        { background: url("/static/icons/theme/go-up.png") center / 24px no-repeat; }
+.icon_add       { background: url("/static/icons/theme/list-add.png") center / 24px no-repeat; }
+.icon_remove    { background: url("/static/icons/theme/list-remove.png") center / 24px no-repeat; }
+.icon_attachment{ background: url("/static/icons/theme/mail-attachment.png") center / 24px no-repeat; }
+.icon_replied   { background: url("/static/icons/theme/mail-replied.png") center / 24px no-repeat; }
+.icon_unread    { background: url("/static/icons/theme/mail-unread.png") center / 24px no-repeat; }
+.icon_pause     { background: url("/static/icons/theme/media-playback-pause.png") center / 24px no-repeat; }
+.icon_start     { background: url("/static/icons/theme/media-playback-start.png") center / 24px no-repeat; }
+.icon_stop      { background: url("/static/icons/theme/media-playback-stop.png") center / 24px no-repeat; }
+.icon_record    { background: url("/static/icons/theme/media-record.png") center / 24px no-repeat; }
+.icon_server    { background: url("/static/icons/theme/network-server.png") center / 24px no-repeat; }
+.icon_settings  { background: url("/static/icons/theme/preferences-system.png") center / 24px no-repeat; }
+.icon_run       { background: url("/static/icons/theme/system-run.png") center / 24px no-repeat; }
+.icon_home      { background: url("/static/icons/theme/user-home.png") center / 24px no-repeat; }
+.icon_trash     { background: url("/static/icons/theme/user-trash.png") center / 24px no-repeat; }
+.icon_fullscreen{ background: url("/static/icons/theme/view-fullscreen.png") center / 24px no-repeat; }
+.icon_zoom_in   { background: url("/static/icons/theme/zoom-in.png") center / 24px no-repeat; }
+.icon_zoom_orig { background: url("/static/icons/theme/zoom-original.png") center / 24px no-repeat; }
+.icon_zoom_out  { background: url("/static/icons/theme/zoom-out.png") center / 24px no-repeat; }
