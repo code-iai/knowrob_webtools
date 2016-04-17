@@ -393,11 +393,11 @@ function KnowrobClient(options){
     };
     
     this.on_marker_delete = function(ns) {
+        if(that.getActiveFrame())
+            that.getActiveFrame().on_marker_delete(ns);
         if(ns === that.selectedMarker) {
             that.unselectMarker();
         }
-        if(that.getActiveFrame())
-            that.getActiveFrame().on_marker_delete(ns);
     };
     
     this.on_marker_contextmenu = function(marker) {

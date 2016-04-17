@@ -209,6 +209,7 @@ li:hover ul li.zero_size > div { top: 0px; }
   padding-left:15px;
   margin-top: 63px;
   margin-left: -8px;
+  overflow: hidden;
 }
 .container-background,
 .page-background {
