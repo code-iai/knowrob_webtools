@@ -36,17 +36,61 @@ function KnowrobEpisode(client){
     
     this.queryEpisodeData = function (handler) {
         if(!that.episodeData) {
-            $.ajax({
-                url: "/episode_queries",
-                type: "GET",
-                contentType: "application/json",
-                dataType: "json"
-            }).done( function (request) {
+            that.downloadEpisodeData(function (request) {
                 that.episodeData = request;
                 if(handler) handler(that.episodeData);
             });
         }
         else if(handler) handler(that.episodeData);
+    };
+    
+    this.downloadEpisodeData = function (handler) {
+        $.ajax({
+            url: "/download_episode",
+            type: "GET",
+            contentType: "application/json",
+            dataType: "json"
+        }).done( function (request) {
+            handler(request);
+        });
+    };
+    
+    this.uploadEpisodeData = function(query_lib) {
+        $.ajax({
+            url: "/upload_episode",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(query_lib),  
+            dataType: "json",
+            success: function (data) {
+                window.alert("Query library uploaded successfully!");
+            }
+        }).done( function (request) {});
+    };
+    
+    this.downloadEpisodeDataFTP = function (server, user, pw, handler) {
+        $.ajax({
+            url: "/download_episode_ftp",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({server:server, user:user, pw:pw}), 
+            dataType: "json"
+        }).done( function (request) {
+            handler(request);
+        });
+    };
+    
+    this.uploadEpisodeDataFTP = function(server, user, pw, query_lib) {
+        $.ajax({
+            url: "/upload_episode_ftp",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({ options: { server:server, user:user, pw:pw }, lib: query_lib }),  
+            dataType: "json",
+            success: function (data) {
+                window.alert("Query library uploaded successfully!");
+            }
+        }).done( function (request) {});
     };
     
     this.selectMongoDB = function () {

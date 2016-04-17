@@ -538,15 +538,22 @@ a.btn {
 }
 
 .library-editor-button {
-    float: right;
-    height: 30px;
-    width: 30px;
-    opacity: 0.2;
+  float: right;
+  height: 30px;
+  width: 30px;
+  opacity: 0.2;
 }
 .library-editor-button:hover,
 .library-editor-button:focus {
-    opacity: 1.0;
-    cursor: pointer;
+  opacity: 1.0;
+  cursor: pointer;
+}
+
+.library-editor-header {
+  float: left;
+  height: 30px;
+  font-size:20px;
+  font-weight:bold;
 }
 
 .query_lib_header {
@@ -804,7 +811,7 @@ li.zero_size,
 .modal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
-    z-index: 999; /* Sit on top */
+    z-index: 99999; /* Sit on top */
     padding-top: 10px; /* Location of the box */
     left: 0;
     top: 0;
@@ -824,6 +831,11 @@ li.zero_size,
     border: 1px solid #888;
     width: 80%;
     height: 90%;
+}
+
+#no-diff {
+  font-size: 16px;
+  text-align: center;
 }
 
 .icon_bookmark  { background: url("/static/icons/theme/bookmark-new.png") center / 24px no-repeat; }
@@ -888,3 +900,38 @@ li.zero_size,
   outline-width: 1px;
   outline-color: red;
 }
+
+/** jquery dialogs **/
+
+#dialog select {
+  width: 100%;
+  display: inline-block;
+  border: 1px solid #c7c7c7;
+  border-radius: 4px;
+  height: 28px;
+  line-height: 28px;
+  margin-top: 10px;
+  background: -moz-linear-gradient(top,  #fefefe 0%, #eeeeee 100%);
+  background: -webkit-linear-gradient(top,  #fefefe 0%,#eeeeee 100%);
+  background: -ms-linear-gradient(top,  #fefefe 0%,#eeeeee 100%);
+  background: linear-gradient(to bottom,  #fefefe 0%,#eeeeee 100%);
+}
+
+.dialog-prompt {
+  width: 100%;
+  font-size:15px;
+  font-family: Tahoma, Geneva, sans-serif;
+}
+
+.dialog-note {
+  width: 100%;
+  background: #f1f393;
+  border: 1px solid #a9a9b2;
+  margin-top: 10px;
+  padding: 4px;
+  border-radius: 4px;
+}
+.dialog-note::before {
+  content: "NOTE: ";
+  font-weight: bold;
+} 

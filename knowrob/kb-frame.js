@@ -209,6 +209,7 @@ function KnowrobUI(client, options) {
             sortable: false,
             scrollable: false
         });
+        $('.library-editor-header').html('Query library editor');
     };
     
     this.showLibraryEditor = function() {
@@ -231,27 +232,90 @@ function KnowrobUI(client, options) {
         }
     };
     
-    this.saveQueries = function() {
-        // FIXME(daniel): object queries can not be saved like this
-        var experimentData = { query: that.queryLibrary };
-        $.ajax({
-            url: "/knowrob/exp_save",
-            type: "POST",
-            contentType: "application/json",
-            data: JSON.stringify(experimentData),  
-            dataType: "json",
-            success: function (data) {
-                window.alert("Query library saved successfully!");
+    this.dialogServerSelection = function(note) {
+        $("#dialog").html('<div class="dialog-prompt">Please select the server:</div>'+
+            '<select id="dialog-server-select" class="form-group">'+
+                '<option>openEASE</option>'+
+                '<option>FTP</option>'+
+            '</select>' +
+            '<div id="dialog-server-field" class="form-group ftp-input" style="display: none">' +
+                '<input placeholder="Server" class="form-control" type="text" value="open-ease-stor.informatik.uni-bremen.de" />' +
+            '</div>' +
+            '<div id="dialog-user-field" class="form-group ftp-input" style="display: none">' +
+                '<input placeholder="Username" class="form-control" type="text" value="" />' +
+            '</div>' +
+            '<div id="dialog-pw-field" class="form-group ftp-input" style="display: none">' +
+                '<input placeholder="Password" class="form-control" name="password" type="password" value="" />' +
+            '</div>' +
+            '<div class="dialog-note">'+note+'</div>'
+        );
+        
+        $("#dialog-server-select").change(function() {
+            if($("#dialog-server-select option:selected").text()=='openEASE') {
+                $("#dialog .ftp-input").css('display', 'none');
             }
-        }).done( function (request) {});
+            else {
+                $("#dialog .ftp-input").css('display', 'block');
+            }
+        });
+        
+        return {
+            autoOpen: false,
+            modal: true,
+            resizable: false,
+            width:'auto',
+            buttons : {
+                "Diff" : function() {
+                    if($("#dialog-server-select option:selected").text()=='openEASE') {
+                        that.diffQueries();
+                    }
+                    else {
+                        var server = $("#dialog-server-field input").val();
+                        var user = $("#dialog-user-field input").val();
+                        var pw = $("#dialog-pw-field input").val();
+                        client.episode.downloadEpisodeDataFTP(server, user, pw, that.diffQueries);
+                    }
+                 }
+            }
+        };
     };
     
     this.uploadQueries = function() {
-        window.alert("Not implemented yet.");
+        var d = that.dialogServerSelection('Uploading replaces the remote query library.');
+        d.buttons["Upload"] = function() {
+            if($("#dialog-server-select option:selected").text()=='openEASE') {
+                client.episode.uploadEpisodeData({ query: that.queryLibrary });
+            }
+            else {
+                var server = $("#dialog-server-field input").val();
+                var user = $("#dialog-user-field input").val();
+                var pw = $("#dialog-pw-field input").val();
+                client.episode.uploadEpisodeDataFTP(server, user, pw, { query: that.queryLibrary });
+            }
+            $(this).dialog("close");
+        };
+        d.buttons["Cancel"] = function() { $(this).dialog("close"); };
+        $("#dialog").dialog(d);
+        $("#dialog").dialog("open");
     };
     
     this.downloadQueries = function() {
-        window.alert("Not implemented yet.");
+        var d = that.dialogServerSelection('Downloading replaces the local query library.');
+        d.buttons["Download"] = function() {
+            if($("#dialog-server-select option:selected").text()=='openEASE') {
+                client.episode.downloadEpisodeData(that.initQueryLibrary);
+            }
+            else {
+                var server = $("#dialog-server-field input").val();
+                var user = $("#dialog-user-field input").val();
+                var pw = $("#dialog-pw-field input").val();
+                client.episode.downloadEpisodeDataFTP(server, user, pw, that.initQueryLibrary);
+            }
+            $(this).dialog("close");
+        };
+        d.buttons["Cancel"] = function() { $(this).dialog("close"); };
+        $("#dialog").dialog(d);
+        $("#dialog").dialog("open");
     };
     
     ///////////////////////////////
@@ -259,24 +323,31 @@ function KnowrobUI(client, options) {
     ///////////////////////////////
     
     this.jsondiff = function(left, right) {
-        console.info(left);
-        console.info(right);
         var delta = jsondiffpatch.diff(left, right);
-        return jsondiffpatch.formatters.html.format(delta, left);
+        return delta ? jsondiffpatch.formatters.html.format(delta, left) : undefined;
     };
     
     this.showDiff = function(diff) {
-        document.getElementById('library-editor-content').innerHTML = diff;
+        document.getElementById('library-editor-content').innerHTML =
+            diff ? diff : "<p id='no-diff'>The query libraries are identical.</p>";
         jsondiffpatch.formatters.html.hideUnchanged();
         // TODO: make lib editor more generic
+        // FIXME: add button is shown for diff viewer
+        $('.library-editor-header').html('Diff viewer');
         that.showLibraryEditor();
     };
     
-    this.diffQueries = function() {
+    this.diffQueries = function(query_lib) {
         var right = JSON.parse(JSON.stringify(that.queryLibrary));
-        client.episode.queryEpisodeData(function(result) {
+        if(query_lib == undefined) {
+            client.episode.queryEpisodeData(function(result) {
+                //that.showDiff(that.jsondiff( result.query, right ) );
+                that.showDiff(that.jsondiff( JSON.parse(JSON.stringify(result.query)), right ) );
+            });
+        }
+        else {
             //that.showDiff(that.jsondiff( result.query, right ) );
-            that.showDiff(that.jsondiff( JSON.parse(JSON.stringify(result.query)), right ) );
-        });
+            that.showDiff(that.jsondiff( JSON.parse(JSON.stringify(query_lib.query)), right ) );
+        }
     };
 };
