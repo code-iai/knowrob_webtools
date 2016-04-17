@@ -16,6 +16,7 @@ function KnowrobUI(client, options) {
     
     this.rosViewer = undefined;
     this.console = undefined;
+    this.queryLibrary = undefined;
 
     this.init = function () {
         that.rosViewer = client.newCanvas({
@@ -103,6 +104,7 @@ function KnowrobUI(client, options) {
                         lib_div.appendChild(x);
                     }
                 }
+                that.queryLibrary = query;
                 that.updateLibraryEditor(query);
             }
             
@@ -156,6 +158,11 @@ function KnowrobUI(client, options) {
         $('<textarea class="library_textarea" data-bind="value: ' + options.field + '"></textarea>').appendTo(container);
     };
     
+    this.editLibrary = function() {
+        that.updateLibraryEditor(that.queryLibrary);
+        that.showLibraryEditor();
+    };
+    
     this.updateLibraryEditor = function(query_lib) {
         if(editorSkipUpdate) return;
         libraryData = new kendo.data.DataSource({
@@ -171,8 +178,11 @@ function KnowrobUI(client, options) {
             }
         });
         libraryData.read();
-
-        $("#library-editor-content").kendoGrid({
+        
+        //var n = document.createElement("div");
+        document.getElementById('library-editor-content').innerHTML = '';
+        //document.getElementById('library-editor-content').appendChild(n);
+        $('#library-editor-content').kendoGrid({
             dataSource: libraryData,
             columns: [
                 { field: "text", title: "Natural language query", editor: textEditor },
@@ -223,7 +233,7 @@ function KnowrobUI(client, options) {
     
     this.saveQueries = function() {
         // FIXME(daniel): object queries can not be saved like this
-        var experimentData = { query: libraryData._data };
+        var experimentData = { query: that.queryLibrary };
         $.ajax({
             url: "/knowrob/exp_save",
             type: "POST",
@@ -242,5 +252,31 @@ function KnowrobUI(client, options) {
     
     this.downloadQueries = function() {
         window.alert("Not implemented yet.");
+    };
+    
+    ///////////////////////////////
+    //////////// Query Library Diff
+    ///////////////////////////////
+    
+    this.jsondiff = function(left, right) {
+        console.info(left);
+        console.info(right);
+        var delta = jsondiffpatch.diff(left, right);
+        return jsondiffpatch.formatters.html.format(delta, left);
+    };
+    
+    this.showDiff = function(diff) {
+        document.getElementById('library-editor-content').innerHTML = diff;
+        jsondiffpatch.formatters.html.hideUnchanged();
+        // TODO: make lib editor more generic
+        that.showLibraryEditor();
+    };
+    
+    this.diffQueries = function() {
+        var right = JSON.parse(JSON.stringify(that.queryLibrary));
+        client.episode.queryEpisodeData(function(result) {
+            //that.showDiff(that.jsondiff( result.query, right ) );
+            that.showDiff(that.jsondiff( JSON.parse(JSON.stringify(result.query)), right ) );
+        });
     };
 };

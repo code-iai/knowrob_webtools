@@ -875,6 +875,7 @@ li.zero_size,
 .icon_zoom_in   { background: url("/static/icons/theme/zoom-in.png") center / 24px no-repeat; }
 .icon_zoom_orig { background: url("/static/icons/theme/zoom-original.png") center / 24px no-repeat; }
 .icon_zoom_out  { background: url("/static/icons/theme/zoom-out.png") center / 24px no-repeat; }
+.icon_diff      { background: url("/static/icons/theme/diff.png") center / 24px no-repeat; }
 
 /** Kendo grid **/
 
