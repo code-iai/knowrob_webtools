@@ -318,8 +318,13 @@ function KnowrobReplayUI(client, options) {
     }
     
     this.updateHUDText = function(t, handler) {
+        // TODO(daniel): - Remove this code.
+        //               - Create a module for HUD display in openEASE
+        //                 using the marker interface with HTML encoded string.
+        //               - Call this interface with special video HUD query (and extend openEASE UI)
+        //               - Provide some default dispay interfaces that work for all experiments
+        /*
         var hudtextLines = [];
-        // TODO: Use prolog to build task tree
         var infoQuery = "_T = 'timepoint_" + t.toString() + "', " +
               "task(_Task, _T), " +
               "rdf_has(_Task, knowrob:'taskContext', literal(type(_,Task))), " +
@@ -349,7 +354,6 @@ function KnowrobReplayUI(client, options) {
                 prolog.nextQuery(processInfo);
             }
             else {
-                // FIXME(daniel): this interface was removed! only markers aupported now.
                 //knowrob.show_hud_text(hudtextLines, {});
                 setTimeout(function(){ handler(); }, 500);
             }
@@ -357,6 +361,7 @@ function KnowrobReplayUI(client, options) {
         var timeString = "Time: " + formatDate(t);
         hudtextLines.push(timeString.trim());
         prolog.jsonQuery(infoQuery, processInfo);
+        */
     };
     
     this.toggleContent = function(imageId, divId) {
