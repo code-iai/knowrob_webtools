@@ -331,6 +331,7 @@ function KnowrobUI(client, options) {
         document.getElementById('library-editor-content').innerHTML =
             diff ? diff : "<p id='no-diff'>The query libraries are identical.</p>";
         jsondiffpatch.formatters.html.hideUnchanged();
+        // TODO: Add info to the header about which files are diffed
         // TODO: make lib editor more generic
         // FIXME: add button is shown for diff viewer
         $('.library-editor-header').html('Diff viewer');
