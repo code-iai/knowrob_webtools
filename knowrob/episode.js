@@ -68,24 +68,24 @@ function KnowrobEpisode(client){
         }).done( function (request) {});
     };
     
-    this.downloadEpisodeDataFTP = function (server, user, pw, handler) {
+    this.downloadEpisodeDataFTP = function (credentials, handler) {
         $.ajax({
             url: "/download_episode_ftp",
             type: "POST",
             contentType: "application/json",
-            data: JSON.stringify({server:server, user:user, pw:pw}), 
+            data: JSON.stringify({server:credentials.server, user:credentials.user, pw:credentials.pw}), 
             dataType: "json"
         }).done( function (request) {
             handler(request);
         });
     };
     
-    this.uploadEpisodeDataFTP = function(server, user, pw, query_lib) {
+    this.uploadEpisodeDataFTP = function(credentials, query_lib) {
         $.ajax({
             url: "/upload_episode_ftp",
             type: "POST",
             contentType: "application/json",
-            data: JSON.stringify({ options: { server:server, user:user, pw:pw }, lib: query_lib }),  
+            data: JSON.stringify({ options: { server:credentials.server, user:credentials.user, pw:credentials.pw }, lib: query_lib }),  
             dataType: "json",
             success: function (data) {
                 window.alert("Query library uploaded successfully!");

@@ -232,6 +232,14 @@ function KnowrobUI(client, options) {
         }
     };
     
+    this.dialogCredentials = function() {
+        return {
+            server: $("#dialog-server-field input").val(),
+            user: $("#dialog-user-field input").val(),
+            pw: $("#dialog-pw-field input").val();
+        };
+    };
+    
     this.dialogServerSelection = function(note) {
         $("#dialog").html('<div class="dialog-prompt">Please select the server:</div>'+
             '<select id="dialog-server-select" class="form-group">'+
@@ -270,10 +278,7 @@ function KnowrobUI(client, options) {
                         that.diffQueries();
                     }
                     else {
-                        var server = $("#dialog-server-field input").val();
-                        var user = $("#dialog-user-field input").val();
-                        var pw = $("#dialog-pw-field input").val();
-                        client.episode.downloadEpisodeDataFTP(server, user, pw, that.diffQueries);
+                        client.episode.downloadEpisodeDataFTP(that.dialogCredentials(), that.diffQueries);
                     }
                  }
             }
@@ -287,10 +292,7 @@ function KnowrobUI(client, options) {
                 client.episode.uploadEpisodeData({ query: that.queryLibrary });
             }
             else {
-                var server = $("#dialog-server-field input").val();
-                var user = $("#dialog-user-field input").val();
-                var pw = $("#dialog-pw-field input").val();
-                client.episode.uploadEpisodeDataFTP(server, user, pw, { query: that.queryLibrary });
+                client.episode.uploadEpisodeDataFTP(that.dialogCredentials(), { query: that.queryLibrary });
             }
             $(this).dialog("close");
         };
@@ -306,10 +308,7 @@ function KnowrobUI(client, options) {
                 client.episode.downloadEpisodeData(that.initQueryLibrary);
             }
             else {
-                var server = $("#dialog-server-field input").val();
-                var user = $("#dialog-user-field input").val();
-                var pw = $("#dialog-pw-field input").val();
-                client.episode.downloadEpisodeDataFTP(server, user, pw, that.initQueryLibrary);
+                client.episode.downloadEpisodeDataFTP(that.dialogCredentials(), that.initQueryLibrary);
             }
             $(this).dialog("close");
         };
