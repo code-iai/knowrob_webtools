@@ -236,7 +236,7 @@ function KnowrobUI(client, options) {
         return {
             server: $("#dialog-server-field input").val(),
             user: $("#dialog-user-field input").val(),
-            pw: $("#dialog-pw-field input").val();
+            pw: $("#dialog-pw-field input").val()
         };
     };
     

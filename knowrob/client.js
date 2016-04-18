@@ -459,8 +459,8 @@ function KnowrobClient(options){
     
     function updateQueryString() {
         urlQuery = {};
-        var query = window.location.hash.substring(1);
-        var vars = query.split("&");
+        var query = String(window.location.hash.substring(1));
+        var vars = query.split("?");
         for (var i=0;i<vars.length;i++) {
             var pair = vars[i].split("=");
             if (typeof urlQuery[pair[0]] === "undefined") {
@@ -482,6 +482,11 @@ function KnowrobClient(options){
     this.updateLocation = function() {
       updateQueryString();
       showFrame(getActiveFrameName());
+      // update episode selection from URL query
+      // e.g., https://data.openease.org/#kb?category=foo?episode=bar
+      if(urlQuery['category'] && urlQuery['episode']) {
+          that.setEpisode(urlQuery['category'], urlQuery['episode']);
+      }
     };
     
     ///////////////////////////////
