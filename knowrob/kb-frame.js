@@ -42,8 +42,8 @@ function KnowrobUI(client, options) {
         });
     
         var editor = document.getElementById('library-editor');
-        document.getElementsByClassName("icon_close")[0].onclick = that.hideLibraryEditor;
-        document.getElementsByClassName("icon_add")[0].onclick = that.addQuery;
+        $('#library-editor .icon_close').click(that.hideEditor);
+        $('#library-editor .icon_add').click(that.addQuery);
         window.onclick = function(event) {
             if (event.target == editor) {
                 editor.style.display = "none";
@@ -160,7 +160,7 @@ function KnowrobUI(client, options) {
     
     this.editLibrary = function() {
         that.updateLibraryEditor(that.queryLibrary);
-        that.showLibraryEditor();
+        that.showEditor();
     };
     
     this.updateLibraryEditor = function(query_lib) {
@@ -179,9 +179,7 @@ function KnowrobUI(client, options) {
         });
         libraryData.read();
         
-        //var n = document.createElement("div");
         document.getElementById('library-editor-content').innerHTML = '';
-        //document.getElementById('library-editor-content').appendChild(n);
         $('#library-editor-content').kendoGrid({
             dataSource: libraryData,
             columns: [
@@ -210,14 +208,15 @@ function KnowrobUI(client, options) {
             scrollable: false
         });
         $('.library-editor-header').html('Query library editor');
+        $('#library-editor .icon_add').css('display', 'block');
     };
     
-    this.showLibraryEditor = function() {
-        document.getElementById('library-editor').style.display = "block";
+    this.showEditor = function() {
+        $('#library-editor').css('display', 'block');
     };
     
-    this.hideLibraryEditor = function() {
-        document.getElementById('library-editor').style.display = "none";
+    this.hideEditor = function() {
+        $('#library-editor').css('display', 'none');
     };
     
     this.addQuery = function() {
@@ -326,15 +325,15 @@ function KnowrobUI(client, options) {
         return delta ? jsondiffpatch.formatters.html.format(delta, left) : undefined;
     };
     
-    this.showDiff = function(diff) {
+    this.showDiff = function(diff, target) {
         document.getElementById('library-editor-content').innerHTML =
             diff ? diff : "<p id='no-diff'>The query libraries are identical.</p>";
         jsondiffpatch.formatters.html.hideUnchanged();
-        // TODO: Add info to the header about which files are diffed
-        // TODO: make lib editor more generic
-        // FIXME: add button is shown for diff viewer
-        $('.library-editor-header').html('Diff viewer');
-        that.showLibraryEditor();
+        $('.library-editor-header').html('Diff '+
+                '<p class="diff-source">local</p> against '+
+                '<p class="diff-target">'+target+'</p>');
+        $('#library-editor .icon_add').css('display', 'none');
+        that.showEditor();
     };
     
     this.diffQueries = function(query_lib) {
@@ -342,12 +341,12 @@ function KnowrobUI(client, options) {
         if(query_lib == undefined) {
             client.episode.queryEpisodeData(function(result) {
                 //that.showDiff(that.jsondiff( result.query, right ) );
-                that.showDiff(that.jsondiff( JSON.parse(JSON.stringify(result.query)), right ) );
+                that.showDiff(that.jsondiff( JSON.parse(JSON.stringify(result.query)), right ), 'openEASE');
             });
         }
         else {
             //that.showDiff(that.jsondiff( result.query, right ) );
-            that.showDiff(that.jsondiff( JSON.parse(JSON.stringify(query_lib.query)), right ) );
+            that.showDiff(that.jsondiff( JSON.parse(JSON.stringify(query_lib.query)), right ), 'FTP' );
         }
     };
 };

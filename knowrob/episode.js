@@ -73,7 +73,7 @@ function KnowrobEpisode(client){
             url: "/download_episode_ftp",
             type: "POST",
             contentType: "application/json",
-            data: JSON.stringify({server:credentials.server, user:credentials.user, pw:credentials.pw}), 
+            data: JSON.stringify(credentials), 
             dataType: "json"
         }).done( function (request) {
             handler(request);
@@ -85,7 +85,7 @@ function KnowrobEpisode(client){
             url: "/upload_episode_ftp",
             type: "POST",
             contentType: "application/json",
-            data: JSON.stringify({ options: { server:credentials.server, user:credentials.user, pw:credentials.pw }, lib: query_lib }),  
+            data: JSON.stringify({ options: credentials, lib: query_lib }),  
             dataType: "json",
             success: function (data) {
                 window.alert("Query library uploaded successfully!");

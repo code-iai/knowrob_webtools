@@ -901,6 +901,18 @@ li.zero_size,
   outline-color: red;
 }
 
+/** diff **/
+
+.diff-source {
+    display: inline;
+    background-color: #BFB;
+}
+
+.diff-target {
+    display: inline;
+    background-color: #ffbbbb;
+}
+
 /** jquery dialogs **/
 
 #dialog select {
