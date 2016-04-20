@@ -889,6 +889,11 @@ li.zero_size,
 .icon_zoom_out  { background: url("/static/icons/theme/zoom-out.png") center / 24px no-repeat; }
 .icon_diff      { background: url("/static/icons/theme/diff.png") center / 24px no-repeat; }
 
+.icon_facebook  { background: url("/static/icons/facebook.png") center / 24px no-repeat; }
+.icon_twitter   { background: url("/static/icons/twitter.png") center / 24px no-repeat; }
+.icon_github    { background: url("/static/icons/github.png") center / 24px no-repeat; }
+.icon_google    { background: url("/static/icons/google.png") center / 24px no-repeat; }
+
 /** Kendo grid **/
 
 .k-grid tbody tr {
@@ -901,6 +906,7 @@ li.zero_size,
   outline-color: red;
 }
 
+<<<<<<< HEAD
 /** diff **/
 
 .diff-source {
@@ -911,6 +917,42 @@ li.zero_size,
 .diff-target {
     display: inline;
     background-color: #ffbbbb;
+}
+
+/** remote apps **/
+
+.remote-login-box {
+  float: left;
+  border: 1px solid #c8afaf;
+  border-radius: 7px;
+  margin-top: 10px;
+}
+
+.remote-login-header {
+  float: left;
+  font-size: 18px;
+  color: #144F78;
+  font-family: Oswald,Arial,Helvetica,sans-serif;
+  padding: 4px;
+  margin-top: 4px;
+  margin-left: 6px;
+}
+
+.remote-login-button {
+  float: left;
+  border: none;
+  height: 34px;
+  width: 34px;
+  margin: 4px;
+  -webkit-transition: 0.2s -webkit-filter linear;
+  -moz-transition: 0.2s -moz-filter linear;
+  -moz-transition: 0.2s filter linear;
+  -ms-transition: 0.2s -ms-filter linear;
+  -o-transition: 0.2s -o-filter linear;
+  transition: 0.2s filter linear;
+}
+.remote-login-button:hover {
+  filter: sepia(90%) hue-rotate(90deg);
 }
 
 /** jquery dialogs **/
