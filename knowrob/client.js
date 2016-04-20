@@ -40,6 +40,11 @@ function KnowrobClient(options){
     var requireEpisode = options.require_episode;
     // Viewer used by tutorial page
     var globalViewer = options.global_viewer;
+
+    // sprite markers and render events
+    var sprites = [];
+    var render_event;
+
     // The selected marker object or undefined
     this.selectedMarker = undefined;
     
@@ -100,6 +105,7 @@ function KnowrobClient(options){
       
         setInterval(containerRefresh, 570000);
         containerRefresh();
+        render_event = new CustomEvent('render', {'camera': null});
     };
     
     function containerRefresh() {
@@ -382,8 +388,16 @@ function KnowrobClient(options){
     };
     
     this.on_render = function(camera,scene) {
-        if(that.getActiveFrame())
+        if(that.getActiveFrame() && that.getActiveFrame().on_render)
             that.getActiveFrame().on_render(camera,scene);
+
+        var index;
+        for(index = 0; index < sprites.length; index++) {
+            //sprites[index].camera = camera;
+            //render_event.target = sprites[index];
+            render_event.camera = camera;
+            sprites[index].dispatchEvent(render_event);
+        }
     };
     
     this.on_marker_dblclick = function(marker) {

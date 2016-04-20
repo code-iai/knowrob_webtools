@@ -37,13 +37,12 @@ function KnowrobReplayUI(client, options) {
         episodeSelect.innerHTML = "";
         
         if (episodeSelect !== null && client.episode.hasEpisode()) {
-            if(that.episodeData().video && that.episodeData().video.length > 0) {
+            if(that.episodeData() && that.episodeData().video && that.episodeData().video.length > 0) {
                for (var i = 0; i < that.episodeData().video.length; i++) {
                   that.addVideoItem(that.episodeData().video[i].name);
                }
             }
             else {
-                window.alert("This experiment has no video queries available yet! You can create new ones if you have administrative rights.");
                 return;
             }
             
@@ -257,9 +256,9 @@ function KnowrobReplayUI(client, options) {
            var prolog = client.newProlog();
            prolog.jsonQuery('openease_video_stop.', function(result) {
               console.log(prolog.format(result));
+              window.open('/knowrob/local_data/video_created/video.mpg','_blank')
            }, mode=1);
         }
-
         isStreaming = false;
         var toggleButton = document.getElementById("replay-toggle-button");
         toggleButton.onclick = that.startStreaming;
@@ -302,7 +301,7 @@ function KnowrobReplayUI(client, options) {
           
           var prolog = client.newProlog();
           prolog.jsonQuery(query, function(result) {
-            that.updateHUDText(t, function(){
+            that.updateTime(t, function(){
               that.rosViewer.snapshot(frame_number, fps);
               frame_number += 1;
               streamStep();
@@ -317,51 +316,21 @@ function KnowrobReplayUI(client, options) {
         document.getElementById("replay-progress-value").innerHTML = formatDate(t);
     }
     
-    this.updateHUDText = function(t, handler) {
-        // TODO(daniel): - Remove this code.
-        //               - Create a module for HUD display in openEASE
-        //                 using the marker interface with HTML encoded string.
-        //               - Call this interface with special video HUD query (and extend openEASE UI)
-        //               - Provide some default dispay interfaces that work for all experiments
-        /*
-        var hudtextLines = [];
-        var infoQuery = "_T = 'timepoint_" + t.toString() + "', " +
-              "task(_Task, _T), " +
-              "rdf_has(_Task, knowrob:'taskContext', literal(type(_,Task))), " +
-              "(( rdf_has(_Task, knowrob:'objectActedOn', _ObjectActedOn), " +
-                  "( mng_designator_props(_ObjectActedOn, 'NAME', ObjectActedOn) ; " +
-                  "( rdf_has(_ObjectActedOn, knowrob:'objectActedOn', __ObjectActedOn), " +
-                  "  mng_designator_props(__ObjectActedOn, 'NAME', ObjectActedOn) ))) ; ObjectActedOn = ''), " +
-              "(( rdf_has(_Task, knowrob:'perceptionResult', _Perception), " +
-                  "mng_designator_props(_Perception, 'NAME', Perception) ) ; Perception = ''), " +
-              "(( rdf_has(_Task, knowrob:'designator', _Designator), " +
-                  "mng_designator_props(_Designator, 'NAME', Designator) ) ; Designator = ''), " +
-              "(( rdf_has(_Task, knowrob:'goalContext', literal(type(_,Goal))) ) ; Goal = ''), " +
-              "( ObjectActedOn \\= '' ; Perception \\= '' ; Designator \\= '' ; Goal \\= '')," +
-              "findall(_TaskDetail, (task(_TaskId), subtask(_ParentTaskId, _TaskId), task_type(_TaskId, _Type), rdf_has(_TaskId, knowrob:'taskContext', literal(type(_,_TaskContext))), (rdf_has(_TaskId, knowrob:'goalContext', literal(type(_,_TaskGoal))); _TaskGoal = ''), atomic_list_concat([_TaskContext, _TaskGoal], ' ', _TaskTip), term_to_atom(_TaskId, _TaskIdAtom), term_to_atom(_ParentTaskId, _ParentTaskIdAtom), term_to_atom(_TaskTip, _TaskAtom), term_to_atom(_Type, _TypeAtom), jpl_new( '[Ljava.lang.String;', [_TaskAtom, _TaskIdAtom, _ParentTaskIdAtom, _TypeAtom], _TaskDetail)), _TaskDetails), jpl_new( '[[Ljava.lang.String;', _TaskDetails, _Tasks), findall(_TaskAtom, (task(__TaskId, _T), term_to_atom(__TaskId, _TaskAtom)), _HighlightedTaskDetails), jpl_new( '[Ljava.lang.String;', _HighlightedTaskDetails, _HighlightedTasks), jpl_new( '[Ljava.lang.String;', ['\\'http://knowrob.org/kb/knowrob.owl#CRAMAction\\'', '\\'http://knowrob.org/kb/knowrob.owl#ArmMovement\\''], _Types), update_task_tree(_Tasks, _HighlightedTasks, _Types).";
+    this.updateTime = function(t, handler) {
+        var timeString = "Time: " + formatDate(t);
+        var infoQuery = "_T = 'timepoint_" + t.toString() + "', " + "marker(hud_text('HUD'), TimeHudOld), marker_remove(TimeHudOld)," +
+            "marker(hud_text('HUD'), TimeHudNew), marker_text(TimeHudNew, '" +  timeString + "'), marker_publish.";
+
+        console.log(timeString);
         
         var prolog = client.newProlog();
-        function processInfo(result) {            
-           if(result.solution) {
-                var solutionString = result.solution['Task'];
-                for(var key in result.solution) {
-                    var value = result.solution[key];
-                    if(key != 'Task' && value != '') {
-                        solutionString += " " + value.trim();
-                    }
-                }
-                hudtextLines.push(solutionString);
-                prolog.nextQuery(processInfo);
-            }
-            else {
-                //knowrob.show_hud_text(hudtextLines, {});
-                setTimeout(function(){ handler(); }, 500);
-            }
+        function processInfo(result) {
+            setTimeout(function(){ handler(); }, 500);
         }
-        var timeString = "Time: " + formatDate(t);
-        hudtextLines.push(timeString.trim());
+        //
+        //hudtextLines.push(timeString.trim());
         prolog.jsonQuery(infoQuery, processInfo);
-        */
+       
     };
     
     this.toggleContent = function(imageId, divId) {

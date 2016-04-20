@@ -14,7 +14,7 @@ function KnowrobCanvas(client, options){
         enableShadows: false,
         near: options.near || 0.01,
         far: options.far || 1000.0,
-        on_render: options.on_render,
+        on_render: client.on_render || options.on_render,
         on_window_dblclick: options.on_window_dblclick
     });
     // add some default objects to the scene
@@ -40,7 +40,7 @@ function KnowrobCanvas(client, options){
     this.snapshot = function (frameNumber, fps) {
       console.log("Publishing canvas snapshot frame:" + frameNumber + " fps:" + fps);
       
-      var gl = this.rosViewer.renderer.getContext();
+      var gl = this.rosViewer.renderer.getContext("webgl", {preserveDrawingBuffer: true});
       var width  = gl.drawingBufferWidth;
       var height = gl.drawingBufferHeight;
       
