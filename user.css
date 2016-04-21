@@ -5,6 +5,7 @@ body {
   margin: 0;
   height: 100%;
   background: none repeat scroll 0% 0% #dadada;
+  overflow: auto;
 }
 
 /* Header for openease/institute/university logo */
@@ -228,10 +229,10 @@ li:hover ul li.zero_size > div { top: 0px; }
 }
 
 /* Area at the top of the page */
-.headline { margin-top: 10px !important; }
+.headline { margin-top: 10px !important; min-width: 820px; }
 /* Area below headlines */
 #page-content { width:100%; height:100%; }
-#page-body { margin-top: 20px !important; }
+#page-body { margin-top: 20px !important; min-width: 820px; }
 
 .content-box {
   background-color: #f3f3ef;
@@ -943,15 +944,6 @@ li.zero_size,
   height: 34px;
   width: 34px;
   margin: 4px;
-  -webkit-transition: 0.2s -webkit-filter linear;
-  -moz-transition: 0.2s -moz-filter linear;
-  -moz-transition: 0.2s filter linear;
-  -ms-transition: 0.2s -ms-filter linear;
-  -o-transition: 0.2s -o-filter linear;
-  transition: 0.2s filter linear;
-}
-.remote-login-button:hover {
-  filter: sepia(90%) hue-rotate(90deg);
 }
 
 /** jquery dialogs **/
