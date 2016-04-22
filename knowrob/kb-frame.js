@@ -8,8 +8,8 @@
 function KnowrobUI(client, options) {
     var that = this;
     
-    var imageWidth = function() { return 0.0; };
-    var imageHeight = function() { return 0.0; };
+    this.imageWidth = function(doc) { return 0.0; };
+    this.imageHeight = function(doc) { return 0.0; };
     
     var libraryData;
     var editorSkipUpdate = false;
@@ -54,8 +54,8 @@ function KnowrobUI(client, options) {
     this.resizeImage = function () {
         return imageResizer($('#mjpeg_image'),
                             $('#mjpeg'),
-                            imageWidth(),
-                            imageHeight()
+                            that.imageWidth($('#mjpeg_image')[0]),
+                            that.imageHeight($('#mjpeg_image')[0])
                            );
     };
 

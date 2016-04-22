@@ -284,8 +284,8 @@ function KnowrobClient(options){
               html += '<img id="mjpeg_image" class="picture" src="'+url+'" width="300" height="240"/>';
               html += '</div>';
               
-              imageHeight = function() { return document.getElementById('mjpeg_image').height; };
-              imageWidth  = function() { return document.getElementById('mjpeg_image').width; };
+              imageHeight = function(mjpeg_image) { return mjpeg_image.height; };
+              imageWidth  = function(mjpeg_image) { return mjpeg_image.width; };
           }
           else if(ext =='ogg' || ext =='ogv' || ext =='mp4') {
               html += '<div class="image_view">';
@@ -297,8 +297,8 @@ function KnowrobClient(options){
               html += 'Your browser does not support the video tag.';
               html += '</video></div>';
               
-              imageHeight = function() { return document.getElementById('mjpeg_image').videoHeight; };
-              imageWidth  = function() { return document.getElementById('mjpeg_image').videoWidth; };
+              imageHeight = function(mjpeg_image) { return mjpeg_image.videoHeight; };
+              imageWidth  = function(mjpeg_image) { return mjpeg_image.videoWidth; };
           }
           else {
               console.warn("Unknown data format on /logged_images topic: " + message.data);
