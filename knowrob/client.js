@@ -57,6 +57,8 @@ function KnowrobClient(options){
     var cameraPoseClient = undefined;
     this.snapshotTopic = undefined;
     
+    this.nodesRegistered = false;
+    
     // Redirects incomming marker messages to currently active canvas.
     function CanvasProxy(scene) {
         this.viewer = function() {
@@ -317,13 +319,13 @@ function KnowrobClient(options){
           that.getActiveFrame().on_camera_pose_received(message);
       });
       
+      // NOTE: frame windows may not be loaded already
       for(var i in user_interfaces) {
           var frame = document.getElementById(user_interfaces[i].id+"-frame");
           if(frame && frame.contentWindow && frame.contentWindow.on_register_nodes)
               frame.contentWindow.on_register_nodes();
       }
-      if(!document.getElementById(getActiveFrameName()+"-frame"))
-          that.getActiveFrame().on_register_nodes();
+      that.nodesRegistered = true;
     };
     
     this.waitForJsonProlog = function () {
