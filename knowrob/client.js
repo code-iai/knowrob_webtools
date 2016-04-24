@@ -275,7 +275,7 @@ function KnowrobClient(options){
         messageType : 'std_msgs/String'
       });
       imageClient.subscribe(function(message) {
-          var ext = message.data.substr(message.data.lastIndexOf('.') + 1);
+          var ext = message.data.substr(message.data.lastIndexOf('.') + 1).toLowerCase();
           var url = message.data;
           if(!url.startsWith("/knowrob/")) url = '/knowrob/knowrob_data/'+url;
           
@@ -289,7 +289,7 @@ function KnowrobClient(options){
               imageHeight = function(mjpeg_image) { return mjpeg_image.height; };
               imageWidth  = function(mjpeg_image) { return mjpeg_image.width; };
           }
-          else if(ext =='ogg' || ext =='ogv' || ext =='mp4') {
+          else if(ext =='ogg' || ext =='ogv' || ext =='mp4' || ext =='mov') {
               html += '<div class="image_view">';
               html += '  <video id="mjpeg_image" controls autoplay loop>';
               html += '    <source src="'+url+'" ';
