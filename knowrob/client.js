@@ -40,6 +40,11 @@ function KnowrobClient(options){
     var requireEpisode = options.require_episode;
     // Viewer used by tutorial page
     var globalViewer = options.global_viewer;
+
+    // sprite markers and render events
+    var sprites = [];
+    var render_event;
+
     // The selected marker object or undefined
     this.selectedMarker = undefined;
     
@@ -51,6 +56,8 @@ function KnowrobClient(options){
     var imageClient = undefined;
     var cameraPoseClient = undefined;
     this.snapshotTopic = undefined;
+    
+    this.nodesRegistered = false;
     
     // Redirects incomming marker messages to currently active canvas.
     function CanvasProxy(scene) {
@@ -100,6 +107,7 @@ function KnowrobClient(options){
       
         setInterval(containerRefresh, 570000);
         containerRefresh();
+        render_event = new CustomEvent('render', {'camera': null});
     };
     
     function containerRefresh() {
@@ -278,8 +286,8 @@ function KnowrobClient(options){
               html += '<img id="mjpeg_image" class="picture" src="'+url+'" width="300" height="240"/>';
               html += '</div>';
               
-              imageHeight = function() { return document.getElementById('mjpeg_image').height; };
-              imageWidth  = function() { return document.getElementById('mjpeg_image').width; };
+              imageHeight = function(mjpeg_image) { return mjpeg_image.height; };
+              imageWidth  = function(mjpeg_image) { return mjpeg_image.width; };
           }
           else if(ext =='ogg' || ext =='ogv' || ext =='mp4') {
               html += '<div class="image_view">';
@@ -291,8 +299,8 @@ function KnowrobClient(options){
               html += 'Your browser does not support the video tag.';
               html += '</video></div>';
               
-              imageHeight = function() { return document.getElementById('mjpeg_image').videoHeight; };
-              imageWidth  = function() { return document.getElementById('mjpeg_image').videoWidth; };
+              imageHeight = function(mjpeg_image) { return mjpeg_image.videoHeight; };
+              imageWidth  = function(mjpeg_image) { return mjpeg_image.videoWidth; };
           }
           else {
               console.warn("Unknown data format on /logged_images topic: " + message.data);
@@ -311,13 +319,13 @@ function KnowrobClient(options){
           that.getActiveFrame().on_camera_pose_received(message);
       });
       
+      // NOTE: frame windows may not be loaded already
       for(var i in user_interfaces) {
           var frame = document.getElementById(user_interfaces[i].id+"-frame");
           if(frame && frame.contentWindow && frame.contentWindow.on_register_nodes)
               frame.contentWindow.on_register_nodes();
       }
-      if(!document.getElementById(getActiveFrameName()+"-frame"))
-          that.getActiveFrame().on_register_nodes();
+      that.nodesRegistered = true;
     };
     
     this.waitForJsonProlog = function () {
@@ -382,8 +390,16 @@ function KnowrobClient(options){
     };
     
     this.on_render = function(camera,scene) {
-        if(that.getActiveFrame())
+        if(that.getActiveFrame() && that.getActiveFrame().on_render)
             that.getActiveFrame().on_render(camera,scene);
+
+        var index;
+        for(index = 0; index < sprites.length; index++) {
+            //sprites[index].camera = camera;
+            //render_event.target = sprites[index];
+            render_event.camera = camera;
+            sprites[index].dispatchEvent(render_event);
+        }
     };
     
     this.on_marker_dblclick = function(marker) {

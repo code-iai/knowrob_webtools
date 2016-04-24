@@ -5,6 +5,7 @@ body {
   margin: 0;
   height: 100%;
   background: none repeat scroll 0% 0% #dadada;
+  overflow: auto;
 }
 
 /* Header for openease/institute/university logo */
@@ -228,10 +229,10 @@ li:hover ul li.zero_size > div { top: 0px; }
 }
 
 /* Area at the top of the page */
-.headline { margin-top: 10px !important; }
+.headline { margin-top: 10px !important; min-width: 820px; }
 /* Area below headlines */
 #page-content { width:100%; height:100%; }
-#page-body { margin-top: 20px !important; }
+#page-body { margin-top: 20px !important; min-width: 820px; }
 
 .content-box {
   background-color: #f3f3ef;
@@ -889,6 +890,11 @@ li.zero_size,
 .icon_zoom_out  { background: url("/static/icons/theme/zoom-out.png") center / 24px no-repeat; }
 .icon_diff      { background: url("/static/icons/theme/diff.png") center / 24px no-repeat; }
 
+.icon_facebook  { background: url("/static/icons/facebook.png") center / 24px no-repeat; }
+.icon_twitter   { background: url("/static/icons/twitter.png") center / 24px no-repeat; }
+.icon_github    { background: url("/static/icons/github.png") center / 24px no-repeat; }
+.icon_google    { background: url("/static/icons/google.png") center / 24px no-repeat; }
+
 /** Kendo grid **/
 
 .k-grid tbody tr {
@@ -899,6 +905,45 @@ li.zero_size,
   outline-style: dashed;
   outline-width: 1px;
   outline-color: red;
+}
+
+/** diff **/
+
+.diff-source {
+    display: inline;
+    background-color: #BFB;
+}
+
+.diff-target {
+    display: inline;
+    background-color: #ffbbbb;
+}
+
+/** remote apps **/
+
+.remote-login-box {
+  float: left;
+  border: 1px solid #c8afaf;
+  border-radius: 7px;
+  margin-top: 10px;
+}
+
+.remote-login-header {
+  float: left;
+  font-size: 18px;
+  color: #144F78;
+  font-family: Oswald,Arial,Helvetica,sans-serif;
+  padding: 4px;
+  margin-top: 4px;
+  margin-left: 6px;
+}
+
+.remote-login-button {
+  float: left;
+  border: none;
+  height: 34px;
+  width: 34px;
+  margin: 4px;
 }
 
 /** jquery dialogs **/
