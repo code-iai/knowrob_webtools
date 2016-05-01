@@ -115,7 +115,8 @@ function KnowrobUI(client, options) {
         };
         
         if(queries == undefined) {
-            client.episode.queryEpisodeData(loadQueries);
+          // TODO: only dowload if required!
+          client.episode.queryEpisodeData(loadQueries);
         }
         else {
             loadQueries(queries);

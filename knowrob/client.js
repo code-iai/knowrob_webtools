@@ -269,7 +269,7 @@ function KnowrobClient(options){
           var html = undefined;
           if(desig_js.type) {
             if(desig_js.type=='ADT') {
-              html = format_adt_designator(desig_js);
+              html = format_adt_designator(that.getActiveFrame().ui, desig_js);
             }
           }
           if(!html) {

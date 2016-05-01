@@ -889,6 +889,7 @@ li.zero_size,
 .icon_zoom_orig { background: url("/static/icons/theme/zoom-original.png") center / 24px no-repeat; }
 .icon_zoom_out  { background: url("/static/icons/theme/zoom-out.png") center / 24px no-repeat; }
 .icon_diff      { background: url("/static/icons/theme/diff.png") center / 24px no-repeat; }
+.icon_reset     { background: url("/static/icons/theme/reset.png") center / 24px no-repeat; }
 
 .icon_facebook  { background: url("/static/icons/facebook.png") center / 24px no-repeat; }
 .icon_twitter   { background: url("/static/icons/twitter.png") center / 24px no-repeat; }
@@ -1001,6 +1002,9 @@ li.zero_size,
 .adt-table-row {
   cursor: pointer;
 }
+.adt-table-row-active {
+  background-color: #eee;
+}
 
 .adt-table-indicator { 
   width: 16px;
@@ -1009,6 +1013,7 @@ li.zero_size,
   border: 1px solid #8D8BE1;
 }
 .adt-table-indicator-elem {
+  min-width: 20px;
   width: 20px;
 }
 
@@ -1035,7 +1040,8 @@ li.zero_size,
 .adt-table-key  {
   text-align: right;
   padding-right: 10px;
-  width: 200px;
+  min-width: 150px;
+  width: 150px;
   font-family: Helvetica,Arial,sans-serif;
   font-size: 16px;
   font-weight: bold;
