@@ -247,6 +247,7 @@ function KnowrobClient(options){
           console.warn("Ignoring empty designator.");
         }
         else {
+          /*
           var designatorHtml = "";
           if(message.type==0) {
               designatorHtml += "OBJECT DESIGNATOR";
@@ -263,8 +264,18 @@ function KnowrobClient(options){
           else {
               designatorHtml += "DESIGNATOR";
           }
-          designatorHtml += format_designator(message.description);
-          that.getActiveFrame().on_designator_received(designatorHtml);
+          */
+          var desig_js = parse_designator(message.description);
+          var html = undefined;
+          if(desig_js.type) {
+            if(desig_js.type=='ADT') {
+              html = format_adt_designator(desig_js);
+            }
+          }
+          if(!html) {
+            html = format_designator(message.description);
+          }
+          that.getActiveFrame().on_designator_received(html);
         }
       });
         

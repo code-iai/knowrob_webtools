@@ -980,3 +980,86 @@ li.zero_size,
   content: "NOTE: ";
   font-weight: bold;
 } 
+
+/*****************************************/
+/************ ADT designator *************/
+/*****************************************/
+
+.adt {
+}
+.adt-table {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  width: 100%;
+}
+.adt-table tr {
+  border-bottom: 1px solid #B5D1E4;
+}
+
+.adt-table-row {
+  cursor: pointer;
+}
+
+.adt-table-indicator { 
+  width: 16px;
+  height: 16px;
+  border-radius: 10px;
+  border: 1px solid #8D8BE1;
+}
+.adt-table-indicator-elem {
+  width: 20px;
+}
+
+.adt-table-row-general {
+}
+.adt-table-row-general:hover {
+}
+.adt-table-row-general .adt-table-indicator {
+  background-color: rgb(211, 237, 251);
+}
+
+.adt-table-row-specific {
+}
+.adt-table-row-specific:hover {
+}
+.adt-table-row-specific .adt-table-indicator {
+  background-color: #CEFCBA;
+}
+
+.adt-table-elem  {
+  vertical-align: middle;
+  padding: 4px;
+}
+.adt-table-key  {
+  text-align: right;
+  padding-right: 10px;
+  width: 200px;
+  font-family: Helvetica,Arial,sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+}
+.adt-table-value {
+  text-align: left;
+  padding-left: 10px;
+  font-family: Helvetica,Arial,sans-serif;
+  font-size: 16px;
+  font-style: italic;
+}
+.adt-header {
+}
+.adt-headline {
+  font-size: 24px;
+  background: transparent linear-gradient(to bottom, #549FC8 0%, #246F98 50%, #246F98 51%, #144F78 100%) repeat scroll 0% 0%;
+  color: #fff;
+  font-family: Oswald,Arial,Helvetica,sans-serif;
+  padding: 4px;
+  text-align: center;
+}
+.adt-action-roles {
+}
+.adt-objects {
+}
+.adt-action-chunks {
+}
