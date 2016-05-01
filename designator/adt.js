@@ -1,4 +1,5 @@
 // @author Daniel Beßler
+// TODO: make this more robust with respect to missing keys
 
 function format_adt_designator(ui,desig_js) {
   var div = $('<div class="adt"></div>');
@@ -54,7 +55,8 @@ function adt_table_row_general(ui,table, key, value, queries) {
 };
 
 function unquote(str) {
-  if (str[0] === "'" && str[str.length - 1] === "'") return str.slice(1, str.length - 1);
+  if (!str) return '';
+  else if (str[0] === "'" && str[str.length - 1] === "'") return str.slice(1, str.length - 1);
   else return str;
 };
 
@@ -62,11 +64,21 @@ function format_owl_individual(x) {
   return x.slice(x.lastIndexOf("#")+1, x.length);
 };
 
+function format_date(t) {
+  var d = new Date(parseFloat(t)*1000.0);
+  return (d.getHours()<10?'0':'')   + d.getHours() + ':' +
+         (d.getMinutes()<10?'0':'') + d.getMinutes() + ':' +
+         (d.getSeconds()<10?'0':'') + d.getSeconds();
+}
+function format_interval(start,end) {
+  return format_date(start) + ' &mdash; ' + format_date(end);
+}
+
 function format_adt_header(ui,desig_js) {
   var div = $('<div class="adt-header"></div>');
   div.append($('<div class="adt-headline">Header</div>'));
   var table = adt_table();
-  var interval = '' + desig_js.start + ':' + desig_js.end;
+  var interval = format_interval(desig_js.start, desig_js.end);
   adt_table_row_specific(ui,table, 'adt',
       format_owl_individual(unquote(desig_js['adt-id'])), [
       { text: 'just testing', q: 'member(X,[a,b])' }
@@ -112,8 +124,17 @@ function format_adt_objects(ui,desig_js) {
 };
 
 function format_trajectory(traj) {
-  // TODO: do something fancy here
-  return traj;
+  var vec_ = traj.replace("\\n", "").split(" "), vec = []; 
+  var html = '';
+  for(i in vec_) {
+    if(vec_[i]!='' && vec_[i]!=' ') vec.push(vec_[i]);
+  }
+  while(vec.length>5) {
+    html += vec.slice(0,6).toString();
+    var vec = vec.slice(7,vec.length);
+    if(vec.length>5) html+="<br>";
+  }
+  return html;
 };
 
 function format_adt_action_chunks(ui,desig_js) {
@@ -123,12 +144,12 @@ function format_adt_action_chunks(ui,desig_js) {
   for (var key in desig_js) {
     if(key=='type') continue;
     var obj = desig_js[key];
-    var interval = '' + obj.start + ':' + obj.end;
+    var interval = format_interval(obj.start, obj.end);
     
     div.append($('<div class="adt-headline">Action-Chunk ('+count+')</div>'));
     var table = adt_table();
     adt_table_row_general(ui,table, 'task', unquote(obj.task), []);
-    adt_table_row_general(ui,table, 'class', unquote(obj.class), []);
+    adt_table_row_general(ui,table, 'class', unquote(obj['action-class']), []);
     adt_table_row_general(ui,table, 'success', unquote(obj['success']), []);
     adt_table_row_general(ui,table, 'frame', unquote(obj['trajectory-frame']), []);
     adt_table_row_general(ui,table, 'trajectory',
