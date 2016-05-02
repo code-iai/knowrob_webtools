@@ -71,6 +71,40 @@ function KnowrobUI(client, options) {
     //////////// Query Library
     ///////////////////////////////
     
+    this.loadQueriesForObject = function(objectName) {
+        var prolog = client.newProlog();
+        prolog.jsonQuery("object_queries("+objectName+",Queries).",
+            function(result) {
+                prolog.finishClient();
+                ui.loadObjectQueries(result.solution.Queries);
+            }
+        );
+    };
+    
+    this.loadObjectQueries = function(queries) {
+        // parse query and add to category--queries map
+        var queryLibMap = {};
+        for(var i=0; i<queries.length; i++) {
+            var category = queries[i][0];
+            var title = queries[i][1];
+            var query = queries[i][2];
+            if(!query.endsWith(".")) query += ".";
+            
+            if(queryLibMap[category]==undefined) queryLibMap[category]=[];
+            queryLibMap[category].push({q: query, text: title});
+        }
+        // flatten the map into queryLib array
+        var queryLib = [];
+        var categories = Object.keys(queryLibMap);
+        categories.sort();
+        for(var i=0; i<categories.length; i++) {
+            queryLib.push({q: "", text: "----- " + categories[i] + " -----"});
+            queryLib.push.apply(queryLib, queryLibMap[categories[i]]);
+        }
+        
+        ui.initQueryLibrary(queryLib);
+    };
+    
     this.initQueryLibrary = function (queries) {
         function loadQueries(query_lib) {
             var lib_div = document.getElementById('library_content');

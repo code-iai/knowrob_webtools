@@ -33,8 +33,8 @@ function adt_table_row(ui, table, key, value, queries, cls) {
       __adtActiveRow__.removeClass('adt-table-row-active');
     }
     __adtActiveRow__ = row;
-    if(queries && queries.length>0) {
-      if(ui && ui.initQueryLibrary) ui.initQueryLibrary(queries);
+    if(queries) {
+      queries();
     }
     else {
       if(ui && ui.initQueryLibrary) ui.initQueryLibrary();
@@ -79,15 +79,28 @@ function format_adt_header(ui,desig_js) {
   div.append($('<div class="adt-headline">Action Data Table</div>'));
   var table = adt_table();
   var interval = format_interval(desig_js.start, desig_js.end);
+  
+  var adtIndividual = unquote(desig_js['adt-id']);
   adt_table_row_specific(ui,table, 'adt',
-      format_owl_individual(unquote(desig_js['adt-id'])), [
-      { text: 'just testing', q: 'member(X,[a,b])' }
-  ]);
+      format_owl_individual(adtIndividual), function() {
+        ui.loadQueriesForObject("'"+adtIndividual+"'");
+      }
+  );
+  
+  var actionIndividual = unquote(desig_js['adt-action']);
   adt_table_row_specific(ui,table, 'action',
-      format_owl_individual(unquote(desig_js['adt-action'])), []);
-  adt_table_row_specific(ui,table, 'interval', interval, []);
-  adt_table_row_general(ui,table, 'instruction', unquote(desig_js.instruction), []);
-  adt_table_row_general(ui,table, 'actioncore', unquote(desig_js.actioncore), []);
+      format_owl_individual(actionIndividual), function() {
+        ui.loadQueriesForObject("'"+actionIndividual+"'");
+      }
+  );
+  
+  adt_table_row_specific(ui,table, 'interval', interval, function() {
+      ui.loadQueriesForObject("interval('timepoint_"+desig_js.start +
+                                    "', 'timepoint_"+desig_js.end+"')");
+  });
+  
+  adt_table_row_general(ui,table, 'instruction', unquote(desig_js.instruction));
+  adt_table_row_general(ui,table, 'actioncore', unquote(desig_js.actioncore));
   div.append(table);
   return div;
 };
@@ -98,7 +111,12 @@ function format_adt_action_roles(ui,desig_js) {
   var table = adt_table();
   for (var key in desig_js) {
     if(key=='type') continue;
-    adt_table_row_general(ui,table, key, unquote(desig_js[key]), []);
+    if(key.endsWith('-object')) continue;
+    var objIndividual = unquote(desig_js[key+"-object"]);
+    adt_table_row_general(ui,table, key, unquote(desig_js[key]), function() {
+        ui.loadQueriesForObject("'"+objIndividual+"'");
+      }
+    );
   }
   div.append(table);
   return div;
@@ -115,7 +133,7 @@ function format_adt_objects(ui,desig_js) {
     div.append($('<div class="adt-sub-headline">Object-Description ('+count+')</div>'));
     var table = adt_table();
     for (var obj_key in obj) {
-      adt_table_row_general(ui,table, obj_key, unquote(obj[obj_key]), []);
+      adt_table_row_general(ui,table, obj_key, unquote(obj[obj_key]));
     }
     div.append(table);
     count += 1;
@@ -145,18 +163,29 @@ function format_adt_action_chunks(ui,desig_js) {
     if(key=='type') continue;
     var obj = desig_js[key];
     var interval = format_interval(obj.start, obj.end);
+    var actionIndividual = unquote(obj['action-id']);
     
     div.append($('<div class="adt-sub-headline">Action-Chunk ('+count+')</div>'));
     var table = adt_table();
-    adt_table_row_general(ui,table, 'task', unquote(obj.task), []);
-    adt_table_row_general(ui,table, 'class', unquote(obj['action-class']), []);
-    adt_table_row_general(ui,table, 'success', unquote(obj['success']), []);
-    adt_table_row_general(ui,table, 'frame', unquote(obj['trajectory-frame']), []);
+    adt_table_row_general(ui,table, 'task', unquote(obj.task), function() {
+        ui.loadQueriesForObject("'"+actionIndividual+"'");
+      }
+    );
+    adt_table_row_general(ui,table, 'class', unquote(obj['action-class']), function() {
+        ui.loadQueriesForObject("'"+actionIndividual+"'");
+      }
+    );
+    adt_table_row_general(ui,table, 'success', unquote(obj['success']));
+    adt_table_row_general(ui,table, 'frame', unquote(obj['trajectory-frame']));
     adt_table_row_general(ui,table, 'trajectory',
-        format_trajectory(unquote(obj['trajectory'])), []);
-    adt_table_row_general(ui,table, 'interval', interval, []);
+        format_trajectory(unquote(obj['trajectory'])));
+    adt_table_row_general(ui,table, 'interval', interval, function() {
+        ui.loadQueriesForObject("interval('timepoint_"+obj.start +
+                                       "','timepoint_"+obj.end+"')");
+      }
+    );
     adt_table_row_specific(ui,table, 'relative-to',
-        format_owl_individual(unquote(obj['trajectory-reference'])), []);
+        format_owl_individual(unquote(obj['trajectory-reference'])));
     div.append(table);
     count += 1;
   }
