@@ -1063,6 +1063,14 @@ li.zero_size,
   padding: 4px;
   text-align: center;
 }
+.adt-sub-headline {
+  font-size: 16px;
+  background: transparent linear-gradient(to bottom, #84CFF8 0%, #549FC8 50%, #549FC8 51%, #447FA8 100%) repeat scroll 0% 0%;
+  color: #fff;
+  font-family: Oswald,Arial,Helvetica,sans-serif;
+  padding: 4px;
+  text-align: center;
+}
 .adt-action-roles {
 }
 .adt-objects {

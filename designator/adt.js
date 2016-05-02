@@ -76,7 +76,7 @@ function format_interval(start,end) {
 
 function format_adt_header(ui,desig_js) {
   var div = $('<div class="adt-header"></div>');
-  div.append($('<div class="adt-headline">Header</div>'));
+  div.append($('<div class="adt-headline">Action Data Table</div>'));
   var table = adt_table();
   var interval = format_interval(desig_js.start, desig_js.end);
   adt_table_row_specific(ui,table, 'adt',
@@ -94,7 +94,7 @@ function format_adt_header(ui,desig_js) {
 
 function format_adt_action_roles(ui,desig_js) {
   var div = $('<div class="adt-action-roles"></div>');
-  div.append($('<div class="adt-headline">Action-Roles</div>'));
+  div.append($('<div class="adt-sub-headline">Action-Roles</div>'));
   var table = adt_table();
   for (var key in desig_js) {
     if(key=='type') continue;
@@ -112,7 +112,7 @@ function format_adt_objects(ui,desig_js) {
     if(key=='type') continue;
     var obj = desig_js[key];
     
-    div.append($('<div class="adt-headline">Object-Description ('+count+')</div>'));
+    div.append($('<div class="adt-sub-headline">Object-Description ('+count+')</div>'));
     var table = adt_table();
     for (var obj_key in obj) {
       adt_table_row_general(ui,table, obj_key, unquote(obj[obj_key]), []);
@@ -146,7 +146,7 @@ function format_adt_action_chunks(ui,desig_js) {
     var obj = desig_js[key];
     var interval = format_interval(obj.start, obj.end);
     
-    div.append($('<div class="adt-headline">Action-Chunk ('+count+')</div>'));
+    div.append($('<div class="adt-sub-headline">Action-Chunk ('+count+')</div>'));
     var table = adt_table();
     adt_table_row_general(ui,table, 'task', unquote(obj.task), []);
     adt_table_row_general(ui,table, 'class', unquote(obj['action-class']), []);
