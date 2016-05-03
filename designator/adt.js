@@ -118,8 +118,10 @@ function format_adt_objects(ui,desig_js) {
     
     div.append($('<div class="adt-sub-headline">Object-Description ('+count+')</div>'));
     var table = adt_table();
+    var objIndividual = unquote(obj['object-id']);
     for (var obj_key in obj) {
-      adt_table_row_general(ui,table, obj_key, unquote(obj[obj_key]));
+      if(obj_key=='object-id') continue;
+      adt_table_row_general(ui,table, obj_key, unquote(obj[obj_key]), objIndividual);
     }
     div.append(table);
     count += 1;
@@ -133,10 +135,15 @@ function format_trajectory(traj) {
   for(i in vec_) {
     if(vec_[i]!='' && vec_[i]!=' ') vec.push(vec_[i]);
   }
+  var count = 0;
   while(vec.length>5) {
     html += vec.slice(0,6).toString();
     var vec = vec.slice(7,vec.length);
-    if(vec.length>5) html+="<br>";
+    if(vec.length>5) {
+        if(count=1) { html+="<br>...."; break; }
+        else html+="<br>";
+    }
+    count += 1;
   }
   return html;
 };
@@ -149,7 +156,7 @@ function format_adt_action_chunks(ui,desig_js) {
     if(key=='type') continue;
     var obj = desig_js[key];
     var interval = format_interval(obj.start, obj.end);
-    var actionIndividual = unquote(obj['action-id']);
+    var actionIndividual = unquote(obj['adt-action']);
     
     div.append($('<div class="adt-sub-headline">Action-Chunk ('+count+')</div>'));
     var table = adt_table();
