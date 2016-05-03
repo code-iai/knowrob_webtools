@@ -20,7 +20,7 @@ function adt_table() {
 
 var __adtActiveRow__ = undefined;
 
-function adt_table_row(ui, table, key, value, queries, cls) {
+function adt_table_row(ui, table, key, value, objIndividual, cls) {
   var row = $('<tr class="adt-table-row"></tr>');
   row.addClass(cls);
   row.append($('<td class="adt-table-elem adt-table-indicator-elem"><div class="adt-table-indicator"></div></td>'));
@@ -33,8 +33,8 @@ function adt_table_row(ui, table, key, value, queries, cls) {
       __adtActiveRow__.removeClass('adt-table-row-active');
     }
     __adtActiveRow__ = row;
-    if(queries) {
-      queries();
+    if(objIndividual) {
+      ui.loadQueriesForObject("'"+objIndividual+"'");
     }
     else {
       if(ui && ui.initQueryLibrary) ui.initQueryLibrary();
@@ -42,16 +42,13 @@ function adt_table_row(ui, table, key, value, queries, cls) {
   });
   return row;
 };
-$('#adt-table').on('click', '.clickable-row', function(event) {
-  $(this).addClass('active').siblings().removeClass('active');
-});
 
-function adt_table_row_specific(ui,table, key, value, queries) {
-  return adt_table_row(ui,table, key, value, queries, 'adt-table-row-specific');
+function adt_table_row_specific(ui,table, key, value, objIndividual) {
+  return adt_table_row(ui,table, key, value, objIndividual, 'adt-table-row-specific');
 };
 
-function adt_table_row_general(ui,table, key, value, queries) {
-  return adt_table_row(ui,table, key, value, queries, 'adt-table-row-general');
+function adt_table_row_general(ui,table, key, value, objIndividual) {
+  return adt_table_row(ui,table, key, value, objIndividual, 'adt-table-row-general');
 };
 
 function unquote(str) {
@@ -82,22 +79,14 @@ function format_adt_header(ui,desig_js) {
   
   var adtIndividual = unquote(desig_js['adt-id']);
   adt_table_row_specific(ui,table, 'adt',
-      format_owl_individual(adtIndividual), function() {
-        ui.loadQueriesForObject("'"+adtIndividual+"'");
-      }
-  );
+      format_owl_individual(adtIndividual), adtIndividual);
   
   var actionIndividual = unquote(desig_js['adt-action']);
   adt_table_row_specific(ui,table, 'action',
-      format_owl_individual(actionIndividual), function() {
-        ui.loadQueriesForObject("'"+actionIndividual+"'");
-      }
-  );
+      format_owl_individual(actionIndividual), actionIndividual);
   
-  adt_table_row_specific(ui,table, 'interval', interval, function() {
-      ui.loadQueriesForObject("interval('timepoint_"+desig_js.start +
-                                    "', 'timepoint_"+desig_js.end+"')");
-  });
+  adt_table_row_specific(ui,table, 'interval', interval,
+       "interval("+desig_js.start +", "+desig_js.end+")");
   
   adt_table_row_general(ui,table, 'instruction', unquote(desig_js.instruction));
   adt_table_row_general(ui,table, 'actioncore', unquote(desig_js.actioncore));
@@ -113,10 +102,7 @@ function format_adt_action_roles(ui,desig_js) {
     if(key=='type') continue;
     if(key.endsWith('-object')) continue;
     var objIndividual = unquote(desig_js[key+"-object"]);
-    adt_table_row_general(ui,table, key, unquote(desig_js[key]), function() {
-        ui.loadQueriesForObject("'"+objIndividual+"'");
-      }
-    );
+    adt_table_row_general(ui,table, key, unquote(desig_js[key]), objIndividual);
   }
   div.append(table);
   return div;
@@ -167,23 +153,14 @@ function format_adt_action_chunks(ui,desig_js) {
     
     div.append($('<div class="adt-sub-headline">Action-Chunk ('+count+')</div>'));
     var table = adt_table();
-    adt_table_row_general(ui,table, 'task', unquote(obj.task), function() {
-        ui.loadQueriesForObject("'"+actionIndividual+"'");
-      }
-    );
-    adt_table_row_general(ui,table, 'class', unquote(obj['action-class']), function() {
-        ui.loadQueriesForObject("'"+actionIndividual+"'");
-      }
-    );
+    adt_table_row_general(ui,table, 'task', unquote(obj.task), actionIndividual);
+    adt_table_row_general(ui,table, 'class', unquote(obj['action-class']), actionIndividual);
     adt_table_row_general(ui,table, 'success', unquote(obj['success']));
     adt_table_row_general(ui,table, 'frame', unquote(obj['trajectory-frame']));
     adt_table_row_general(ui,table, 'trajectory',
         format_trajectory(unquote(obj['trajectory'])));
-    adt_table_row_general(ui,table, 'interval', interval, function() {
-        ui.loadQueriesForObject("interval('timepoint_"+obj.start +
-                                       "','timepoint_"+obj.end+"')");
-      }
-    );
+    adt_table_row_general(ui,table, 'interval', interval,
+        "interval("+obj.start + "," + obj.end+")");
     adt_table_row_specific(ui,table, 'relative-to',
         format_owl_individual(unquote(obj['trajectory-reference'])));
     div.append(table);
