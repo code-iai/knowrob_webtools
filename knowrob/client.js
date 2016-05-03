@@ -33,7 +33,7 @@ function KnowrobClient(options){
     // true iff json_prolog is connected
     this.isPrologConnected = false;
     // true iff registerNodes was called before
-    var isRegistered = false;
+    this.isRegistered = false;
     // Prefix for mesh GET URL's
     var meshPath  = options.meshPath || '/';
     // Block the interface until an episode was selected?
@@ -136,12 +136,14 @@ function KnowrobClient(options){
       that.ros.on('close', function() {
           console.log('Connection to websocket server closed.');
           that.ros = undefined;
+          that.isRegistered = false;
           setTimeout(that.connect, 500);
       });
       that.ros.on('error', function(error) {
           console.log('Error connecting to websocket server: ', error);
           if(that.ros) that.ros.close();
           that.ros = undefined;
+          that.isRegistered = false;
           setTimeout(that.connect, 500);
       });
     };
@@ -177,8 +179,8 @@ function KnowrobClient(options){
     };
     
     this.registerNodes = function () {
-      if(isRegistered) return;
-      isRegistered = true;
+      if(that.isRegistered) return;
+      that.isRegistered = true;
       
       // Setup publisher that sends a dummy message in order to keep alive the socket connection
       {
