@@ -33,31 +33,34 @@ function KnowrobReplayUI(client, options) {
     this.episodeData = function() { return client.episode.episodeData; };
     
     this.initVideoDivs = function() {
-        var episodeSelect = document.getElementById('replay-episode-list');
-        episodeSelect.innerHTML = "";
-        
-        if (episodeSelect !== null && client.episode.hasEpisode()) {
+        var select = document.getElementById('time-sequence-dropdown');
+        if (client.episode.hasEpisode()) {
             if(that.episodeData() && that.episodeData().video && that.episodeData().video.length > 0) {
                for (var i = 0; i < that.episodeData().video.length; i++) {
                   that.addVideoItem(that.episodeData().video[i].name);
                }
             }
-            else {
-                return;
-            }
-            
-            var select = document.getElementById('time-sequence-dropdown');
-            var opt = document.createElement('option');
-            opt.value = 0;
-            opt.innerHTML = 'Choose an experiment time interval';
-            select.appendChild(opt);
             if(that.episodeData().time_intervals != null) {
+                if( select.length > 1)
+                {
+                    for (var i = 1; i < select.length; i++) {
+                         select.remove(i);
+                    }
+                }         
                 for (var i = 0; i < that.episodeData().time_intervals.length; i++) {
                     that.addTimeInterval(i + 1,
                          that.episodeData().time_intervals[i].start,
                          that.episodeData().time_intervals[i].end);
                 }
             }      
+        }
+        
+        if( select.length == 0)
+        {
+            var opt = document.createElement('option');
+            opt.value = 0;
+            opt.innerHTML = 'Choose an experiment time interval';
+            select.appendChild(opt);
         }
     };
 
