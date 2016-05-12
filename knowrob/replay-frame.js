@@ -34,6 +34,15 @@ function KnowrobReplayUI(client, options) {
     
     this.initVideoDivs = function() {
         var select = document.getElementById('time-sequence-dropdown');
+
+        if( select.length == 0)
+        {
+            var opt = document.createElement('option');
+            opt.value = 0;
+            opt.innerHTML = 'Choose an experiment time interval';
+            select.appendChild(opt);
+        }
+
         if (client.episode.hasEpisode()) {
             if(that.episodeData() && that.episodeData().video && that.episodeData().video.length > 0) {
                for (var i = 0; i < that.episodeData().video.length; i++) {
@@ -43,7 +52,7 @@ function KnowrobReplayUI(client, options) {
             if(that.episodeData().time_intervals != null) {
                 if( select.length > 1)
                 {
-                    for (var i = 1; i < select.length; i++) {
+                    for (var i = select.length - 1; i > 0; i--) {
                          select.remove(i);
                     }
                 }         
@@ -53,14 +62,6 @@ function KnowrobReplayUI(client, options) {
                          that.episodeData().time_intervals[i].end);
                 }
             }      
-        }
-        
-        if( select.length == 0)
-        {
-            var opt = document.createElement('option');
-            opt.value = 0;
-            opt.innerHTML = 'Choose an experiment time interval';
-            select.appendChild(opt);
         }
     };
 
