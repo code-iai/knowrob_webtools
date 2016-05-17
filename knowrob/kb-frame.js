@@ -19,17 +19,8 @@ function KnowrobUI(client, options) {
     this.queryLibrary = undefined;
 
     this.init = function () {
-        that.rosViewer = client.newCanvas({
-            divID: document.getElementById('markers'),
-            on_window_dblclick: function() {
-                if(client.selectedMarker) {
-                    that.initQueryLibrary();
-                    client.unselectMarker();
-                }
-            }
-        });
+        that.initCanvas();
         
-    
         that.console = new PrologConsole(client, options);
         that.console.init();
         
@@ -49,6 +40,22 @@ function KnowrobUI(client, options) {
                 editor.style.display = "none";
             }
         };
+    };
+    
+    this.initCanvas = function() {
+        if(that.rosViewer) {
+          delete that.rosViewer;
+          document.getElementById('markers').innerHTML = "";
+        }
+        that.rosViewer = client.newCanvas({
+            divID: document.getElementById('markers'),
+            on_window_dblclick: function() {
+                if(client.selectedMarker) {
+                    that.initQueryLibrary();
+                    client.unselectMarker();
+                }
+            }
+        });
     };
 
     this.resizeImage = function () {
