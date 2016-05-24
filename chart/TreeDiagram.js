@@ -1,7 +1,7 @@
 function TreeDiagram(options){
   options = options || {};
-  var width = options.width || 960;
-  var height = options.height || 500;
+  var width = options.width || 0;
+  var height = options.height || 0;
   var where = options.where;
   /*var root = {id: options.data.value1[0],
               parent: "",
@@ -53,7 +53,11 @@ function TreeDiagram(options){
 
   // removes this chart
   this.remove = function() {
+    vis = d3.select(where).append("svg:svg")
+      .attr("width", 0)
+      .attr("height", 0);
     vis.remove();
+    d3.select(where).html("");
     /*vis = d3.select(where).append("svg:svg")
       .attr("width", width)
       .attr("height", height);
@@ -66,16 +70,22 @@ function TreeDiagram(options){
 
   this.update = function(data) {
     vis.remove();
+    if(data.data.length == 0)
+    {
+      this.remove();
+      return 0;
+    }
+
     vis = d3.select(where).append("svg:svg")
-      .attr("width", width)
-      .attr("height", height);
+      .attr("width", data.width)
+      .attr("height", data.height);
     svg = vis
     .append("svg:g")
       .attr("transform", "translate(10,10)");
     node = svg.selectAll(".node"),
       link = svg.selectAll(".link");
     var tree = d3.layout.tree()
-      .size([height - 20, width - 20]);
+      .size([data.height - 20, data.width - 20]);
     var root = {id: data.data[0].id,
                 parent: data.data[0].id,
                 color: data.data[0].color,
@@ -86,7 +96,6 @@ function TreeDiagram(options){
     root.parent = root;
     root.px = root.y;
     root.py = root.x;
-
 
     for (var i = 0; i < data.data.length; i++) {
 

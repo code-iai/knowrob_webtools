@@ -2,13 +2,13 @@ function TaskTreeVisClient(options) {
   var ros = options.ros;
   var containerId = options.containerId;
   var topic = options.topic;
-  var width1 = options.width || 960;
-  var height1 = options.height || 500;
+  var init_width = options.width || 960;
+  var init_height = options.height || 500;
  
   var initialOptions = {
         where: containerId,
-        width: width1,
-        height: height1
+        width: this.width,
+        height: this.height
       };
 
   var taskTreeHandle = new TreeDiagram(initialOptions);
@@ -24,8 +24,8 @@ function TaskTreeVisClient(options) {
         data: message.tree,
         info: message.info,
         where: containerId,
-        width: message.width,
-        height: message.height,
+        width: message.width || 960,
+        height: message.height || 500,
       };
       taskTreeHandle.update(options);         
       $(containerId).change();
