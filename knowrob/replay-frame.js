@@ -260,7 +260,7 @@ function KnowrobReplayUI(client, options) {
            var prolog = client.newProlog();
            prolog.jsonQuery('openease_video_stop.', function(result) {
               console.log(prolog.format(result));
-              window.open('/knowrob/local_data/video_created/video.mpg','_blank')
+              window.open('/knowrob/local_data/video_created/video.mp4','_blank')
            }, mode=1);
         }
         isStreaming = false;
