@@ -53,6 +53,7 @@ function KnowrobClient(options){
     this.markerClient = undefined;
     this.markerArrayClient = undefined;
     var designatorClient = undefined;
+    var designatorArrayClient = undefined;
     var imageClient = undefined;
     var cameraPoseClient = undefined;
     this.snapshotTopic = undefined;
@@ -238,48 +239,51 @@ function KnowrobClient(options){
         on_delete: options.on_marker_delete || that.on_marker_delete
       });
 
-      // Setup the designator message client.
+      //Setup the designator message client.
       designatorClient = new ROSLIB.Topic({
         ros : that.ros,
         name : '/logged_designators',
         messageType : 'designator_integration_msgs/Designator'
       });
-      designatorClient.subscribe(function(message) {
-        if(message.description.length==0) {
+      
+      designatorArrayClient = new ROSLIB.Topic({
+        ros : that.ros,
+        name : 'RoboSherlock/object_designators',
+        messageType : 'designator_integration_msgs/DesignatorResponse'
+      });
+      
+      var designatorArrayHandler = function(message) {
+        if(message.designators.length==0) {
           console.warn("Ignoring empty designator.");
         }
         else {
-          /*
-          var designatorHtml = "";
-          if(message.type==0) {
-              designatorHtml += "OBJECT DESIGNATOR";
-          }
-          else if(message.type==1) {
-              designatorHtml += "ACTION DESIGNATOR";
-          }
-          else if(message.type==2) {
-              designatorHtml += "LOCATION DESIGNATOR";
-          }
-          else if(message.type==3) {
-              designatorHtml += "HUMAN DESIGNATOR";
-          }
-          else {
-              designatorHtml += "DESIGNATOR";
-          }
-          */
-          var desig_js = parse_designator(message.description);
-          var html = undefined;
-          if(desig_js.type) {
-            if(desig_js.type=='ADT') {
-              html = format_adt_designator(that.getActiveFrame().ui, desig_js);
-            }
-          }
-          if(!html) {
-            html = format_designator(message.description);
+          var length = message.designators.length;
+	  var html = "";
+	  for (i=0;i<length;i++){
+	    post = undefined;
+	    var desig_js = parse_designator(message.designators[i].description);
+	    if(desig_js.type) {
+	      if(desig_js.type=='ADT') {
+		post= format_adt_designator(that.getActiveFrame().ui,desig_js);
+	      }
+	    }
+	    if(!post){
+	      post = format_designator(message.designators[i].description);
+	    }
+	    html += post;
           }
           that.getActiveFrame().on_designator_received(html);
         }
+      };
+      designatorArrayClient.subscribe(designatorArrayHandler);
+      
+      designatorClient.subscribe(function(message){
+	var array_msgs = new ROSLIB.Message({ 
+	  designators:[message]
+	});
+	designatorArrayHandler(array_msgs);
       });
+     
         
       // Setup the image message client.
       imageClient = new ROSLIB.Topic({
@@ -439,7 +443,53 @@ function KnowrobClient(options){
     ///////////////////////////////
     
     this.setEpisode = function(category, episode) {
-        that.episode.setEpisode(category, episode, that.on_episode_selected);
+        
+	that.episode.setEpisode(category, episode, that.on_episode_selected);
+/*	if(episode == "reasoning1") {
+	
+	    designatorClient = new ROSLIB.Topic({
+	      ros : that.ros,
+	      name : '/RoboSherlock/object_designators',
+	      messageType : 'designator_integration_msgs/DesignatorResponse'
+	    });
+	    console.log("Changed subscriber to /RoboSherlock/object_designators");
+	    designatorClient.subscribe(function(message) {
+	    if(message.designators.length == 0 || empty_designators(message)) {
+	      console.warn("Ignoring empty designator.");
+	    }
+	    else {
+	     html = format_designator_array(message);
+	     that.getActiveFrame().on_designator_received(html);
+	    }
+	   });
+      }
+      else{
+	  designatorClient = new ROSLIB.Topic({
+	    ros : that.ros,
+	    name : '/logged_designators',
+	    messageType : 'designator_integration_msgs/Designator'
+	  });
+	  console.log("Changed subscriber to /logged_designators");
+	  designatorClient.subscribe(function(message) {
+	  if(message.description.length==0) {
+	    console.warn("Ignoring empty designator.");
+	  }
+	  else {
+	    var desig_js = parse_designator(message.description);
+	    var html = undefined;
+	    if(desig_js.type) {
+	      if(desig_js.type=='ADT') {
+		html = format_adt_designator(that.getActiveFrame().ui, desig_js);
+	      }
+	    }
+	    if(!html) {
+	      html = format_designator(message.description);
+	    }
+	    that.getActiveFrame().on_designator_received(html);
+	  }
+	});
+      }
+      console.log(designatorClient.messageType);*/
     };
     
     this.on_episode_selected = function(library) {

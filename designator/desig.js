@@ -1,14 +1,36 @@
+//handle array of designators
+function empty_designators(desigResponseMsgs) {
+  var empty =true;
+  var length = desigResponseMsgs.designators.length;
+  for (i=0;i<length;i++){
+       if(desigResponseMsgs.designators[i].description.length != 0){
+	 empty = false;
+       }
+  }
+  return empty;
+};
 
-function parse_designator(desig, parents) {
+function format_designator_array(desigResponseMsgs) {
+  var length = desigResponseMsgs.designators.length;
+  post = "";
+  for (i=0;i<length;i++){
+       post += format_designator(desigResponseMsgs.designators[i].description);
+  }
+  return post;
+};
+
+function parse_designator(desig/*, parents*/) {
     var out = {};
     var parents = [out];
     for(var i in desig) {
-      var d = desig[i]; // next value
-      // find the parent designator
+      var d = desig[i]; // next value find the parent designator
       var level = d["parent"];
       var parent = parents[level];
+      if(parent == undefined){
+	continue;
+      }
       parents = parents.slice(0,level+1);
-      // parse value 
+      //parse value 
       var value = parse_designator_value(d);
       if(!value) {
         value = {};
@@ -16,15 +38,17 @@ function parse_designator(desig, parents) {
       }
       parent[d["key"]] = value;
     }
+    console.warn("OUT MSGS:"+out);
     return out;
 };
 
 function parse_designator_value(elem) {
   if(elem["type"]==0)       return elem["value_string"];
   else if(elem["type"]==1)  return elem["value_float"];
+  else if(elem["type"]==3)  return elem["value_float"];//why not...C++ interface of desigs has only lists, no generic array container
   else if(elem["type"]==5)  return elem["value_pose"];
-  else if(elem["type"]==12) return elem["value_array"]; // Matrix
-  else if(elem["type"]==13) return elem["value_array"]; // Vector
+  else if(elem["type"]==12) return elem["value_array"]; // Matrix of floats ...so this sux
+  else if(elem["type"]==13) return elem["value_array"]; // Vector of floats ...so what if I want a vector of Objects?
   else if(elem["type"]==4)  return elem["value_posestamped"];
   else return undefined;
 };
