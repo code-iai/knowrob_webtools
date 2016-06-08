@@ -292,36 +292,45 @@ function KnowrobClient(options){
         messageType : 'std_msgs/String'
       });
       imageClient.subscribe(function(message) {
-          var ext = message.data.substr(message.data.lastIndexOf('.') + 1).toLowerCase();
-          var url = message.data;
-          if(!url.startsWith("/knowrob/")) url = '/knowrob/knowrob_data/'+url;
-          
-          var imageHeight, imageWidth;
+	  
+	  var imageHeight, imageWidth;
           var html = '';
-          if(ext=='jpg' || ext =='png') {
-              html += '<div class="image_view">';
-              html += '<img id="mjpeg_image" class="picture" src="'+url+'" width="300" height="240"/>';
-              html += '</div>';
+	  if(message.data.startsWith("data:image/jpg;base64")){
+	      console.warn("base64 encoded image");
+	      html += '<div class="image_view">';
+	      html += '<img id="mjpeg_image" class="picture" src="'+message.data+'" width="300" height="240"/>';
+	      html += '</div>';
+	  }
+	  else{
+	    var ext = message.data.substr(message.data.lastIndexOf('.') + 1).toLowerCase();
+	    var url = message.data;
+	    if(!url.startsWith("/knowrob/")) url = '/knowrob/knowrob_data/'+url;
+	  
+	    if(ext=='jpg' || ext =='png') {
+		html += '<div class="image_view">';
+		html += '<img id="mjpeg_image" class="picture" src="'+url+'" width="300" height="240"/>';
+		html += '</div>';
               
-              imageHeight = function(mjpeg_image) { return mjpeg_image.height; };
-              imageWidth  = function(mjpeg_image) { return mjpeg_image.width; };
-          }
-          else if(ext =='ogg' || ext =='ogv' || ext =='mp4' || ext =='mov') {
-              html += '<div class="image_view">';
-              html += '  <video id="mjpeg_image" controls autoplay loop>';
-              html += '    <source src="'+url+'" ';
-              if(ext =='ogg' || ext =='ogv') html += 'type="video/ogg" ';
-              else if(ext =='mp4') html += 'type="video/mp4" ';
-              html += '/>';
-              html += 'Your browser does not support the video tag.';
-              html += '</video></div>';
+		imageHeight = function(mjpeg_image) { return mjpeg_image.height; };
+		imageWidth  = function(mjpeg_image) { return mjpeg_image.width; };
+	    }
+	    else if(ext =='ogg' || ext =='ogv' || ext =='mp4' || ext =='mov') {
+		html += '<div class="image_view">';
+		html += '  <video id="mjpeg_image" controls autoplay loop>';
+		html += '    <source src="'+url+'" ';
+		if(ext =='ogg' || ext =='ogv') html += 'type="video/ogg" ';
+		else if(ext =='mp4') html += 'type="video/mp4" ';
+		html += '/>';
+		html += 'Your browser does not support the video tag.';
+		html += '</video></div>';
               
-              imageHeight = function(mjpeg_image) { return mjpeg_image.videoHeight; };
-              imageWidth  = function(mjpeg_image) { return mjpeg_image.videoWidth; };
-          }
-          else {
+		imageHeight = function(mjpeg_image) { return mjpeg_image.videoHeight; };
+		imageWidth  = function(mjpeg_image) { return mjpeg_image.videoWidth; };
+	    }
+	    else {
               console.warn("Unknown data format on /logged_images topic: " + message.data);
-          }
+	    }
+	  }
           if(html.length>0) {
               that.getActiveFrame().on_image_received(html, imageWidth, imageHeight);
           }
