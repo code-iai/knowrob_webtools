@@ -2,8 +2,8 @@ function TaskTreeVisClient(options) {
   var ros = options.ros;
   var containerId = options.containerId;
   var topic = options.topic;
-  var init_width = options.width || 960;
-  var init_height = options.height || 500;
+  var init_width = options.width || 460;
+  var init_height = options.height || 580;
  
   var initialOptions = {
         where: containerId,
@@ -24,8 +24,8 @@ function TaskTreeVisClient(options) {
         data: message.tree,
         info: message.info,
         where: containerId,
-        width: message.width || 960,
-        height: message.height || 500,
+        width: message.width || 460,
+        height: message.height || 580,
       };
       taskTreeHandle.update(options);         
       $(containerId).change();

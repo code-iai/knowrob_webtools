@@ -29,6 +29,10 @@ function KnowrobReplayUI(client, options) {
     this.resizeCanvas = function () {
         that.rosViewer.resize($('#'+canvasDiv).width(), $('#'+canvasDiv).height());
     };
+
+    this.setCameraPose = function (pose) {
+        that.rosViewer.setCameraPose(pose);
+    };
     
     this.episodeData = function() { return client.episode.episodeData; };
     
