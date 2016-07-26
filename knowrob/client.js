@@ -443,8 +443,10 @@ function KnowrobClient(options){
     };
     
     this.on_episode_selected = function(library) {
-        if(that.getActiveFrame())
-            that.getActiveFrame().on_episode_selected(library);
+        for(var i in user_interfaces) {
+            var frame = document.getElementById(user_interfaces[i].id+"-frame");
+            if(frame) frame.contentWindow.on_episode_selected(library);
+        }
         that.hidePageOverlay();
     };
     

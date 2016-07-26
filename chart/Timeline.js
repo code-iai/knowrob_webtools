@@ -3,6 +3,8 @@ More information can be found on https://developers.google.com/chart/
 */
 
 function Timeline (options) {
+  var that = this;
+
   options = options || {};
   var w = options.width - 100 || 200;
   var h = options.height - 100 || 200;
@@ -10,10 +12,11 @@ function Timeline (options) {
   var where = options.where;
   var label = options.label;
   var fontsize = options.fontsize || "12px";
+  this.ros = options.ros || false;
   this.label = options.label;
 
   var chart;
-  
+  var dataTable;
   this.remove = function() {
     chart.clearChart();
   }
@@ -21,7 +24,7 @@ function Timeline (options) {
   this.update = function(data) {
       var container = document.getElementById('chart');
       chart = new google.visualization.Timeline(container);
-      var dataTable = new google.visualization.DataTable();
+      dataTable = new google.visualization.DataTable();
       
       dataTable.addColumn({ type: 'string', id: 'Event' });
       dataTable.addColumn({ type: 'number', id: 'Start' });
@@ -41,6 +44,27 @@ function Timeline (options) {
       dataTable.addRows(data_array);
       // alert(JSON.stringify(dataTable));
       var view =  new google.visualization.DataView(dataTable);
-      chart.draw(view);
+      
+
+      
+      google.visualization.events.addListener(chart, 'select', function(){
+        var selection = chart.getSelection();
+        var prolog = new JsonProlog(that.ros, {});
+        for (var i = 0; i < selection.length; i++) {
+         var query = "remove_task_tree, !, visualize_task_tree_in_timeline('http://knowrob.org/kb/cram_log.owl#timepoint_" + (dataTable.getValue(selection[i].row, 1) / 1000.0)  +
+                                                                       "', 'http://knowrob.org/kb/cram_log.owl#timepoint_" + (dataTable.getValue(selection[i].row, 2) / 1000.0)  + 
+                                                                       "', '" + dataTable.getValue(selection[i].row, 0) + "' ).";
+         console.log(query);
+         prolog.jsonQuery(query,
+          function(result) 
+          { 
+            prolog.finishClient(); 
+          });	     
+         }
+     });
+     
+     chart.draw(view);
   }
 }
+
+
