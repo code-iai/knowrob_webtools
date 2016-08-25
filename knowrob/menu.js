@@ -55,7 +55,7 @@ function KnowrobMenu(user, user_interfaces){
     };
     
     this.addCommonMenuItems = function(left_menu, right_menu) {
-        if(left_menu && user.isLoggedIn()) {
+        if(left_menu) {
             // openEASE user interfaces
             for(var i in user_interfaces) {
                 that.addMenuItem(left_menu, {
@@ -68,7 +68,7 @@ function KnowrobMenu(user, user_interfaces){
         if(left_menu) {
             that.addMenuItem(left_menu, { id:"tutorials-menu", text: 'Tutorials', href: "/tutorials" });
         }
-        if(left_menu && user.isLoggedIn()) {
+        if(left_menu) {
             // admin pages
             if(user.isAdmin()) {
                 that.handleWebappMenu(left_menu, {
@@ -114,10 +114,16 @@ function KnowrobMenu(user, user_interfaces){
                 */
             }
         }
-        if(right_menu) {
+        if(right_menu && user.isLoggedIn()) {
             that.addMenuItem(right_menu, {
                 text: "Logout "+user.username,
                 href: "/user/sign-out"
+            });
+        }
+        else if(right_menu && !user.isLoggedIn()) {
+            that.addMenuItem(right_menu, {
+                text: "Login",
+                href: "/user/sign-in"
             });
         }
     };
