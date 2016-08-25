@@ -7,8 +7,8 @@ function KnowrobCanvas(client, options){
     // The canvas object
     this.rosViewer = new ROS3D.Viewer({
         divID : options.divID,
-        width : 800,
-        height : 600,
+        width : 1920,
+        height : 1080,
         antialias : true,
         background : options.background || '#ffffff',
         enableShadows: false,

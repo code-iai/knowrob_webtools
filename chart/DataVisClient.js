@@ -76,7 +76,7 @@ function DataVisClient(options) {
 
       // Timeline (Gantt style)
       } else if (message.type == 3) {
-
+        options.ros = ros;
         chartHandle.push({
           id: message.id,
           handle: new Timeline(options)

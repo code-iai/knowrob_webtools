@@ -29,29 +29,37 @@ function KnowrobReplayUI(client, options) {
     this.resizeCanvas = function () {
         that.rosViewer.resize($('#'+canvasDiv).width(), $('#'+canvasDiv).height());
     };
+
+    this.setCameraPose = function (pose) {
+        that.rosViewer.setCameraPose(pose);
+    };
     
     this.episodeData = function() { return client.episode.episodeData; };
     
     this.initVideoDivs = function() {
-        var episodeSelect = document.getElementById('replay-episode-list');
-        episodeSelect.innerHTML = "";
-        
-        if (episodeSelect !== null && client.episode.hasEpisode()) {
+        var select = document.getElementById('time-sequence-dropdown');
+
+        if( select.length == 0)
+        {
+            var opt = document.createElement('option');
+            opt.value = 0;
+            opt.innerHTML = 'Choose an experiment time interval';
+            select.appendChild(opt);
+        }
+
+        if (client.episode.hasEpisode()) {
             if(that.episodeData() && that.episodeData().video && that.episodeData().video.length > 0) {
                for (var i = 0; i < that.episodeData().video.length; i++) {
                   that.addVideoItem(that.episodeData().video[i].name);
                }
             }
-            else {
-                return;
-            }
-            
-            var select = document.getElementById('time-sequence-dropdown');
-            var opt = document.createElement('option');
-            opt.value = 0;
-            opt.innerHTML = 'Choose an experiment time interval';
-            select.appendChild(opt);
             if(that.episodeData().time_intervals != null) {
+                if( select.length > 1)
+                {
+                    for (var i = select.length - 1; i > 0; i--) {
+                         select.remove(i);
+                    }
+                }         
                 for (var i = 0; i < that.episodeData().time_intervals.length; i++) {
                     that.addTimeInterval(i + 1,
                          that.episodeData().time_intervals[i].start,
@@ -256,7 +264,7 @@ function KnowrobReplayUI(client, options) {
            var prolog = client.newProlog();
            prolog.jsonQuery('openease_video_stop.', function(result) {
               console.log(prolog.format(result));
-              window.open('/knowrob/local_data/video_created/video.mpg','_blank')
+              window.open('/knowrob/local_data/video_created/video.mp4','_blank')
            }, mode=1);
         }
         isStreaming = false;
