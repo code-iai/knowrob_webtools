@@ -116,7 +116,7 @@ function JsonProlog(ros, options){
     that.finished = true;
   };
   
-  this.format = function(result) {
+  this.format = function(result, rdf_namespaces) {
     if (result.error) {
       console.log("Prolog Query failed: " + result.error.toString());
       return (result.error.solution || result.error.message || result.error.toString()) + "\n";
@@ -130,7 +130,16 @@ function JsonProlog(ros, options){
       }
     }
     else {
-      return result.value;
+      var value_formatted = result.value;
+      for(iri in rdf_namespaces) {
+          // TODO: wrap individual/class name in ''
+          if(value_formatted.indexOf(iri) !== -1) {
+              value_formatted = value_formatted.replace(
+                  new RegExp(iri, 'g'), rdf_namespaces[iri]+":");
+          }
+      }
+      return value_formatted;
     }
-  }
+  };
+  
 }
