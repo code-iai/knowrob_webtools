@@ -102,10 +102,10 @@ function PrologConsole(client, options) {
     };
     
     this.updateNamespaces = function(objectName) {
-        var prolog = client.newProlog();
-        prolog.jsonQuery("findall([_X,_Y], rdf_current_ns(_X,_Y), NS).",
+        var pl = client.newProlog();
+        pl.jsonQuery("findall([_X,_Y], rdf_current_ns(_X,_Y), NS).",
             function(result) {
-                prolog.finishClient();
+                pl.finishClient();
                 var namespaces = {};
                 for(i in result.solution.NS) {
                    namespaces[result.solution.NS[i][1]] = result.solution.NS[i][0];
