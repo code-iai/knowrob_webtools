@@ -120,6 +120,8 @@ function KnowrobUI(client, options) {
                 
                 var query = query_lib.query || query_lib;
                 for (var i = 0; i < query.length; i++) {
+                    if(!query[i].text) continue;
+
                     var text = query[i].text.trim();
                     if(text.length==0) continue;
                     
