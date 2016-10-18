@@ -27,7 +27,7 @@ function KnowrobClient(options){
     //    URL_QUERY = {foo: undefined, bar: 1}
     var urlQuery = {};
     
-    var pageOverlayDisabled = false;
+    this.pageOverlayDisabled = false;
     // true iff connection to ROS master is established
     this.isConnected = false;
     // true iff json_prolog is connected
@@ -84,19 +84,6 @@ function KnowrobClient(options){
     
     this.init = function() {
         // Connect to ROS.
-        iosOverlay({
-            text: "Loading Knowledge Base"
-          , spinner: createSpinner()
-          , isSpinning: function() {
-              return !that.isConnected || !that.isPrologConnected;
-          }
-          , onhide: function() {
-              // Show overlay until an episode is selected
-              if(requireEpisode && !that.episode.hasEpisode()) {
-                that.showPageOverlay();
-              }
-          }
-        });
         that.connect();
         
         that.episode = new KnowrobEpisode(that);
@@ -104,6 +91,12 @@ function KnowrobClient(options){
             that.episode.setEpisode(options.category, options.episode);
         
         that.createOverlay();
+        
+        if(requireEpisode && !that.episode.hasEpisode()) {
+          that.showPageOverlay("Please select an Episode");
+        } else {
+          that.showPageOverlay("Loading Knowledge Base");
+        }
       
         setInterval(containerRefresh, 570000);
         containerRefresh();
@@ -120,6 +113,7 @@ function KnowrobClient(options){
     };
 
     this.connect = function () {
+      if(that.ros) return;
       that.ros = new ROSLIB.Ros({url : rosURL});
       that.ros.on('connection', function() {
           that.isConnected = true;
@@ -134,13 +128,15 @@ function KnowrobClient(options){
           }
       });
       that.ros.on('close', function() {
-          console.log('Connection to websocket server closed.');
+          console.log('Connection was closed.');
+          that.showPageOverlay("Connection was closed, reconnecting...");
           that.ros = undefined;
           that.isRegistered = false;
           setTimeout(that.connect, 500);
       });
       that.ros.on('error', function(error) {
           console.log('Error connecting to websocket server: ', error);
+          that.showPageOverlay("Connection error, reconnecting...");
           if(that.ros) that.ros.close();
           that.ros = undefined;
           that.isRegistered = false;
@@ -350,6 +346,7 @@ function KnowrobClient(options){
                 setTimeout(that.waitForJsonProlog, 500);
             }
             else {
+                that.hidePageOverlay();
                 that.isPrologConnected = true;
                 that.episode.selectMongoDB();
             }
@@ -447,7 +444,17 @@ function KnowrobClient(options){
             var frame = document.getElementById(user_interfaces[i].id+"-frame");
             if(frame) frame.contentWindow.on_episode_selected(library);
         }
+        // Hide "Please select an episode" overlay
         that.hidePageOverlay();
+        that.showPageOverlay("Loading Knowledge Base");
+        if(that.ros) that.ros.close(); // force reconnect
+        
+        $.ajax({
+            url: '/knowrob/reset',
+            type: "POST",
+            contentType: "application/json",
+            dataType: "json"
+        });
     };
     
     ///////////////////////////////
@@ -539,21 +546,24 @@ function KnowrobClient(options){
         }
     };
     
-    this.showPageOverlay = function() {
+    this.showPageOverlay = function(text) {
       var pageOverlay = document.getElementById('page-overlay');
-      if(pageOverlay && !pageOverlayDisabled) {
+      if(pageOverlay && !that.pageOverlayDisabled) {
+          pageOverlay.children[0].innerHTML = text;
           pageOverlay.style.display = 'block';
           pageOverlay.className = pageOverlay.className.replace("hide","show");
           pageOverlay.style.pointerEvents = "auto";
+          that.pageOverlayDisabled = true;
       }
     };
     
     this.hidePageOverlay = function() {
       var pageOverlay = document.getElementById('page-overlay');
-      if(pageOverlay && !pageOverlayDisabled) {
+      if(pageOverlay && that.pageOverlayDisabled) {
           //pageOverlay.style.display = 'none';
           pageOverlay.className = pageOverlay.className.replace("show","hide");
           pageOverlay.style.pointerEvents = "none";
+          that.pageOverlayDisabled = false;
       }
     };
 };
