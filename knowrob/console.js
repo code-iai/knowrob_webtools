@@ -17,6 +17,8 @@ function PrologConsole(client, options) {
     // The index to the currently active history item
     // history items are saved on the server and queried using AJAX
     var historyIndex = -1;
+    
+    this.rdf_namespaces = {};
 
     this.init = function () {
         ace.require("ace/ext/language_tools");
@@ -31,7 +33,8 @@ function PrologConsole(client, options) {
             highlightActiveLine: false,
             highlightGutterLine: false,
             enableBasicAutocompletion: true,
-            enableLiveAutocompletion: true
+            enableLiveAutocompletion: true,
+            wrap: false
         });
         userQuery.commands.addCommand({
             name: 'send_query', readOnly: false,
@@ -88,10 +91,28 @@ function PrologConsole(client, options) {
             showGutter: false,
             printMarginColumn: false,
             highlightActiveLine: false,
-            highlightGutterLine: false
+            highlightGutterLine: false,
+            wrap: false
         });
         
         setInactive(document.getElementById(nextButtonDiv));
+        
+        setInterval(that.updateNamespaces, 10000);
+        that.updateNamespaces();
+    };
+    
+    this.updateNamespaces = function(objectName) {
+        var pl = client.newProlog();
+        pl.jsonQuery("findall([_X,_Y], rdf_current_ns(_X,_Y), NS).",
+            function(result) {
+                pl.finishClient();
+                var namespaces = {};
+                for(i in result.solution.NS) {
+                   namespaces[result.solution.NS[i][1]] = result.solution.NS[i][0];
+                }
+                that.rdf_namespaces = namespaces;
+            }
+        );
     };
     
     this.queryPredicateNames = function() {
@@ -178,7 +199,7 @@ function PrologConsole(client, options) {
         
         prolog.jsonQuery(q+", marker_publish", function(result) {
             if(useOverlay) that.hideConsoleOverlay();
-            history.setValue(history.getValue() + prolog.format(result), -1);
+            history.setValue(history.getValue() + prolog.format(result,that.rdf_namespaces), -1);
             history.navigateFileEnd();
             if( ! result.value ) setInactive(document.getElementById(nextButtonDiv));
         }, mode=1); // incremental mode
@@ -207,7 +228,7 @@ function PrologConsole(client, options) {
       if(useOverlay) that.showConsoleOverlay();
       prolog.nextQuery(function(result) {
           if(useOverlay) that.hideConsoleOverlay();
-          history.setValue(history.getValue() + prolog.format(result), -1);
+          history.setValue(history.getValue() + prolog.format(result,that.rdf_namespaces), -1);
           history.navigateFileEnd();
           if( ! result.value ) setInactive(document.getElementById(nextButtonDiv));
       });
@@ -239,7 +260,8 @@ function PrologConsole(client, options) {
       var user_query = ace.edit(queryDiv);
       user_query.setValue(val, -1);
       if(focus) user_query.focus();
-      user_query.navigateFileEnd();
+      // disabled because it behaviour is not nice when wrapping disabled
+      //user_query.navigateFileEnd();
     };
     
     ///////////////////////////////

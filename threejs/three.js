@@ -23485,7 +23485,7 @@ THREE.WebGLRenderer = function ( parameters ) {
 
 				}
 
-				customAttributesDirty = material.attributes && areCustomAttributesDirty( material );
+				customAttributesDirty = material && material.attributes && areCustomAttributesDirty( material );
 
 				if ( geometry.verticesNeedUpdate || geometry.morphTargetsNeedUpdate || geometry.elementsNeedUpdate ||
 					 geometry.uvsNeedUpdate || geometry.normalsNeedUpdate ||
@@ -23507,13 +23507,13 @@ THREE.WebGLRenderer = function ( parameters ) {
 
 			geometry.buffersNeedUpdate = false;
 
-			material.attributes && clearCustomAttributes( material );
+			material && material.attributes && clearCustomAttributes( material );
 
 		} else if ( object instanceof THREE.Line ) {
 
 			material = getBufferMaterial( object, geometry );
 
-			customAttributesDirty = material.attributes && areCustomAttributesDirty( material );
+			customAttributesDirty = material && material.attributes && areCustomAttributesDirty( material );
 
 			if ( geometry.verticesNeedUpdate || geometry.colorsNeedUpdate || geometry.lineDistancesNeedUpdate || customAttributesDirty ) {
 
@@ -23525,14 +23525,14 @@ THREE.WebGLRenderer = function ( parameters ) {
 			geometry.colorsNeedUpdate = false;
 			geometry.lineDistancesNeedUpdate = false;
 
-			material.attributes && clearCustomAttributes( material );
+			material && material.attributes && clearCustomAttributes( material );
 
 
 		} else if ( object instanceof THREE.ParticleSystem ) {
 
 			material = getBufferMaterial( object, geometry );
 
-			customAttributesDirty = material.attributes && areCustomAttributesDirty( material );
+			customAttributesDirty = material && material.attributes && areCustomAttributesDirty( material );
 
 			if ( geometry.verticesNeedUpdate || geometry.colorsNeedUpdate || object.sortParticles || customAttributesDirty ) {
 
@@ -23543,7 +23543,7 @@ THREE.WebGLRenderer = function ( parameters ) {
 			geometry.verticesNeedUpdate = false;
 			geometry.colorsNeedUpdate = false;
 
-			material.attributes && clearCustomAttributes( material );
+			material && material.attributes && clearCustomAttributes( material );
 
 		}
 
