@@ -347,6 +347,8 @@ function KnowrobClient(options){
             }
             else {
                 that.hidePageOverlay();
+                if(requireEpisode && !that.episode.hasEpisode())
+                  that.showPageOverlay("Please select an Episode");
                 that.isPrologConnected = true;
                 that.episode.selectMongoDB();
             }
