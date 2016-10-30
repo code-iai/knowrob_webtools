@@ -360,7 +360,7 @@ function KnowrobClient(options){
     ///////////////////////////////
     
     this.newProlog = function() {
-        return new JsonProlog(that.ros, {});
+        return that.ros ? new JsonProlog(that.ros, {}) : undefined;
     };
     
     this.newCanvas = function(options) {
