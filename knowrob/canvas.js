@@ -21,16 +21,10 @@ function KnowrobCanvas(client, options){
     this.rosViewer.scene.add(new ROS3D.Grid());
     
     this.resize = function (w,h) {
+        console.info("RESIZE CANVAS " + w + " " + h);
+        console.info("   RATIO " + (w/h));
       // update perspective projection
-      this.rosViewer.renderer.setSize(w, h);
-      this.rosViewer.camera.aspect = w/h;
-      this.rosViewer.camera.updateProjectionMatrix();
-      // update orthographic projection
-      this.rosViewer.cameraOrtho.left = - w / 2;
-      this.rosViewer.cameraOrtho.right = w / 2;
-      this.rosViewer.cameraOrtho.top = h / 2;
-      this.rosViewer.cameraOrtho.bottom = - h / 2;
-      this.rosViewer.cameraOrtho.updateProjectionMatrix();
+      this.rosViewer.resize(w, h);
     };
     
     /**
