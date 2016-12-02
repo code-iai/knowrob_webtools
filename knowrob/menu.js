@@ -58,16 +58,38 @@ function KnowrobMenu(user, user_interfaces){
         if(left_menu) {
             // openEASE user interfaces
             for(var i in user_interfaces) {
-                that.addMenuItem(left_menu, {
-                    id:user_interfaces[i].id+"-menu",
-                    text: user_interfaces[i].name,
-                    href: "/#"+user_interfaces[i].id
-                });
+                var elem = user_interfaces[i];
+                if(elem.interfaces) { // submenu
+                    var submenu = document.createElement("ul");
+                    var li = document.createElement("li");
+                    var a = document.createElement("a");
+                    a.innerHTML = elem.name;
+                    li.className = 'submenu';
+                    a.id = elem.id+"-menu";
+                    li.appendChild(a);
+                    li.appendChild(submenu);
+                    left_menu.appendChild(li);
+                    
+                    for(var j in elem.interfaces) {
+                        that.addMenuItem(submenu, {
+                            id: elem.interfaces[j].id+"-menu",
+                            text: elem.interfaces[j].name,
+                            href: "/#"+elem.interfaces[j].id
+                        });
+                    }
+                }
+                else { // menu entry
+                    that.addMenuItem(left_menu, {
+                        id:elem.id+"-menu",
+                        text: elem.name,
+                        href: "/#"+elem.id
+                    });
+                }
             };
         }
-        if(left_menu) {
-            that.addMenuItem(left_menu, { id:"tutorials-menu", text: 'Tutorials', href: "/tutorials" });
-        }
+        //if(left_menu) {
+        //    that.addMenuItem(left_menu, { id:"tutorials-menu", text: 'Tutorials', href: "/tutorials" });
+        //}
         if(left_menu) {
             // admin pages
             if(user.isAdmin()) {
@@ -90,7 +112,10 @@ function KnowrobMenu(user, user_interfaces){
                                 { text: 'Tags', href: '/db/page/tag' },
                                 { text: 'Projects', href: '/db/page/project' },
                                 { text: 'Platforms', href: '/db/page/platform' },
-                                { text: 'Tutorials', href: '/db/page/tutorial' }
+                                { text: 'Tutorials', href: '/db/page/tutorial' },
+                                { text: 'Courses', href: '/db/page/course' },
+                                { text: 'Exercises', href: '/db/page/course_exercise' },
+                                { text: 'Exercise Tasks', href: '/db/page/course_task' }
                             ]
                         },
                         {

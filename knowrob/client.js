@@ -22,6 +22,7 @@ function KnowrobClient(options){
     
     // User interface names (e.g., editor, memory replay, ...)
     var user_interfaces = options.user_interfaces || [];
+    var user_interfaces_flat = options.user_interfaces_flat || [];
     // Query parameters encoded in URL
     // E.g., localhost/#foo&bar=1 yields in:
     //    URL_QUERY = {foo: undefined, bar: 1}
@@ -463,20 +464,33 @@ function KnowrobClient(options){
     //////////// Frames
     ///////////////////////////////
     
-    function showFrame(name, fading) {
+    function showFrame(iface_name) {
+        var frame_name = getInterfaceFrameName(iface_name);
         // Hide inactive frames
         for(var i in user_interfaces) {
-            if(user_interfaces[i].id == name) continue;
+            if(user_interfaces[i].id == frame_name) continue;
             $("#"+user_interfaces[i].id+"-frame").hide();
             $("#"+user_interfaces[i].id+"-frame").removeClass("selected-frame");
             $("#"+user_interfaces[i].id+"-menu").removeClass("selected-menu");
         }
+        
+        var new_src = getInterfaceSrc(iface_name);
+        var frame = document.getElementById(frame_name+"-frame");
+        var old_src = frame.src;
+        if(!old_src.endsWith(new_src)) {
+            frame.src = new_src;
+            if(frame.contentWindow && frame.contentWindow.on_register_nodes)
+                frame.contentWindow.on_register_nodes();
+            //if(frame.contentWindow && frame.contentWindow.on_episode_selected)
+            //    frame.contentWindow.on_episode_selected(library);
+        }
+        
         // Show selected frame
-        $("#"+name+"-frame").show();
-        $("#"+name+"-frame").addClass("selected-frame");
-        $("#"+name+"-menu").addClass("selected-menu");
+        $("#"+frame_name+"-frame").show();
+        $("#"+frame_name+"-frame").addClass("selected-frame");
+        $("#"+frame_name+"-menu").addClass("selected-menu");
         // Load menu items of active frame
-        that.menu.updateFrameMenu(document.getElementById(name+"-frame").contentWindow);
+        that.menu.updateFrameMenu(document.getElementById(frame_name+"-frame").contentWindow);
     };
     
     this.getActiveFrame = function() {
@@ -486,9 +500,33 @@ function KnowrobClient(options){
         //else return undefined;
     };
     
+    function getInterfaceFrameName(iface) {
+        for(var i in user_interfaces) {
+            var elem = user_interfaces[i];
+            if(elem.id == iface) return elem.id;
+            for(var j in elem.interfaces) {
+                if(elem.interfaces[j].id == iface) return elem.id;
+            }
+        }
+    };
+    
+    function getInterfaceSrc(iface) {
+        for(var i in user_interfaces) {
+            var elem = user_interfaces[i];
+            if(elem.id == iface) return elem.src;
+            for(var j in elem.interfaces) {
+                if(elem.interfaces[j].id == iface) return elem.interfaces[j].src;
+            }
+        }
+    };
+    
     function getActiveFrameName() {
-      for(var i in user_interfaces) {
-        if(urlQuery[user_interfaces[i].id]) return user_interfaces[i].id;
+      return getInterfaceFrameName(getActiveInterfaceName());
+    };
+    
+    function getActiveInterfaceName() {
+      for(var i in user_interfaces_flat) {
+        if(urlQuery[user_interfaces_flat[i].id]) return user_interfaces_flat[i].id;
       }
       return "kb";
     };
@@ -521,7 +559,7 @@ function KnowrobClient(options){
     
     this.updateLocation = function() {
       updateQueryString();
-      showFrame(getActiveFrameName());
+      showFrame(getActiveInterfaceName());
       // update episode selection from URL query
       // e.g., https://data.openease.org/#kb?category=foo?episode=bar
       if(urlQuery['category'] && urlQuery['episode']) {
