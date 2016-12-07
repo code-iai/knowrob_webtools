@@ -390,14 +390,14 @@ function KnowrobClient(options){
         
         var prolog = new JsonProlog(that.ros, {});
         prolog.jsonQuery("term_to_atom("+marker.ns+",MarkerName), "+
-            "marker_highlight(MarkerName), marker_publish.",
+            "marker_highlight(MarkerName), ignore(marker_publish).",
             function(result) { prolog.finishClient(); });
     };
     
     this.unselectMarker = function() {
         var prolog = new JsonProlog(that.ros, {});
         prolog.jsonQuery("term_to_atom("+that.selectedMarker+",MarkerName), "+
-            "marker_highlight_remove(MarkerName), marker_publish.",
+            "marker_highlight_remove(MarkerName), ignore(marker_publish).",
             function(result) { prolog.finishClient(); });
         that.selectedMarker = undefined;
     };

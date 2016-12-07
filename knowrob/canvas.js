@@ -21,8 +21,6 @@ function KnowrobCanvas(client, options){
     this.rosViewer.scene.add(new ROS3D.Grid());
     
     this.resize = function (w,h) {
-        console.info("RESIZE CANVAS " + w + " " + h);
-        console.info("   RATIO " + (w/h));
       // update perspective projection
       this.rosViewer.resize(w, h);
     };

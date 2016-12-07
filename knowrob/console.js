@@ -202,7 +202,7 @@ function PrologConsole(client, options) {
         history.navigateFileEnd();
         setActive(document.getElementById(nextButtonDiv));
         
-        prolog.jsonQuery(q+", marker_publish", function(result) {
+        prolog.jsonQuery(q+", ignore(marker_publish)", function(result) {
             if(useOverlay) that.hideConsoleOverlay();
             history.setValue(history.getValue() + prolog.format(result,that.rdf_namespaces), -1);
             history.navigateFileEnd();
