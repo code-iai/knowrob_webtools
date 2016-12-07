@@ -613,7 +613,7 @@ a.btn {
   padding: 0;
   margin: 0 !important;
 }
-#exercise-header-icon {
+.exercise-header-icon {
   float: right;
   height: 30px;
   width: 30px;
