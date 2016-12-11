@@ -38,22 +38,12 @@ function PrologConsole(client, options) {
         });
         userQuery.commands.addCommand({
             name: 'send_query', readOnly: false,
-            bindKey: {win: 'Enter',  mac: 'Enter'},
-            exec: function(editor) { that.query(); }
-        });
-        userQuery.commands.addCommand({
-            name: 'new_line', readOnly: false,
             bindKey: {win: 'Ctrl-Enter',  mac: 'Command-Enter'},
-            exec: function(editor) { that.setQueryValue(userQuery.getValue()+"\n"); }
+            exec: function(editor) { that.query(); }
         });
         userQuery.commands.addCommand({
             name: 'next_result', readOnly: false,
             bindKey: {win: 'Ctrl-;',  mac: 'Command-;'},
-            exec: function(editor) { that.nextSolution(); }
-        });
-        userQuery.commands.addCommand({
-            name: 'next_result', readOnly: false,
-            bindKey: {win: 'Ctrl-n',  mac: 'Command-n'},
             exec: function(editor) { that.nextSolution(); }
         });
         userQuery.commands.addCommand({
