@@ -294,4 +294,14 @@ function PrologConsole(client, options) {
     this.previousHistoryItem = function () {
         this.setHistoryItem(historyIndex-1);
     };
+    
+    this.zoomIn = function() {
+        $('#history').css('font-size', parseInt($('#history').css("font-size")) + 2);
+        $('#user_query').css('font-size', parseInt($('#user_query').css("font-size")) + 2);
+    };
+    
+    this.zoomOut = function() {
+        $('#history').css('font-size', parseInt($('#history').css("font-size")) - 2);
+        $('#user_query').css('font-size', parseInt($('#user_query').css("font-size")) - 2);
+    };
 };

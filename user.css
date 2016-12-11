@@ -506,6 +506,10 @@ a.btn {
   height: 30px;
 }
 
+.ace_comment {
+  color: #0003FF !important;
+}
+
 #library {
   padding: 0px;
   width: 100%;
@@ -687,11 +691,12 @@ a.btn {
 }
 
 /****** CONSOLE ******/
+
 #history {
   width:100%;
   height:50%;
   border-bottom: 1px solid #CCC;
-  font-size:20px;
+  font-size: 20px;
 }
 
 #query_buttons {
@@ -708,8 +713,8 @@ a.btn {
 }
 .query_button_group li {
   display: inline;
-  float:left;
   display: inline-block;
+  float:left;
   margin:0px;
   padding:0px;
   font-size:10px;
@@ -723,6 +728,12 @@ a.btn {
   color: #FFF;
   background-color:#adadad;
 }
+.query_button_left {
+  float:left;
+}
+.query_button_right {
+  float:right;
+}
 .query_button {
   display:block;
   background-color:#dadada;
@@ -735,7 +746,7 @@ a.btn {
   width:100%;
   height:50%;
   border-bottom: 1px solid #CCC;
-  font-size:20px;
+  font-size: 20px;
 }
 
 #chart {
