@@ -274,7 +274,9 @@ function KnowrobClient(options){
           if(!html) {
             html = format_designator(message.description);
           }
-          that.getActiveFrame().on_designator_received(html);
+          // TODO: send to all?
+          if(that.getActiveFrame().on_designator_received)
+            that.getActiveFrame().on_designator_received(html);
         }
       });
         
@@ -315,7 +317,8 @@ function KnowrobClient(options){
           else {
               console.warn("Unknown data format on /logged_images topic: " + message.data);
           }
-          if(html.length>0) {
+          if(html.length>0 && that.getActiveFrame().on_image_received) {
+              // TODO: send to all?
               that.getActiveFrame().on_image_received(html, imageWidth, imageHeight);
           }
       });
@@ -326,7 +329,9 @@ function KnowrobClient(options){
         messageType : 'geometry_msgs/Pose'
       });
       cameraPoseClient.subscribe(function(message) {
-          that.getActiveFrame().on_camera_pose_received(message);
+          // TODO: send to all?
+          if(that.getActiveFrame().on_camera_pose_received)
+            that.getActiveFrame().on_camera_pose_received(message);
       });
       
       // NOTE: frame windows may not be loaded already
@@ -445,7 +450,8 @@ function KnowrobClient(options){
     this.on_episode_selected = function(library) {
         for(var i in user_interfaces) {
             var frame = document.getElementById(user_interfaces[i].id+"-frame");
-            if(frame) frame.contentWindow.on_episode_selected(library);
+            if(frame && frame.contentWindow.on_episode_selected)
+                frame.contentWindow.on_episode_selected(library);
         }
         // Hide "Please select an episode" overlay
         that.hidePageOverlay();
@@ -481,8 +487,6 @@ function KnowrobClient(options){
             frame.src = new_src;
             if(frame.contentWindow && frame.contentWindow.on_register_nodes)
                 frame.contentWindow.on_register_nodes();
-            //if(frame.contentWindow && frame.contentWindow.on_episode_selected)
-            //    frame.contentWindow.on_episode_selected(library);
         }
         
         // Show selected frame
