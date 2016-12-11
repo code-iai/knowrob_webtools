@@ -102,9 +102,9 @@ function KnowrobCanvas(client, options){
         that.rosViewer.cameraControls.camera.position.z = position.z;
     };
     
-    this.setCameraOrientation = function(orientation) {
-        var orientation = new THREE.Quaternion(orientation.x, orientation.y,
-                                               orientation.z, orientation.w);
+    this.setCameraOrientation = function(o) {
+        var orientation = new THREE.Quaternion(o.x, o.y,
+                                               o.z, o.w);
         var frontVector = new THREE.Vector3(0, 0, 1);
         frontVector.applyQuaternion(orientation);
         that.rosViewer.cameraControls.center = that.rosViewer.cameraControls.camera.position.clone();

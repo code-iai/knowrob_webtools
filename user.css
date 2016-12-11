@@ -592,6 +592,16 @@ a.btn {
 }
 
 /****** TEACHING ******/
+.tutorial-library {
+  position:relative;
+  left:0px;
+  top:470px;
+  width:auto;
+  font-size:10pt;
+  padding:5px 15px;
+  margin-top:10px;
+  overflow:auto;
+}
 .teaching-library {
   position:relative;
   left:0px;
@@ -917,6 +927,13 @@ li.zero_size,
     border: 1px solid #888;
     width: 80%;
     height: 90%;
+}
+
+#dom-highlight {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    background-color: rgba(24, 122, 218, 0.4);
+    pointer-events: none;
 }
 
 #no-diff {
