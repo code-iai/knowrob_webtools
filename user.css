@@ -357,6 +357,18 @@ a.btn {
   width: 100%;
   padding: 4px;
 }
+#replay-video-title-text {
+  background: #fff !important;
+  border: 1px solid #a9a9b2 !important;
+  text-align: center;
+}
+#replay-episode-dropdown {
+  background: #fff !important;
+  border: 1px solid #a9a9b2 !important;
+  text-align: center;
+  width: 100%;
+  padding: 4px;
+}
 #replay-start-value {
   position: relative;
   float: right;
@@ -372,7 +384,6 @@ a.btn {
   float: right;
   top: -46px;
 }
-
 #replay-fps {
   background: #fff !important;
   border: 1px solid #a9a9b2 !important;

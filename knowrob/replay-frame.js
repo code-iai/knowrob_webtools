@@ -37,15 +37,7 @@ function KnowrobReplayUI(client, options) {
     this.episodeData = function() { return client.episode.episodeData; };
     
     this.initVideoDivs = function() {
-        var select = document.getElementById('time-sequence-dropdown');
-
-        if( select.length == 0)
-        {
-            var opt = document.createElement('option');
-            opt.value = 0;
-            opt.innerHTML = 'Choose an experiment time interval';
-            select.appendChild(opt);
-        }
+        var select = document.getElementById('replay-episode-dropdown');
 
         if (client.episode.hasEpisode()) {
             if(that.episodeData() && that.episodeData().video && that.episodeData().video.length > 0) {
@@ -53,46 +45,33 @@ function KnowrobReplayUI(client, options) {
                   that.addVideoItem(that.episodeData().video[i].name);
                }
             }
-            if(that.episodeData().time_intervals != null) {
-                if( select.length > 1)
-                {
-                    for (var i = select.length - 1; i > 0; i--) {
-                         select.remove(i);
-                    }
-                }         
-                for (var i = 0; i < that.episodeData().time_intervals.length; i++) {
-                    that.addTimeInterval(i + 1,
-                         that.episodeData().time_intervals[i].start,
-                         that.episodeData().time_intervals[i].end);
+            if(that.episodeData().episodes != null) {
+                for (var i = select.length - 1; i >= 0; i--) {
+                    select.remove(i);
+                }
+                
+                for (var i = 0; i < that.episodeData().episodes.length; i++) {
+                    that.addTimeInterval(i, that.episodeData().episodes[i]);
                 }
             }      
         }
     };
 
-    this.addTimeInterval = function(ind, start, end) {
-        var select = document.getElementById('time-sequence-dropdown');
+    this.addTimeInterval = function(ind, episode) {
+        var select = document.getElementById('replay-episode-dropdown');
         var opt = document.createElement('option');
         opt.value = ind;
-        opt.innerHTML = start + '--' + end;
+        opt.innerHTML = episode.name;
         select.appendChild(opt);
     };
 
     this.setTimeSlides = function() {
-        var i = document.getElementById('time-sequence-dropdown').value;
-        if(i > 0){
+        var i = document.getElementById('replay-episode-dropdown').value;
+        if(i >= 0){
             var firstrange = document.getElementById('replay-start-time');
             var secondrange = document.getElementById('replay-end-time');
-            //var select = document.getElementById('time-sequence-dropdown');
-            //var string_value = select.options[select.selectedIndex].text;
-            //var string_array = string_value.split("--");
-            var start = 0;
-            var end = 20000000;
-            
-            if(that.episodeData().time_intervals != null) {
-                start = that.episodeData().time_intervals[i-1].start;
-                end = that.episodeData().time_intervals[i-1].end;
-            }
-
+            var start = that.episodeData().episodes[i].start;
+            var end = that.episodeData().episodes[i].end;
 
             firstrange.min = start;
             firstrange.max = end;
@@ -165,7 +144,7 @@ function KnowrobReplayUI(client, options) {
         var userdiv = document.getElementById('user_query');
         var firstrange = document.getElementById('replay-start-time');
         var secondrange = document.getElementById('replay-end-time');
-        var select = document.getElementById('time-sequence-dropdown');
+        var select = document.getElementById('replay-episode-dropdown');
         
         var selection = that.selectedVideoEpisode();
         if(selection){
@@ -176,10 +155,10 @@ function KnowrobReplayUI(client, options) {
             ace.edit('user_query').setValue(selection.animation);
           }
           
-          document.getElementById('name-text').value = selection.name;
-          for (var i = 0; i < that.episodeData().time_intervals.length; i++) {
-                var episodestart = that.episodeData().time_intervals[i].start;
-                var episodeend = that.episodeData().time_intervals[i].end;
+          document.getElementById('replay-video-title-text').value = selection.name;
+          for (var i = 0; i < that.episodeData().episodes.length; i++) {
+                var episodestart = that.episodeData().episodes[i].start;
+                var episodeend = that.episodeData().episodes[i].end;
 
                 if(episodestart <= selection.start && episodeend >= selection.start
                 && episodestart <= selection.end && episodeend >= selection.end)
@@ -189,52 +168,15 @@ function KnowrobReplayUI(client, options) {
 
                     secondrange.min = episodestart;
                     secondrange.max = episodeend;
-                    select.selectedIndex = i +1;
+                    select.selectedIndex = i;
                 }
           }
-
-          if(firstrange !== null) {
-            //firstrange.min = selection.start;
-            //firstrange.max = selection.end;
-            firstrange.value = selection.start;
-          }
-          if(secondrange !== null) {
-            //secondrange.min = selection.start;
-            //secondrange.max = selection.end;
-            secondrange.value = selection.end;
-          }
+          firstrange.value = selection.start;
+          secondrange.value = selection.end;
           
           that.updateStartTime();
           that.updateEndTime();
         }
-    };
-    
-    this.updateSummaryDivs = function() {
-        // FIXME: Re-implement
-        /*
-        var pictureUrl = '/knowrob/summary_data/' + videoFile.replace('/knowrob/static/experiments/video/', '').replace('.json', '.jpg');
-
-        var sumdiv = document.getElementById('summary');
-        var sumheaderdiv = document.getElementById('summary_header');
-          
-          if(sumdiv !== null && typeof(selection.summary) != "undefined" ) {
-            var http = new XMLHttpRequest();
-            http.open('HEAD', pictureUrl, false);
-            http.send();
-            if (http.status !== 404){
-               sumheaderdiv.innerHTML = 'Summary';
-               sumdiv.innerHTML = '<img class="picture" src="'+pictureUrl+'" width="205" height="180"/>';
-            }
-            else if(typeof(selection.summary) != "undefined" ){
-               var image_creator_prolog_engine = this.new_pl_client();
-               var regQuery = selection.summary;
-               image_creator_prolog_engine.jsonQuery(regQuery, function(result) {
-                  sumheaderdiv.innerHTML = 'Summary';
-                  sumdiv.innerHTML = '<img class="picture" src="'+pictureUrl+'" width="205" height="180"/>'; 
-               }); 
-            }
-          }
-          */
     };
     
     this.updateStartTime = function() {
@@ -253,7 +195,7 @@ function KnowrobReplayUI(client, options) {
     this.formatInitialQuery = function(t) {
         var fps = parseInt(document.getElementById("replay-fps").value, 10);
         var init_query = "openease_video_fps(" + fps +
-            "), openease_video_start, !, clear_canvas, T = 'timepoint_" + t + "', task_tree_canvas, " +
+            "), openease_video_start, !, clear_canvas, T = 'timepoint_" + t + "', " +
             ace.edit('init_query').getValue().trim();
         init_query = init_query.substr(0, init_query.length - 1);
         return init_query;
@@ -328,15 +270,11 @@ function KnowrobReplayUI(client, options) {
         var timeString = "Time: " + formatDate(t);
         var infoQuery = "_T = 'timepoint_" + t.toString() + "', " + "marker(hud_text('HUD'), TimeHudOld), marker_remove(TimeHudOld)," +
             "marker(hud_text('HUD'), TimeHudNew), marker_text(TimeHudNew, '" +  timeString + "'), marker_publish.";
-
-        console.log(timeString);
         
         var prolog = client.newProlog();
         function processInfo(result) {
             setTimeout(function(){ handler(); }, 500);
         }
-        //
-        //hudtextLines.push(timeString.trim());
         prolog.jsonQuery(infoQuery, processInfo);
        
     };
@@ -378,20 +316,19 @@ function KnowrobReplayUI(client, options) {
         that.showReplayBox('replay-panel-box');
         that.showContent('replay-configuration-toggle', 'replay-configuration-form');
         that.updateVideoDivs();
-        that.updateSummaryDivs();
     };
     
     this.saveVideoSettings = function() {
         if(isNewVideo == true) {
             that.episodeData().video.push({
-                name: document.getElementById('name-text').value,
+                name: document.getElementById('replay-video-title-text').value,
                 start: document.getElementById('replay-start-time').value,
                 end: document.getElementById('replay-end-time').value,
                 initialization: ace.edit('init_query').getValue(),
                 animation: ace.edit('user_query').getValue(),
                 fps: parseInt(document.getElementById("replay-fps").value, 10)
             });
-            document.getElementById('replay-episode-value').innerHTML = document.getElementById('name-text').value;
+            document.getElementById('replay-episode-value').innerHTML = document.getElementById('replay-video-title-text').value;
             that.addVideoItem(name);
             that.replayEpisodeSelected();
             isNewVideo = false;
@@ -454,14 +391,14 @@ function KnowrobReplayUI(client, options) {
         isNewVideo = true;
         that.replayEpisodeSelected();
 
-        document.getElementById('name-text').value = '';
+        document.getElementById('replay-video-title-text').value = '';
 
         ace.edit('init_query').setValue('');
         ace.edit('user_query').setValue('');
 
         var firstrange = document.getElementById('replay-start-time');
         var secondrange = document.getElementById('replay-end-time');
-        var select = document.getElementById('time-sequence-dropdown');
+        var select = document.getElementById('replay-episode-dropdown');
 
         firstrange.min = 0;
         firstrange.max = 0;
@@ -471,27 +408,8 @@ function KnowrobReplayUI(client, options) {
         secondrange.max = 0;
         secondrange.value = 0;
 
+        select.value = 0;
         select.options[0].selected = true;
-        that.updateTimeValues();
-
-        /*var name = prompt("Please enter a name for the video", "");
-        if(!name) return;
-        // TODO: let user select experiment instead of timestamps
-        var start = prompt("Please enter a start timestamp", "");
-        if(!start) return; start = parseInt(start);
-        var end = prompt("Please enter a end timestamp", "");
-        if(!end) return; end = parseInt(end);
-        
-        knowrob.episodeData.video.push({
-            name: name,
-            start: start,
-            end: end,
-            initialization: '',
-            animation: '',
-            fps: 6
-        });
-        document.getElementById('replay-episode-value').innerHTML = name;
-        that.addVideoItem(name);
-        that.replayEpisodeSelected();*/
+        that.setTimeSlides();
     };
 };
