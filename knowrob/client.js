@@ -22,6 +22,7 @@ function KnowrobClient(options){
     
     // User interface names (e.g., editor, memory replay, ...)
     var user_interfaces = options.user_interfaces || [];
+    var user_interfaces_flat = options.user_interfaces_flat || [];
     // Query parameters encoded in URL
     // E.g., localhost/#foo&bar=1 yields in:
     //    URL_QUERY = {foo: undefined, bar: 1}
@@ -273,7 +274,9 @@ function KnowrobClient(options){
           if(!html) {
             html = format_designator(message.description);
           }
-          that.getActiveFrame().on_designator_received(html);
+          // TODO: send to all?
+          if(that.getActiveFrame().on_designator_received)
+            that.getActiveFrame().on_designator_received(html);
         }
       });
         
@@ -314,7 +317,8 @@ function KnowrobClient(options){
           else {
               console.warn("Unknown data format on /logged_images topic: " + message.data);
           }
-          if(html.length>0) {
+          if(html.length>0 && that.getActiveFrame().on_image_received) {
+              // TODO: send to all?
               that.getActiveFrame().on_image_received(html, imageWidth, imageHeight);
           }
       });
@@ -325,7 +329,9 @@ function KnowrobClient(options){
         messageType : 'geometry_msgs/Pose'
       });
       cameraPoseClient.subscribe(function(message) {
-          that.getActiveFrame().on_camera_pose_received(message);
+          // TODO: send to all?
+          if(that.getActiveFrame().on_camera_pose_received)
+            that.getActiveFrame().on_camera_pose_received(message);
       });
       
       // NOTE: frame windows may not be loaded already
@@ -360,7 +366,7 @@ function KnowrobClient(options){
     ///////////////////////////////
     
     this.newProlog = function() {
-        return new JsonProlog(that.ros, {});
+        return that.ros ? new JsonProlog(that.ros, {}) : undefined;
     };
     
     this.newCanvas = function(options) {
@@ -389,14 +395,14 @@ function KnowrobClient(options){
         
         var prolog = new JsonProlog(that.ros, {});
         prolog.jsonQuery("term_to_atom("+marker.ns+",MarkerName), "+
-            "marker_highlight(MarkerName), marker_publish.",
+            "marker_highlight(MarkerName), ignore(marker_publish).",
             function(result) { prolog.finishClient(); });
     };
     
     this.unselectMarker = function() {
         var prolog = new JsonProlog(that.ros, {});
         prolog.jsonQuery("term_to_atom("+that.selectedMarker+",MarkerName), "+
-            "marker_highlight_remove(MarkerName), marker_publish.",
+            "marker_highlight_remove(MarkerName), ignore(marker_publish).",
             function(result) { prolog.finishClient(); });
         that.selectedMarker = undefined;
     };
@@ -444,7 +450,8 @@ function KnowrobClient(options){
     this.on_episode_selected = function(library) {
         for(var i in user_interfaces) {
             var frame = document.getElementById(user_interfaces[i].id+"-frame");
-            if(frame) frame.contentWindow.on_episode_selected(library);
+            if(frame && frame.contentWindow.on_episode_selected)
+                frame.contentWindow.on_episode_selected(library);
         }
         // Hide "Please select an episode" overlay
         that.hidePageOverlay();
@@ -463,20 +470,31 @@ function KnowrobClient(options){
     //////////// Frames
     ///////////////////////////////
     
-    function showFrame(name, fading) {
+    function showFrame(iface_name) {
+        var frame_name = getInterfaceFrameName(iface_name);
         // Hide inactive frames
         for(var i in user_interfaces) {
-            if(user_interfaces[i].id == name) continue;
+            if(user_interfaces[i].id == frame_name) continue;
             $("#"+user_interfaces[i].id+"-frame").hide();
             $("#"+user_interfaces[i].id+"-frame").removeClass("selected-frame");
             $("#"+user_interfaces[i].id+"-menu").removeClass("selected-menu");
         }
+        
+        var new_src = getInterfaceSrc(iface_name);
+        var frame = document.getElementById(frame_name+"-frame");
+        var old_src = frame.src;
+        if(!old_src.endsWith(new_src)) {
+            frame.src = new_src;
+            if(frame.contentWindow && frame.contentWindow.on_register_nodes)
+                frame.contentWindow.on_register_nodes();
+        }
+        
         // Show selected frame
-        $("#"+name+"-frame").show();
-        $("#"+name+"-frame").addClass("selected-frame");
-        $("#"+name+"-menu").addClass("selected-menu");
+        $("#"+frame_name+"-frame").show();
+        $("#"+frame_name+"-frame").addClass("selected-frame");
+        $("#"+frame_name+"-menu").addClass("selected-menu");
         // Load menu items of active frame
-        that.menu.updateFrameMenu(document.getElementById(name+"-frame").contentWindow);
+        that.menu.updateFrameMenu(document.getElementById(frame_name+"-frame").contentWindow);
     };
     
     this.getActiveFrame = function() {
@@ -486,9 +504,33 @@ function KnowrobClient(options){
         //else return undefined;
     };
     
+    function getInterfaceFrameName(iface) {
+        for(var i in user_interfaces) {
+            var elem = user_interfaces[i];
+            if(elem.id == iface) return elem.id;
+            for(var j in elem.interfaces) {
+                if(elem.interfaces[j].id == iface) return elem.id;
+            }
+        }
+    };
+    
+    function getInterfaceSrc(iface) {
+        for(var i in user_interfaces) {
+            var elem = user_interfaces[i];
+            if(elem.id == iface) return elem.src;
+            for(var j in elem.interfaces) {
+                if(elem.interfaces[j].id == iface) return elem.interfaces[j].src;
+            }
+        }
+    };
+    
     function getActiveFrameName() {
-      for(var i in user_interfaces) {
-        if(urlQuery[user_interfaces[i].id]) return user_interfaces[i].id;
+      return getInterfaceFrameName(getActiveInterfaceName());
+    };
+    
+    function getActiveInterfaceName() {
+      for(var i in user_interfaces_flat) {
+        if(urlQuery[user_interfaces_flat[i].id]) return user_interfaces_flat[i].id;
       }
       return "kb";
     };
@@ -521,7 +563,7 @@ function KnowrobClient(options){
     
     this.updateLocation = function() {
       updateQueryString();
-      showFrame(getActiveFrameName());
+      showFrame(getActiveInterfaceName());
       // update episode selection from URL query
       // e.g., https://data.openease.org/#kb?category=foo?episode=bar
       if(urlQuery['category'] && urlQuery['episode']) {

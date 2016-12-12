@@ -38,22 +38,12 @@ function PrologConsole(client, options) {
         });
         userQuery.commands.addCommand({
             name: 'send_query', readOnly: false,
-            bindKey: {win: 'Enter',  mac: 'Enter'},
-            exec: function(editor) { that.query(); }
-        });
-        userQuery.commands.addCommand({
-            name: 'new_line', readOnly: false,
             bindKey: {win: 'Ctrl-Enter',  mac: 'Command-Enter'},
-            exec: function(editor) { that.setQueryValue(userQuery.getValue()+"\n"); }
+            exec: function(editor) { that.query(); }
         });
         userQuery.commands.addCommand({
             name: 'next_result', readOnly: false,
             bindKey: {win: 'Ctrl-;',  mac: 'Command-;'},
-            exec: function(editor) { that.nextSolution(); }
-        });
-        userQuery.commands.addCommand({
-            name: 'next_result', readOnly: false,
-            bindKey: {win: 'Ctrl-n',  mac: 'Command-n'},
             exec: function(editor) { that.nextSolution(); }
         });
         userQuery.commands.addCommand({
@@ -103,14 +93,17 @@ function PrologConsole(client, options) {
     
     this.updateNamespaces = function(objectName) {
         var pl = client.newProlog();
+        if(!pl) return;
         pl.jsonQuery("findall([_X,_Y], rdf_current_ns(_X,_Y), NS).",
             function(result) {
                 pl.finishClient();
-                var namespaces = {};
-                for(i in result.solution.NS) {
-                   namespaces[result.solution.NS[i][1]] = result.solution.NS[i][0];
+                if(result.solution) {
+                  var namespaces = {};
+                  for(i in result.solution.NS) {
+                    namespaces[result.solution.NS[i][1]] = result.solution.NS[i][0];
+                  }
+                  that.rdf_namespaces = namespaces;
                 }
-                that.rdf_namespaces = namespaces;
             }
         );
     };
@@ -118,6 +111,7 @@ function PrologConsole(client, options) {
     this.queryPredicateNames = function() {
       if( ! prologNames ) {
         prolog = this.newProlog();
+        if(!prolog) return;
         prologNames = [];
         // Query for predicates/modules and collect all results
         prolog.jsonQuery("findall(X, current_predicate(X/_);current_module(X), L)", function(x) {
@@ -174,6 +168,7 @@ function PrologConsole(client, options) {
     };
 
     this.newProlog = function() {
+      if(!client.ros) return;
       if (prolog && prolog.finished == false) {
         ace.edit(historyDiv).setValue(ace.edit(historyDiv).getValue() + "stopped.\n", -1);
         ace.edit(historyDiv).navigateFileEnd();
@@ -197,7 +192,7 @@ function PrologConsole(client, options) {
         history.navigateFileEnd();
         setActive(document.getElementById(nextButtonDiv));
         
-        prolog.jsonQuery(q+", marker_publish", function(result) {
+        prolog.jsonQuery(q+", ignore(marker_publish)", function(result) {
             if(useOverlay) that.hideConsoleOverlay();
             history.setValue(history.getValue() + prolog.format(result,that.rdf_namespaces), -1);
             history.navigateFileEnd();
@@ -298,5 +293,15 @@ function PrologConsole(client, options) {
     
     this.previousHistoryItem = function () {
         this.setHistoryItem(historyIndex-1);
+    };
+    
+    this.zoomIn = function() {
+        $('#history').css('font-size', parseInt($('#history').css("font-size")) + 2);
+        $('#user_query').css('font-size', parseInt($('#user_query').css("font-size")) + 2);
+    };
+    
+    this.zoomOut = function() {
+        $('#history').css('font-size', parseInt($('#history').css("font-size")) - 2);
+        $('#user_query').css('font-size', parseInt($('#user_query').css("font-size")) - 2);
     };
 };

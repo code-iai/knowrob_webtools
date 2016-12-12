@@ -22,15 +22,7 @@ function KnowrobCanvas(client, options){
     
     this.resize = function (w,h) {
       // update perspective projection
-      this.rosViewer.renderer.setSize(w, h);
-      this.rosViewer.camera.aspect = w/h;
-      this.rosViewer.camera.updateProjectionMatrix();
-      // update orthographic projection
-      this.rosViewer.cameraOrtho.left = - w / 2;
-      this.rosViewer.cameraOrtho.right = w / 2;
-      this.rosViewer.cameraOrtho.top = h / 2;
-      this.rosViewer.cameraOrtho.bottom = - h / 2;
-      this.rosViewer.cameraOrtho.updateProjectionMatrix();
+      this.rosViewer.resize(w, h);
     };
     
     /**
@@ -110,9 +102,9 @@ function KnowrobCanvas(client, options){
         that.rosViewer.cameraControls.camera.position.z = position.z;
     };
     
-    this.setCameraOrientation = function(orientation) {
-        var orientation = new THREE.Quaternion(orientation.x, orientation.y,
-                                               orientation.z, orientation.w);
+    this.setCameraOrientation = function(o) {
+        var orientation = new THREE.Quaternion(o.x, o.y,
+                                               o.z, o.w);
         var frontVector = new THREE.Vector3(0, 0, 1);
         frontVector.applyQuaternion(orientation);
         that.rosViewer.cameraControls.center = that.rosViewer.cameraControls.camera.position.clone();
