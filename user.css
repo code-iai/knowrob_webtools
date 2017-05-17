@@ -200,6 +200,7 @@ li:hover ul li.zero_size > div { top: 0px; }
   height: -o-calc(100% - 94px); /* opera */
   height: -webkit-calc(100% - 94px); /* google, safari */
   height: -moz-calc(100% - 94px); /* firefox */
+  height: calc(100% - 94px); /* firefox 53 and newer*/
   width: 100%;
   position: absolute;
   left: 0px;
@@ -221,6 +222,7 @@ li:hover ul li.zero_size > div { top: 0px; }
   height: -o-calc(100% - 10px); /* opera */
   height: -webkit-calc(100% - 10px); /* google, safari */
   height: -moz-calc(100% - 10px); /* firefox */
+  height: calc(100% - 10px); /* firefox 53 and newer */
 }
 .container-centered,
 .page-centered {
@@ -321,6 +323,7 @@ a.btn {
   width: -o-calc(100% - 8px); /* opera */
   width: -webkit-calc(100% - 8px); /* google, safari */
   width: -moz-calc(100% - 8px); /* firefox */
+  width: calc(100% - 8px); /* firefox 53 and newer */
   border: 1px solid #a9a9b2;
   opacity: 1;
   -webkit-transition: opacity 0.5s ease-in-out;
@@ -499,6 +502,7 @@ a.btn {
   height: -o-calc(100% - 30px); /* opera */
   height: -webkit-calc(100% - 30px); /* google, safari */
   height: -moz-calc(100% - 30px); /* firefox */
+  height: calc(100% - 30px); /* firefox 53 and newer*/
 }
 #console_bottom {
   position: relative;
@@ -520,6 +524,7 @@ a.btn {
   height: -o-calc(100% - 30px); /* opera */
   height: -webkit-calc(100% - 30px); /* google, safari */
   height: -moz-calc(100% - 30px); /* firefox */
+  height: calc(100% - 30px); /* firefox 53 and newer*/
   overflow: auto;
 }
 #library_bottom {
@@ -652,6 +657,7 @@ a.btn {
   height: -o-calc(100% - 74px); /* opera */
   height: -webkit-calc(100% - 74px); /* google, safari */
   height: -moz-calc(100% - 74px); /* firefox */
+  height: calc(100% - 74px); /* firefox 53 and newer*/
   width: 100%;
   padding: 6px;
   overflow:auto;
