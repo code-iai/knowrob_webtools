@@ -289,8 +289,10 @@ function KnowrobClient(options){
       imageClient.subscribe(function(message) {
           var ext = message.data.substr(message.data.lastIndexOf('.') + 1).toLowerCase();
           var url = message.data;
-          if(!url.startsWith("/knowrob/")) url = '/knowrob/knowrob_data/'+url;
-          
+          if(!url.startsWith("/knowrob/")) {
+               if(url.startsWith("/home/ros/user_data"))  url = '/user_data/'+url.replace("/home/ros/user_data/", "");
+               else url = '/knowrob/knowrob_data/'+url;
+          }
           var imageHeight, imageWidth;
           var html = '';
           if(ext=='jpg' || ext =='png') {
