@@ -1,0 +1,38 @@
+{
+  "name": "neem-visualization-task-tree",
+  "version": "1.0.0",
+  "description": "Displays a task tree from a narrative-enabled episodic memory (NEEM)",
+  "main": "neemVisualizationTaskTree",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/code-iai/NEEM-Visualization-Task-Tree.git"
+  },
+  "author": "Sebastian Koralewski",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/code-iai/NEEM-Visualization-Task-Tree/issues"
+  },
+  "homepage": "https://github.com/code-iai/NEEM-Visualization-Task-Tree#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "d3": "^3.5.17",
+    "jquery": "^3.3.1",
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "browserify": "^16.2.0",
+    "eslint": "^4.19.1",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^7.0.1",
+    "gulp-clean-css": "^3.9.3",
+    "gulp-sass": "^4.0.1",
+    "gulp-sourcemaps": "^2.6.4",
+    "gulp-uglify": "^3.0.0",
+    "gulplog": "^1.0.0",
+    "reactify": "^1.1.1",
+    "vinyl-buffer": "^1.0.1",
+    "vinyl-source-stream": "^2.0.0"
+  }
+}
