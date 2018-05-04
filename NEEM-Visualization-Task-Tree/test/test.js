@@ -1,3 +1,3 @@
 $(window).on('load',function() {
-    neemVisualizationTaskTree.loadTree('../test/flare.json');
+    neemVisualizationTaskTree.visualizeTaskTree('../test/flare.json', '#tree-container', document);
 });

@@ -3,7 +3,8 @@ const treeContainerHandler = require('./TreeContainerHandler');
 
 
 let root;
-exports.displayTree = (error, treeData) => {
+exports.displayTree = (error, treeData, treeContainerId, taskTreeCanvas) => {
+    taskTreeConfiguration.initConfiguration(treeContainerId, taskTreeCanvas);
     // Define the root
     root = treeData;
     root.x0 = taskTreeConfiguration.viewerHeight() / 2;

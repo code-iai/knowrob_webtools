@@ -1,12 +1,19 @@
 const $ = window.$ || require('jquery');
+let taskTreeCanvasSelection;
 
-exports.treeContainerId = '#chart';
+exports.treeContainerId;
 
 exports.viewerWidth = () => {
-    return $('#chart').width();
+    return taskTreeCanvasSelection.width();
 };
 exports.viewerHeight = () => {
-    return $('#chart').height();
+    return taskTreeCanvasSelection.height();
 };
 
 exports.duration = 750;
+
+exports.initConfiguration = (treeContainerId, taskTreeCanvas) => {
+    exports.treeContainerId = treeContainerId;
+    taskTreeCanvasSelection = $(taskTreeCanvas);
+};
+
