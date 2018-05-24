@@ -60,6 +60,7 @@ function resolveJSRequireDependencies(pathToMainJs, outputName){
     });
     b.external('d3');
     b.external('jquery');
+    b.external('rdflib');
 
     return b.bundle()
         .pipe(source(outputName))

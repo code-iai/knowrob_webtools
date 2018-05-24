@@ -185,6 +185,7 @@ function PrologConsole(client, options) {
     
       if (q.substr(q.length - 1) == ".") {
         q = q.substr(0, q.length - 1);
+        q = prologJSWrapper(q);
         prolog = this.newProlog();
         if(useOverlay) that.showConsoleOverlay();
         
@@ -193,6 +194,7 @@ function PrologConsole(client, options) {
         setActive(document.getElementById(nextButtonDiv));
         
         prolog.jsonQuery(q+", ignore(marker_publish)", function(result) {
+            console.log(result);
             if(useOverlay) that.hideConsoleOverlay();
             history.setValue(history.getValue() + prolog.format(result,that.rdf_namespaces), -1);
             history.navigateFileEnd();
@@ -229,7 +231,18 @@ function PrologConsole(client, options) {
       });
       ace.edit(queryDiv).focus();
     };
-    
+
+    function prologJSWrapper(query){
+        if('showTaskTree' == query){
+            parent.frames['cog-frame'].
+            contentWindow.neemVisualizationTaskTree.
+            visualizeTaskTree('/static/episodes/NEEM/episode0/log.owl','#chart','#chart');
+            return "true";
+        }
+
+        return "false";
+    }
+
     // TODO(daniel): better use CSS class / disabled selector
     function setActive(div) {
       div.style.pointerEvents = "auto";

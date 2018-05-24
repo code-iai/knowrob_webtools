@@ -3,7 +3,7 @@ const treeContainerHandler = require('./TreeContainerHandler');
 
 
 let root;
-exports.displayTree = (error, treeData, treeContainerId, taskTreeCanvas) => {
+exports.displayTree = (treeData, treeContainerId, taskTreeCanvas) => {
     taskTreeConfiguration.initConfiguration(treeContainerId, taskTreeCanvas);
     // Define the root
     root = treeData;

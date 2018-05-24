@@ -16,7 +16,9 @@
     "url": "https://github.com/code-iai/NEEM-Visualization-Task-Tree/issues"
   },
   "homepage": "https://github.com/code-iai/NEEM-Visualization-Task-Tree#readme",
-  "dependencies": {},
+  "dependencies": {
+    "rdflib": "^0.16.9"
+  },
   "devDependencies": {
     "d3": "^3.5.17",
     "jquery": "^3.3.1",
