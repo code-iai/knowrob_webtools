@@ -86,7 +86,7 @@ function click(d) {
     if (d3.event.defaultPrevented) return; // click suppressed
     d = toggleChildren(d);
     treeContainerHandler.update(d);
-    treeContainerHandler.centerNode(d);
+    //treeContainerHandler.centerNode(d);
 }
 
 function handleMouseover(d) {

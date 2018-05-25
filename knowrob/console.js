@@ -233,14 +233,17 @@ function PrologConsole(client, options) {
     };
 
     function prologJSWrapper(query){
-        if('showTaskTree' == query){
+        var splitedQuery = query.split('(');
+        if(splitedQuery[0] && 'showTaskTree' == splitedQuery[0]){
+            var pathToLogFile = splitedQuery[1].split(')')[0].replace(new RegExp('\'', 'g'),'');
+            console.log(pathToLogFile);
             parent.frames['cog-frame'].
             contentWindow.neemVisualizationTaskTree.
-            visualizeTaskTree('/static/episodes/NEEM/episode0/log.owl','#chart','#chart');
+            visualizeTaskTree('/static'+pathToLogFile,'#chart','#chart');
             return "true";
         }
 
-        return "false";
+        return query;
     }
 
     // TODO(daniel): better use CSS class / disabled selector

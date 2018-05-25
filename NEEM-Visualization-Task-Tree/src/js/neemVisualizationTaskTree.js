@@ -12,9 +12,8 @@ function visualizeTaskTree(pathToOWLFile, treeContainerId, taskTreeCanvas){
         });
 }
 
-function triples(result){
-    console.log(result);
-}
+
+
 function createJSONFile(data){
     var uri = 'http://knowrob.org/kb/knowrob.owl'
     var mimeType = 'application/rdf+xml'
@@ -33,7 +32,5 @@ function createJSONFile(data){
 
 global.neemVisualizationTaskTree = {};
 global.neemVisualizationTaskTree.visualizeTaskTree = visualizeTaskTree;
-global.neemVisualizationTaskTree.createJSONFile = createJSONFile;
 
 exports.visualizeTaskTree = visualizeTaskTree;
-exports.createJSONFile = createJSONFile;
