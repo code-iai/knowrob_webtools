@@ -240,11 +240,20 @@ function PrologConsole(client, options) {
             console.log(pathToLogFile);
             parent.frames['cog-frame'].
             contentWindow.neemVisualizationTaskTree.
-            visualizeTaskTree('/static'+pathToLogFile,'#chart','#chart');
+            visualizeTaskTree('/static'+pathToLogFile,'#chart','#chart', nodeClickCallback);
             return "true";
         }
 
         return query;
+    }
+
+    function nodeClickCallback(node){
+        var knowrob_uri = 'http://knowrob.org/kb/knowrob.owl#';
+        console.log(knowrob_uri + node.name);
+        var q = 'asserta(last_clicked(\''+knowrob_uri + node.name+'\'))';
+        prolog.jsonQuery(q+", ignore(marker_publish)", function(result) {
+
+        }, mode=1); // incremental mode
     }
 
     // TODO(daniel): better use CSS class / disabled selector

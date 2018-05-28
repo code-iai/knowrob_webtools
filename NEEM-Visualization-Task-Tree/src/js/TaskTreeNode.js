@@ -87,6 +87,9 @@ function click(d) {
     d = toggleChildren(d);
     treeContainerHandler.update(d);
     //treeContainerHandler.centerNode(d);
+    if(taskTreeConfiguration.nodeOnClickCallback){
+        taskTreeConfiguration.nodeOnClickCallback(d);
+    }
 }
 
 function handleMouseover(d) {

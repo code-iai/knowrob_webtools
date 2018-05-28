@@ -3,12 +3,12 @@ const treeHandler = require('./TreeHandler');
 const taskTreeGenerator = require('./TaskTreeGenerator');
 const $rdf =  window.$rdf || require('rdflib');
 
-function visualizeTaskTree(pathToOWLFile, treeContainerId, taskTreeCanvas){
+function visualizeTaskTree(pathToOWLFile, treeContainerId, taskTreeCanvas, nodeOnClickCallback){
     fetch(pathToOWLFile)
         .then(response => response.text())
         .then(text => {
             let treeData = createJSONFile(text);
-            treeHandler.displayTree(treeData, treeContainerId, taskTreeCanvas);
+            treeHandler.displayTree(treeData, treeContainerId, taskTreeCanvas, nodeOnClickCallback);
         });
 }
 

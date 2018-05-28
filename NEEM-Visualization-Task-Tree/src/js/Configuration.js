@@ -10,10 +10,13 @@ exports.viewerHeight = () => {
     return taskTreeCanvasSelection.height();
 };
 
+exports.nodeOnClickCallback;
+
 exports.duration = 750;
 
-exports.initConfiguration = (treeContainerId, taskTreeCanvas) => {
+exports.initConfiguration = (treeContainerId, taskTreeCanvas, nodeOnClickCallback) => {
     exports.treeContainerId = treeContainerId;
     taskTreeCanvasSelection = $(taskTreeCanvas);
+    exports.nodeOnClickCallback = nodeOnClickCallback;
 };
 
