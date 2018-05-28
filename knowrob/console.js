@@ -185,11 +185,12 @@ function PrologConsole(client, options) {
     
       if (q.substr(q.length - 1) == ".") {
         q = q.substr(0, q.length - 1);
+        var oldQuery = q;
         q = prologJSWrapper(q);
         prolog = this.newProlog();
         if(useOverlay) that.showConsoleOverlay();
         
-        history.setValue(history.getValue() + "\n\n?- " + q +  ".\n", -1);
+        history.setValue(history.getValue() + "\n\n?- " + oldQuery +  ".\n", -1);
         history.navigateFileEnd();
         setActive(document.getElementById(nextButtonDiv));
         
@@ -203,7 +204,7 @@ function PrologConsole(client, options) {
         
         query.setValue("");
         
-        that.addHistoryItem(q);
+        that.addHistoryItem(oldQuery);
         historyIndex = -1;
       }
       else {
