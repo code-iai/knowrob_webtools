@@ -236,12 +236,23 @@ function PrologConsole(client, options) {
     function prologJSWrapper(query){
         var splitedQuery = query.split('(');
         if(splitedQuery[0] && 'showTaskTree' == splitedQuery[0]){
-            var pathToLogFile = splitedQuery[1].split(')')[0].replace(new RegExp('\'', 'g'),'');
-            console.log(pathToLogFile);
-            parent.frames['cog-frame'].
-            contentWindow.neemVisualizationTaskTree.
-            visualizeTaskTree('/static'+pathToLogFile,'#chart','#chart', nodeClickCallback);
+                $.getScript( "/static/lib/d3/d3.v3.min.js", function() {
+                    var pathToLogFile = splitedQuery[1].split(')')[0].replace(new RegExp('\'', 'g'),'');
+                    parent.frames['cog-frame'].contentWindow.d3 = d3;
+                    parent.frames['cog-frame'].
+                    contentWindow.neemVisualizationTaskTree.
+                    visualizeTaskTree('/static'+pathToLogFile,'#chart','#chart', nodeClickCallback);
+                });
             return "true";
+        }
+        else if(splitedQuery[0] && 'showTaskErrorMatrix' == splitedQuery[0]){
+            $.getScript( "/static/lib/d3/d3.v4.min.js", function() {
+                var pathToLogFile = splitedQuery[1].split(')')[0].replace(new RegExp('\'', 'g'),'');
+                parent.frames['cog-frame'].contentWindow.d3 = d3;
+                parent.frames['cog-frame'].
+                contentWindow.neemVisualizationTaskTree.
+                visualizeTaskTree('/static'+pathToLogFile,'#chart','#chart', nodeClickCallback);
+            });
         }
 
         return query;
