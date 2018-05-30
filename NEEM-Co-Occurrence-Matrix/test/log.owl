@@ -1,0 +1,2215 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE rdf:RDF [
+    <!ENTITY knowrob 'http://knowrob.org/kb/knowrob.owl#'>
+    <!ENTITY owl 'http://www.w3.org/2002/07/owl#'>
+    <!ENTITY pr2 'http://knowrob.org/kb/PR2.owl#'>
+    <!ENTITY rdf 'http://www.w3.org/1999/02/22-rdf-syntax-ns#'>
+    <!ENTITY xsd 'http://www.w3.org/2001/XMLSchema#'>
+]>
+
+<rdf:RDF
+    xmlns:knowrob="&knowrob;"
+    xmlns:owl="&owl;"
+    xmlns:pr2="&pr2;"
+    xmlns:rdf="&rdf;"
+    xmlns:xsd="&xsd;"
+>
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640320.88249">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640314.141754">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:LookingAtLocation rdf:about="&knowrob;LookingAtLocation_pQmhNKHv">
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640301.364768"/>
+  <knowrob:nextAction rdf:resource="&knowrob;MovingToLocation_vUXiHMJy"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:previousAction rdf:resource="&knowrob;OpeningAGripper_qdaDeDZn"/>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640300.593709"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">true</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:LookingAtLocation>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640314.797756">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640332.137554">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640310.27652">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:Reaching rdf:about="&knowrob;Reaching_dQdqCSih">
+  <knowrob:bodyPartsUsed rdf:resource="&pr2;pr2_right_gripper"/>
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640331.511127"/>
+  <knowrob:goalLocation rdf:resource="&knowrob;Pose_pfOpBnZh"/>
+  <knowrob:nextAction rdf:resource="&knowrob;SinkingAGripper_JxREiliu"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640331.220775"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">true</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:Reaching>
+
+<knowrob:Reaching rdf:about="&knowrob;Reaching_DkpvqoTE">
+  <knowrob:bodyPartsUsed rdf:resource="&pr2;pr2_right_gripper"/>
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640328.585465"/>
+  <knowrob:goalLocation rdf:resource="&knowrob;Pose_LOdfYcjI"/>
+  <knowrob:nextAction rdf:resource="&knowrob;AcquireGraspOfSomething_kafdTKju"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:previousAction rdf:resource="&knowrob;SettingAGripper_mQmDFocl"/>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640328.022578"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">true</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:Reaching>
+
+<knowrob:Pose rdf:about="&knowrob;Pose_wsQylmgC">
+  <knowrob:inFieldOfView rdf:resource="&pr2;PR2Robot1"/>
+  <knowrob:quaternion rdf:datatype="&xsd;string">0.0 0.0 0.0 1.0</knowrob:quaternion>
+  <knowrob:translation rdf:datatype="&xsd;string">1.3499999046325684 0.3000001907348633 0.85</knowrob:translation>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:Pose>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640312.071259">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:Pose rdf:about="&knowrob;Pose_lWHROvxT">
+  <knowrob:quaternion rdf:datatype="&xsd;string">0.0 0.0 0.0 1.0</knowrob:quaternion>
+  <knowrob:translation rdf:datatype="&xsd;string">0.0 0.0 0.0</knowrob:translation>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:Pose>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640308.504231">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640336.455767">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:ConnectedSpaceRegion rdf:about="&knowrob;ConnectedSpaceRegion_eypLwvuf">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:ConnectedSpaceRegion>
+
+<knowrob:ConnectedSpaceRegion rdf:about="&knowrob;ConnectedSpaceRegion_HOnvcomI">
+  <knowrob:onPhysical rdf:resource="http://knowrob.org/kb/iai-kitchen.owl#iai_kitchen_sink_area_counter_top"/>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:ConnectedSpaceRegion>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640330.578846">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:ConnectedSpaceRegion rdf:about="&knowrob;ConnectedSpaceRegion_TjVsasZe">
+  <knowrob:onPhysical rdf:resource="http://knowrob.org/kb/iai-kitchen.owl#iai_kitchen_sink_area_counter_top"/>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:ConnectedSpaceRegion>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640327.873346">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640325.14589">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TRANSPORTING rdf:about="&knowrob;TRANSPORTING_ysHEUIwW">
+  <knowrob:goalLocation rdf:resource="&knowrob;ConnectedSpaceRegion_YOXaigqs"/>
+  <knowrob:goalLocation rdf:resource="&knowrob;Pose_GIcRIGdP"/>
+  <knowrob:subAction rdf:resource="&knowrob;PickingUpAnObject_CTGdupxa"/>
+  <knowrob:subAction rdf:resource="&knowrob;PuttingDownAnObject_uBRtvLcg"/>
+  <knowrob:arm rdf:resource="&pr2;pr2_right_arm"/>
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640332.733415"/>
+  <knowrob:nextAction rdf:resource="&knowrob;TRANSPORTING_HRgQoeEw"/>
+  <knowrob:objectType rdf:resource="BOWL"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:previousAction rdf:resource="&knowrob;TRANSPORTING_KVRJlsOG"/>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640320.561752"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">true</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TRANSPORTING>
+
+<knowrob:ConnectedSpaceRegion rdf:about="&knowrob;ConnectedSpaceRegion_OqxmhqoK">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:ConnectedSpaceRegion>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640311.670038">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:LookingAtLocation rdf:about="&knowrob;LookingAtLocation_cXVTpaXX">
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640336.864291"/>
+  <knowrob:nextAction rdf:resource="&knowrob;MovingToLocation_kkchSaGr"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:previousAction rdf:resource="&knowrob;TRANSPORTING_HRgQoeEw"/>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640336.571378"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">true</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:LookingAtLocation>
+
+<knowrob:LookingAtLocation rdf:about="&knowrob;LookingAtLocation_DfuAtnfx">
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640318.794057"/>
+  <knowrob:goalLocation rdf:resource="&knowrob;Pose_gTcYQFlh"/>
+  <knowrob:nextAction rdf:resource="&knowrob;VisualPerception_WzQUNQwp"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:previousAction rdf:resource="&knowrob;NavigatingToLocation_jcuEjsae"/>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640318.537913"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">true</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:LookingAtLocation>
+
+<knowrob:LookingAtLocation rdf:about="&knowrob;LookingAtLocation_tWnpEzId">
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640322.808656"/>
+  <knowrob:goalLocation rdf:resource="&knowrob;Pose_UpoNBlzp"/>
+  <knowrob:nextAction rdf:resource="&knowrob;VisualPerception_ZNCBBMOP"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:previousAction rdf:resource="&knowrob;NavigatingToLocation_qjNQTtkC"/>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640322.559788"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">true</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:LookingAtLocation>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640306.282573">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:VoluntaryBodyMovement rdf:about="&knowrob;VoluntaryBodyMovement_CFhTYbti">
+  <knowrob:subAction rdf:resource="&knowrob;AcquireGraspOfSomething_vpXEWMVD"/>
+  <knowrob:subAction rdf:resource="&knowrob;Reaching_VgfDxrle"/>
+  <knowrob:subAction rdf:resource="&knowrob;SettingAGripper_LPjyQRDR"/>
+  <knowrob:arm rdf:resource="&pr2;pr2_right_arm"/>
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640326.214205"/>
+  <knowrob:failure rdf:resource="CRAM-COMMON-FAILURES:GRIPPING-FAILED"/>
+  <knowrob:nextAction rdf:resource="&knowrob;NavigatingToLocation_KdZXERCi"/>
+  <knowrob:objectActedOn rdf:resource="BOWL-1"/>
+  <knowrob:objectType rdf:resource="BOWL"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:previousAction rdf:resource="&knowrob;VisualPerception_uqRcmlod"/>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640325.14589"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">false</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:VoluntaryBodyMovement>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640326.214205">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:MovingToLocation rdf:about="&knowrob;MovingToLocation_vUXiHMJy">
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640301.600033"/>
+  <knowrob:goalLocation rdf:resource="&knowrob;Pose_bneXbLGX"/>
+  <knowrob:nextAction rdf:resource="&knowrob;TRANSPORTING_GJNNLYhq"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:previousAction rdf:resource="&knowrob;LookingAtLocation_pQmhNKHv"/>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640300.585916"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">true</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:MovingToLocation>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640308.095847">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640323.914479">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:Pose rdf:about="&knowrob;Pose_eLrKlpcE">
+  <knowrob:quaternion rdf:datatype="&xsd;string">0.0 0.0 0.7071067811865476 0.7071067811865476</knowrob:quaternion>
+  <knowrob:translation rdf:datatype="&xsd;string">-0.7900000214576721 1.350000023841858 0.8999999761581421</knowrob:translation>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:Pose>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640332.62153">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:Pose rdf:about="&knowrob;Pose_QnGSUiQg">
+  <knowrob:inFieldOfView rdf:resource="&pr2;PR2Robot1"/>
+  <knowrob:quaternion rdf:datatype="&xsd;string">0.0 0.0 0.0 1.0</knowrob:quaternion>
+  <knowrob:translation rdf:datatype="&xsd;string">1.75 0.8499999046325684 0.85</knowrob:translation>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:Pose>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640319.297891">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640324.153006">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:ConnectedSpaceRegion rdf:about="&knowrob;ConnectedSpaceRegion_TaVWzXre">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:ConnectedSpaceRegion>
+
+<knowrob:Pose rdf:about="&knowrob;Pose_GIcRIGdP">
+  <knowrob:quaternion rdf:datatype="&xsd;string">0.0 0.0 1.0 0.0</knowrob:quaternion>
+  <knowrob:translation rdf:datatype="&xsd;string">-0.7599999904632568 1.190000057220459 0.9300000071525574</knowrob:translation>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:Pose>
+
+<knowrob:Pose rdf:about="&knowrob;Pose_VEixmFrf">
+  <knowrob:inFieldOfView rdf:resource="&pr2;PR2Robot1"/>
+  <knowrob:quaternion rdf:datatype="&xsd;string">0.0 0.0 0.0 1.0</knowrob:quaternion>
+  <knowrob:translation rdf:datatype="&xsd;string">1.450000286102295 1.25 0.85</knowrob:translation>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:Pose>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640320.561752">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:LookingForSomething rdf:about="&knowrob;LookingForSomething_jxXEYvNE">
+  <knowrob:subAction rdf:resource="&knowrob;LookingAtLocation_DfuAtnfx"/>
+  <knowrob:subAction rdf:resource="&knowrob;NavigatingToLocation_jcuEjsae"/>
+  <knowrob:subAction rdf:resource="&knowrob;VisualPerception_WzQUNQwp"/>
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640319.202606"/>
+  <knowrob:goalLocation rdf:resource="&knowrob;ConnectedSpaceRegion_QTSwOYqA"/>
+  <knowrob:nextAction rdf:resource="&knowrob;NavigatingToLocation_youYUSPv"/>
+  <knowrob:objectActedOn rdf:resource="CUP-1"/>
+  <knowrob:objectType rdf:resource="CUP"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640317.066475"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">true</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:LookingForSomething>
+
+<knowrob:LookingForSomething rdf:about="&knowrob;LookingForSomething_BcCxRJuS">
+  <knowrob:subAction rdf:resource="&knowrob;LookingAtLocation_tWnpEzId"/>
+  <knowrob:subAction rdf:resource="&knowrob;NavigatingToLocation_qjNQTtkC"/>
+  <knowrob:subAction rdf:resource="&knowrob;VisualPerception_ZNCBBMOP"/>
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640323.233329"/>
+  <knowrob:goalLocation rdf:resource="&knowrob;ConnectedSpaceRegion_TjVsasZe"/>
+  <knowrob:nextAction rdf:resource="&knowrob;NavigatingToLocation_MuTbjdzb"/>
+  <knowrob:objectActedOn rdf:resource="BOWL-1"/>
+  <knowrob:objectType rdf:resource="BOWL"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640321.069768"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">true</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:LookingForSomething>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640320.499945">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640336.850412">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640308.455905">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640305.902743">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640321.069768">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:Pose rdf:about="&knowrob;Pose_UpoNBlzp">
+  <knowrob:quaternion rdf:datatype="&xsd;string">0.0 0.0 0.0 1.0</knowrob:quaternion>
+  <knowrob:translation rdf:datatype="&xsd;string">1.3499999046325684 0.3000001907348633 0.85</knowrob:translation>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:Pose>
+
+<knowrob:VisualPerception rdf:about="&knowrob;VisualPerception_WzQUNQwp">
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640319.120982"/>
+  <knowrob:objectActedOn rdf:resource="CUP-1"/>
+  <knowrob:objectType rdf:resource="CUP"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:previousAction rdf:resource="&knowrob;LookingAtLocation_DfuAtnfx"/>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640318.834059"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">true</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:VisualPerception>
+
+<knowrob:MovingToLocation rdf:about="&knowrob;MovingToLocation_kkchSaGr">
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640337.009929"/>
+  <knowrob:goalLocation rdf:resource="&knowrob;Pose_lWHROvxT"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:previousAction rdf:resource="&knowrob;LookingAtLocation_cXVTpaXX"/>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640336.570936"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">true</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:MovingToLocation>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640322.519383">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:LookingAtLocation rdf:about="&knowrob;LookingAtLocation_UdoWRvuP">
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640314.754106"/>
+  <knowrob:goalLocation rdf:resource="&knowrob;Pose_tHWElQip"/>
+  <knowrob:nextAction rdf:resource="&knowrob;VisualPerception_UkKPxwlH"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:previousAction rdf:resource="&knowrob;NavigatingToLocation_DCUxBNyK"/>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640314.491114"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">true</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:LookingAtLocation>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640312.44973">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TRANSPORTING rdf:about="&knowrob;TRANSPORTING_FkRlsFGa">
+  <knowrob:goalLocation rdf:resource="&knowrob;ConnectedSpaceRegion_WingBxNy"/>
+  <knowrob:goalLocation rdf:resource="&knowrob;Pose_ibAhvmeY"/>
+  <knowrob:arm rdf:resource="&pr2;pr2_right_arm"/>
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640316.459235"/>
+  <knowrob:failure rdf:resource="CRAM-COMMON-FAILURES:OBJECT-UNFETCHABLE"/>
+  <knowrob:nextAction rdf:resource="&knowrob;TRANSPORTING_KVRJlsOG"/>
+  <knowrob:objectType rdf:resource="MILK"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:previousAction rdf:resource="&knowrob;TRANSPORTING_GJNNLYhq"/>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640312.572504"/>
+  <knowrob:subAction rdf:resource="&knowrob;PickingUpAnObject_cScwmUpt"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">false</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TRANSPORTING>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640301.600033">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640323.313619">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640322.559788">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640327.443187">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640314.396064">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640324.742325">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640312.023543">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640310.530132">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640331.944475">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:ConnectedSpaceRegion rdf:about="&knowrob;ConnectedSpaceRegion_QOVXUJVt">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:ConnectedSpaceRegion>
+
+<knowrob:MovingToLocation rdf:about="&knowrob;MovingToLocation_PsVCnVQd">
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640309.871377"/>
+  <knowrob:goalLocation rdf:resource="&knowrob;Pose_gaOpMBqF"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640309.623194"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">true</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:MovingToLocation>
+
+<knowrob:MovingToLocation rdf:about="&knowrob;MovingToLocation_akBUAiAo">
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640322.47819"/>
+  <knowrob:goalLocation rdf:resource="&knowrob;Pose_wsQylmgC"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640322.238632"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">true</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:MovingToLocation>
+
+<knowrob:NavigatingToLocation rdf:about="&knowrob;NavigatingToLocation_tDjYwuhx">
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640306.22963"/>
+  <knowrob:goalLocation rdf:resource="&knowrob;ConnectedSpaceRegion_MewmmEsP"/>
+  <knowrob:nextAction rdf:resource="&knowrob;LookingAtLocation_RMwNovGs"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:previousAction rdf:resource="&knowrob;VisualPerception_OrUIzvEY"/>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640305.12006"/>
+  <knowrob:subAction rdf:resource="&knowrob;MovingToLocation_VeMDiXVm"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">true</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:NavigatingToLocation>
+
+<knowrob:ConnectedSpaceRegion rdf:about="&knowrob;ConnectedSpaceRegion_SgfniCWn">
+  <knowrob:onPhysical rdf:resource="http://knowrob.org/kb/iai-kitchen.owl#iai_kitchen_sink_area_counter_top"/>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:ConnectedSpaceRegion>
+
+<knowrob:SinkingAGripper rdf:about="&knowrob;SinkingAGripper_JxREiliu">
+  <knowrob:bodyPartsUsed rdf:resource="&pr2;pr2_right_gripper"/>
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640331.900734"/>
+  <knowrob:goalLocation rdf:resource="&knowrob;Pose_SmHHnxdq"/>
+  <knowrob:nextAction rdf:resource="&knowrob;ReleasingGraspOfSomething_DAdPBcuH"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:previousAction rdf:resource="&knowrob;Reaching_dQdqCSih"/>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640331.549451"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">true</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:SinkingAGripper>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640334.360467">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:LookingAtLocation rdf:about="&knowrob;LookingAtLocation_GYGUevJh">
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640324.470174"/>
+  <knowrob:goalLocation rdf:resource="&knowrob;Pose_xxYCTEpF"/>
+  <knowrob:nextAction rdf:resource="&knowrob;VisualPerception_uqRcmlod"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:previousAction rdf:resource="&knowrob;NavigatingToLocation_MuTbjdzb"/>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640324.234225"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">true</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:LookingAtLocation>
+
+<knowrob:Pose rdf:about="&knowrob;Pose_eSAhRerq">
+  <knowrob:quaternion rdf:datatype="&xsd;string">0.0 0.0 0.0 1.0</knowrob:quaternion>
+  <knowrob:translation rdf:datatype="&xsd;string">1.6500000953674316 1.200000286102295 0.85</knowrob:translation>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:Pose>
+
+<knowrob:Pose rdf:about="&knowrob;Pose_bykDUrCz">
+  <knowrob:quaternion rdf:datatype="&xsd;string">0.33063312229712827 0.6193774272116103 -0.33265618705987954 0.6295976843892638</knowrob:quaternion>
+  <knowrob:relativeTo rdf:resource="&pr2;pr2_base_footprint"/>
+  <knowrob:translation rdf:datatype="&xsd;string">0.49071633003126447 -0.03724882881783189 1.0975540901190994</knowrob:translation>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:Pose>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640332.733415">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640306.886222">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:MovingToLocation rdf:about="&knowrob;MovingToLocation_zgPoUHLu">
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640324.153006"/>
+  <knowrob:goalLocation rdf:resource="&knowrob;Pose_xaVjTNgr"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640323.914479"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">true</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:MovingToLocation>
+
+<knowrob:Pose rdf:about="&knowrob;Pose_olGdbegR">
+  <knowrob:quaternion rdf:datatype="&xsd;string">0.0 0.0 1.0 0.0</knowrob:quaternion>
+  <knowrob:translation rdf:datatype="&xsd;string">-0.7599999904632568 1.190000057220459 0.9300000071525574</knowrob:translation>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:Pose>
+
+<knowrob:ConnectedSpaceRegion rdf:about="&knowrob;ConnectedSpaceRegion_jIrmoGJE">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:ConnectedSpaceRegion>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640319.202606">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:ConnectedSpaceRegion rdf:about="&knowrob;ConnectedSpaceRegion_QTSwOYqA">
+  <knowrob:onPhysical rdf:resource="http://knowrob.org/kb/iai-kitchen.owl#iai_kitchen_sink_area_counter_top"/>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:ConnectedSpaceRegion>
+
+<knowrob:NavigatingToLocation rdf:about="&knowrob;NavigatingToLocation_DCUxBNyK">
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640314.438811"/>
+  <knowrob:goalLocation rdf:resource="&knowrob;ConnectedSpaceRegion_QOVXUJVt"/>
+  <knowrob:nextAction rdf:resource="&knowrob;LookingAtLocation_UdoWRvuP"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640313.438315"/>
+  <knowrob:subAction rdf:resource="&knowrob;MovingToLocation_WsNNrTDf"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">true</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:NavigatingToLocation>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640315.106992">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:Pose rdf:about="&knowrob;Pose_LOdfYcjI">
+  <knowrob:quaternion rdf:datatype="&xsd;string">0.33063312229712827 0.6193774272116103 -0.33265618705987954 0.6295976843892638</knowrob:quaternion>
+  <knowrob:relativeTo rdf:resource="&pr2;pr2_base_footprint"/>
+  <knowrob:translation rdf:datatype="&xsd;string">0.4930009239892635 -0.039109977818095165 0.8975757964287531</knowrob:translation>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:Pose>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640302.759784">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640336.570936">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640304.313052">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:AcquireGraspOfSomething rdf:about="&knowrob;AcquireGraspOfSomething_vpXEWMVD">
+  <knowrob:bodyPartsUsed rdf:resource="&pr2;pr2_right_gripper"/>
+  <knowrob:effort rdf:datatype="http://qudt.org/vocab/unit#NewtonMeter">100</knowrob:effort>
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640326.156647"/>
+  <knowrob:failure rdf:resource="CRAM-COMMON-FAILURES:GRIPPING-FAILED"/>
+  <knowrob:objectActedOn rdf:resource="BOWL-1"/>
+  <knowrob:objectType rdf:resource="BOWL"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:previousAction rdf:resource="&knowrob;Reaching_VgfDxrle"/>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640325.951614"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">false</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:AcquireGraspOfSomething>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640336.864291">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:AcquireGraspOfSomething rdf:about="&knowrob;AcquireGraspOfSomething_kafdTKju">
+  <knowrob:bodyPartsUsed rdf:resource="&pr2;pr2_right_gripper"/>
+  <knowrob:effort rdf:datatype="http://qudt.org/vocab/unit#NewtonMeter">100</knowrob:effort>
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640328.887872"/>
+  <knowrob:nextAction rdf:resource="&knowrob;LiftingAGripper_KtaWSAmO"/>
+  <knowrob:objectActedOn rdf:resource="BOWL-1"/>
+  <knowrob:objectType rdf:resource="BOWL"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:previousAction rdf:resource="&knowrob;Reaching_DkpvqoTE"/>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640328.651839"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">true</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:AcquireGraspOfSomething>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640328.23454">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:Pose rdf:about="&knowrob;Pose_Klgoavja">
+  <knowrob:inFieldOfView rdf:resource="&pr2;PR2Robot1"/>
+  <knowrob:quaternion rdf:datatype="&xsd;string">0.0 0.0 0.0 1.0</knowrob:quaternion>
+  <knowrob:translation rdf:datatype="&xsd;string">1.4000000953674316 1.200000286102295 0.85</knowrob:translation>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:Pose>
+
+<knowrob:Pose rdf:about="&knowrob;Pose_kpdCJilp">
+  <knowrob:inFieldOfView rdf:resource="&pr2;PR2Robot1"/>
+  <knowrob:quaternion rdf:datatype="&xsd;string">0.0 0.0 0.0 1.0</knowrob:quaternion>
+  <knowrob:translation rdf:datatype="&xsd;string">1.75 1.25 0.85</knowrob:translation>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:Pose>
+
+<knowrob:Pose rdf:about="&knowrob;Pose_gPphamyQ">
+  <knowrob:inReachOf rdf:resource="&pr2;PR2Robot1"/>
+  <knowrob:quaternion rdf:datatype="&xsd;string">-0.006298020482063293 -0.003822062397375703 0.2499957382678986 0.9682189226150513</knowrob:quaternion>
+  <knowrob:translation rdf:datatype="&xsd;string">1.298923244278935 0.5509895758355998 0.8878745396931966</knowrob:translation>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:Pose>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640322.238632">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640335.214622">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:SettingAGripper rdf:about="&knowrob;SettingAGripper_mQmDFocl">
+  <knowrob:bodyPartsUsed rdf:resource="&pr2;pr2_right_gripper"/>
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640328.23454"/>
+  <knowrob:nextAction rdf:resource="&knowrob;Reaching_DkpvqoTE"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:position rdf:datatype="&xsd;float">0.1</knowrob:position>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640328.020883"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">true</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:SettingAGripper>
+
+<knowrob:ConnectedSpaceRegion rdf:about="&knowrob;ConnectedSpaceRegion_ThPDDeBB">
+  <knowrob:onPhysical rdf:resource="http://knowrob.org/kb/iai-kitchen.owl#iai_kitchen_sink_area_counter_top"/>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:ConnectedSpaceRegion>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640334.599067">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640311.758865">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640323.153762">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640304.715065">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:Pose rdf:about="&knowrob;Pose_VPCGpXbm">
+  <knowrob:quaternion rdf:datatype="&xsd;string">0.0 0.0 0.0 1.0</knowrob:quaternion>
+  <knowrob:translation rdf:datatype="&xsd;string">1.4000000953674316 1.200000286102295 0.85</knowrob:translation>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:Pose>
+
+<knowrob:ConnectedSpaceRegion rdf:about="&knowrob;ConnectedSpaceRegion_pupUUOog">
+  <knowrob:onPhysical rdf:resource="http://knowrob.org/kb/iai-kitchen.owl#iai_kitchen_sink_area_counter_top"/>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:ConnectedSpaceRegion>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640317.43165">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640316.459235">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:ConnectedSpaceRegion rdf:about="&knowrob;ConnectedSpaceRegion_bYmVjIRg">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:ConnectedSpaceRegion>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640322.851577">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640300.589687">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:Pose rdf:about="&knowrob;Pose_xaVjTNgr">
+  <knowrob:inReachOf rdf:resource="&pr2;PR2Robot1"/>
+  <knowrob:quaternion rdf:datatype="&xsd;string">-0.006298020482063293 -0.003822062397375703 0.2499957382678986 0.9682189226150513</knowrob:quaternion>
+  <knowrob:translation rdf:datatype="&xsd;string">1.298923244278935 0.5509895758355998 0.8878745396931966</knowrob:translation>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:Pose>
+
+<knowrob:NavigatingToLocation rdf:about="&knowrob;NavigatingToLocation_PGGxOqTn">
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640336.179829"/>
+  <knowrob:failure rdf:resource="CRAM-COMMON-FAILURES:NAVIGATION-POSE-IN-COLLISION"/>
+  <knowrob:goalLocation rdf:resource="&knowrob;ConnectedSpaceRegion_jIrmoGJE"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:previousAction rdf:resource="&knowrob;LookingForSomething_ZzGCfXfC"/>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640335.380807"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">false</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:NavigatingToLocation>
+
+<knowrob:PickingUpAnObject rdf:about="&knowrob;PickingUpAnObject_CTGdupxa">
+  <knowrob:subAction rdf:resource="&knowrob;LookingAtLocation_GYGUevJh"/>
+  <knowrob:subAction rdf:resource="&knowrob;LookingAtLocation_VXGcbfMs"/>
+  <knowrob:subAction rdf:resource="&knowrob;LookingForSomething_BcCxRJuS"/>
+  <knowrob:subAction rdf:resource="&knowrob;NavigatingToLocation_KdZXERCi"/>
+  <knowrob:subAction rdf:resource="&knowrob;NavigatingToLocation_MuTbjdzb"/>
+  <knowrob:subAction rdf:resource="&knowrob;VisualPerception_tPURVDoa"/>
+  <knowrob:subAction rdf:resource="&knowrob;VisualPerception_uqRcmlod"/>
+  <knowrob:subAction rdf:resource="&knowrob;VoluntaryBodyMovement_CFhTYbti"/>
+  <knowrob:subAction rdf:resource="&knowrob;VoluntaryBodyMovement_EKkBnCXd"/>
+  <knowrob:arm rdf:resource="&pr2;pr2_right_arm"/>
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640329.468286"/>
+  <knowrob:goalLocation rdf:resource="&knowrob;ConnectedSpaceRegion_tsvsJibO"/>
+  <knowrob:nextAction rdf:resource="&knowrob;PuttingDownAnObject_uBRtvLcg"/>
+  <knowrob:objectActedOn rdf:resource="BOWL-1"/>
+  <knowrob:objectType rdf:resource="BOWL"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640320.88249"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">true</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:PickingUpAnObject>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640309.962456">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:ConnectedSpaceRegion rdf:about="&knowrob;ConnectedSpaceRegion_eWxMYwSE">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:ConnectedSpaceRegion>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640330.540729">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:NavigatingToLocation rdf:about="&knowrob;NavigatingToLocation_DpphmPqg">
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640308.146966"/>
+  <knowrob:goalLocation rdf:resource="&knowrob;ConnectedSpaceRegion_bYmVjIRg"/>
+  <knowrob:nextAction rdf:resource="&knowrob;LookingAtLocation_QnqNJuDB"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:previousAction rdf:resource="&knowrob;VisualPerception_FWcHvbLr"/>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640307.010393"/>
+  <knowrob:subAction rdf:resource="&knowrob;MovingToLocation_QifCuFiG"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">true</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:NavigatingToLocation>
+
+<knowrob:PickingUpAnObject rdf:about="&knowrob;PickingUpAnObject_dTNiOkWw">
+  <knowrob:subAction rdf:resource="&knowrob;LookingForSomething_ZzGCfXfC"/>
+  <knowrob:subAction rdf:resource="&knowrob;NavigatingToLocation_PGGxOqTn"/>
+  <knowrob:arm rdf:resource="&pr2;pr2_right_arm"/>
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640336.455767"/>
+  <knowrob:failure rdf:resource="CRAM-COMMON-FAILURES:OBJECT-UNFETCHABLE"/>
+  <knowrob:goalLocation rdf:resource="&knowrob;ConnectedSpaceRegion_slMotbEY"/>
+  <knowrob:objectType rdf:resource="SPOON"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640333.104713"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">false</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:PickingUpAnObject>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640331.220775">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640316.395095">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640332.660197">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:Pose rdf:about="&knowrob;Pose_bneXbLGX">
+  <knowrob:quaternion rdf:datatype="&xsd;string">0.0 0.0 0.0 1.0</knowrob:quaternion>
+  <knowrob:translation rdf:datatype="&xsd;string">0.0 0.0 0.0</knowrob:translation>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:Pose>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640314.754106">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:Pose rdf:about="&knowrob;Pose_pfOpBnZh">
+  <knowrob:quaternion rdf:datatype="&xsd;string">0.5875265716860365 0.39346223619586723 -0.5875265716860365 0.39346223619586723</knowrob:quaternion>
+  <knowrob:relativeTo rdf:resource="&pr2;pr2_base_footprint"/>
+  <knowrob:translation rdf:datatype="&xsd;string">0.4868158501032749 0.026652517522687682 1.1400000084191562</knowrob:translation>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:Pose>
+
+<knowrob:VisualPerception rdf:about="&knowrob;VisualPerception_uqRcmlod">
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640324.742325"/>
+  <knowrob:nextAction rdf:resource="&knowrob;VoluntaryBodyMovement_CFhTYbti"/>
+  <knowrob:objectActedOn rdf:resource="BOWL-1"/>
+  <knowrob:objectType rdf:resource="BOWL"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:previousAction rdf:resource="&knowrob;LookingAtLocation_GYGUevJh"/>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640324.523831"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">true</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:VisualPerception>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640316.535484">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:ConnectedSpaceRegion rdf:about="&knowrob;ConnectedSpaceRegion_GzPzatCQ">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:ConnectedSpaceRegion>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640328.651839">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:MovingToLocation rdf:about="&knowrob;MovingToLocation_VeMDiXVm">
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640306.18227"/>
+  <knowrob:goalLocation rdf:resource="&knowrob;Pose_kpdCJilp"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640305.902743"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">true</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:MovingToLocation>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640335.380807">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:ConnectedSpaceRegion rdf:about="&knowrob;ConnectedSpaceRegion_dRhefLOw">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:ConnectedSpaceRegion>
+
+<knowrob:NavigatingToLocation rdf:about="&knowrob;NavigatingToLocation_OaaPxeMq">
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640311.714664"/>
+  <knowrob:goalLocation rdf:resource="&knowrob;ConnectedSpaceRegion_eWxMYwSE"/>
+  <knowrob:nextAction rdf:resource="&knowrob;LookingAtLocation_FSxITSXt"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:previousAction rdf:resource="&knowrob;VisualPerception_MrfWJQRB"/>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640310.631044"/>
+  <knowrob:subAction rdf:resource="&knowrob;MovingToLocation_eQdyEMXp"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">true</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:NavigatingToLocation>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640318.164452">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:PuttingDownAnObject rdf:about="&knowrob;PuttingDownAnObject_uBRtvLcg">
+  <knowrob:subAction rdf:resource="&knowrob;LookingAtLocation_GVQxEgNN"/>
+  <knowrob:subAction rdf:resource="&knowrob;NavigatingToLocation_XwpyjUkq"/>
+  <knowrob:subAction rdf:resource="&knowrob;VoluntaryBodyMovement_GFRdnCoS"/>
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640332.697854"/>
+  <knowrob:goalLocation rdf:resource="&knowrob;Pose_olGdbegR"/>
+  <knowrob:objectActedOn rdf:resource="BOWL-1"/>
+  <knowrob:objectType rdf:resource="BOWL"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:previousAction rdf:resource="&knowrob;PickingUpAnObject_CTGdupxa"/>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640329.551353"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">true</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:PuttingDownAnObject>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640308.871282">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:ConnectedSpaceRegion rdf:about="&knowrob;ConnectedSpaceRegion_YOXaigqs">
+  <knowrob:onPhysical rdf:resource="http://knowrob.org/kb/iai-kitchen.owl#iai_kitchen_sink_area_counter_top"/>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:ConnectedSpaceRegion>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640327.164003">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640312.572504">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640332.768377">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:ConnectedSpaceRegion rdf:about="&knowrob;ConnectedSpaceRegion_MewmmEsP">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:ConnectedSpaceRegion>
+
+<knowrob:VisualPerception rdf:about="&knowrob;VisualPerception_XevXKWTG">
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640308.760239"/>
+  <knowrob:failure rdf:resource="CRAM-COMMON-FAILURES:PERCEPTION-OBJECT-NOT-FOUND"/>
+  <knowrob:nextAction rdf:resource="&knowrob;NavigatingToLocation_omYvrywq"/>
+  <knowrob:objectType rdf:resource="BREAKFAST-CEREAL"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:previousAction rdf:resource="&knowrob;LookingAtLocation_QnqNJuDB"/>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640308.504231"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">false</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:VisualPerception>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640314.438811">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640306.617639">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640325.319725">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:ConnectedSpaceRegion rdf:about="&knowrob;ConnectedSpaceRegion_YRNZlpaL">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:ConnectedSpaceRegion>
+
+<knowrob:PickingUpAnObject rdf:about="&knowrob;PickingUpAnObject_lEOECMZR">
+  <knowrob:arm rdf:resource="&pr2;pr2_right_arm"/>
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640312.44973"/>
+  <knowrob:failure rdf:resource="CRAM-COMMON-FAILURES:OBJECT-NOWHERE-TO-BE-FOUND"/>
+  <knowrob:goalLocation rdf:resource="&knowrob;ConnectedSpaceRegion_ThPDDeBB"/>
+  <knowrob:objectType rdf:resource="BREAKFAST-CEREAL"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640302.102993"/>
+  <knowrob:subAction rdf:resource="&knowrob;LookingForSomething_EuRQCNBL"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">false</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:PickingUpAnObject>
+
+<knowrob:ConnectedSpaceRegion rdf:about="&knowrob;ConnectedSpaceRegion_QEycFNmX">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:ConnectedSpaceRegion>
+
+<knowrob:LookingAtLocation rdf:about="&knowrob;LookingAtLocation_GVQxEgNN">
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640330.822727"/>
+  <knowrob:goalLocation rdf:resource="&knowrob;Pose_CLhXBpBt"/>
+  <knowrob:nextAction rdf:resource="&knowrob;VoluntaryBodyMovement_GFRdnCoS"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:previousAction rdf:resource="&knowrob;NavigatingToLocation_XwpyjUkq"/>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640330.578846"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">true</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:LookingAtLocation>
+
+<knowrob:NavigatingToLocation rdf:about="&knowrob;NavigatingToLocation_omYvrywq">
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640309.917415"/>
+  <knowrob:goalLocation rdf:resource="&knowrob;ConnectedSpaceRegion_uGmuwKPo"/>
+  <knowrob:nextAction rdf:resource="&knowrob;LookingAtLocation_qTLyxIFy"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:previousAction rdf:resource="&knowrob;VisualPerception_XevXKWTG"/>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640308.871282"/>
+  <knowrob:subAction rdf:resource="&knowrob;MovingToLocation_PsVCnVQd"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">true</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:NavigatingToLocation>
+
+<knowrob:PickingUpAnObject rdf:about="&knowrob;PickingUpAnObject_iLTYaxBE">
+  <knowrob:subAction rdf:resource="&knowrob;LookingForSomething_jxXEYvNE"/>
+  <knowrob:subAction rdf:resource="&knowrob;NavigatingToLocation_youYUSPv"/>
+  <knowrob:arm rdf:resource="&pr2;pr2_left_arm"/>
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640320.427306"/>
+  <knowrob:failure rdf:resource="CRAM-COMMON-FAILURES:OBJECT-UNFETCHABLE"/>
+  <knowrob:goalLocation rdf:resource="&knowrob;ConnectedSpaceRegion_uBKpoubm"/>
+  <knowrob:objectType rdf:resource="CUP"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640316.870187"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">false</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:PickingUpAnObject>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640318.454577">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:VisualPerception rdf:about="&knowrob;VisualPerception_LAyOHtdS">
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640335.214622"/>
+  <knowrob:objectActedOn rdf:resource="SPOON-1"/>
+  <knowrob:objectType rdf:resource="SPOON"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:previousAction rdf:resource="&knowrob;LookingAtLocation_ikRCgDAl"/>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640334.936498"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">true</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:VisualPerception>
+
+<knowrob:PickingUpAnObject rdf:about="&knowrob;PickingUpAnObject_cScwmUpt">
+  <knowrob:subAction rdf:resource="&knowrob;LookingForSomething_IlrpcdCP"/>
+  <knowrob:subAction rdf:resource="&knowrob;NavigatingToLocation_ghTMwHAh"/>
+  <knowrob:arm rdf:resource="&pr2;pr2_right_arm"/>
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640316.395095"/>
+  <knowrob:failure rdf:resource="CRAM-COMMON-FAILURES:OBJECT-UNFETCHABLE"/>
+  <knowrob:goalLocation rdf:resource="&knowrob;ConnectedSpaceRegion_cYHVteTZ"/>
+  <knowrob:objectType rdf:resource="MILK"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640312.91408"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">false</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:PickingUpAnObject>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640328.887872">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640316.870187">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640329.551353">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:Pose rdf:about="&knowrob;Pose_dntSDERk">
+  <knowrob:quaternion rdf:datatype="&xsd;string">0.5875265716860365 0.39346223619586723 -0.5875265716860365 0.39346223619586723</knowrob:quaternion>
+  <knowrob:relativeTo rdf:resource="&pr2;pr2_base_footprint"/>
+  <knowrob:translation rdf:datatype="&xsd;string">0.4868158501032749 0.026652517522687682 1.1400000084191562</knowrob:translation>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:Pose>
+
+<knowrob:ConnectedSpaceRegion rdf:about="&knowrob;ConnectedSpaceRegion_tsvsJibO">
+  <knowrob:onPhysical rdf:resource="http://knowrob.org/kb/iai-kitchen.owl#iai_kitchen_sink_area_counter_top"/>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:ConnectedSpaceRegion>
+
+<knowrob:Pose rdf:about="&knowrob;Pose_xxYCTEpF">
+  <knowrob:quaternion rdf:datatype="&xsd;string">-0.006298020482063293 -0.003822062397375703 0.2499957382678986 0.9682189226150513</knowrob:quaternion>
+  <knowrob:translation rdf:datatype="&xsd;string">1.298923244278935 0.5509895758355998 0.8878745396931966</knowrob:translation>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:Pose>
+
+<knowrob:ConnectedSpaceRegion rdf:about="&knowrob;ConnectedSpaceRegion_RitAkLiA">
+  <knowrob:onPhysical rdf:resource="http://knowrob.org/kb/iai-kitchen.owl#iai_kitchen_sink_area_counter_top"/>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:ConnectedSpaceRegion>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640329.468286">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640308.760239">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640325.951614">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:NavigatingToLocation rdf:about="&knowrob;NavigatingToLocation_youYUSPv">
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640320.147995"/>
+  <knowrob:failure rdf:resource="CRAM-COMMON-FAILURES:NAVIGATION-POSE-IN-COLLISION"/>
+  <knowrob:goalLocation rdf:resource="&knowrob;ConnectedSpaceRegion_nDUOgASF"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:previousAction rdf:resource="&knowrob;LookingForSomething_jxXEYvNE"/>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640319.297891"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">false</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:NavigatingToLocation>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640301.364768">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:VisualPerception rdf:about="&knowrob;VisualPerception_tPURVDoa">
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640327.726531"/>
+  <knowrob:nextAction rdf:resource="&knowrob;VoluntaryBodyMovement_EKkBnCXd"/>
+  <knowrob:objectActedOn rdf:resource="BOWL-1"/>
+  <knowrob:objectType rdf:resource="BOWL"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:previousAction rdf:resource="&knowrob;LookingAtLocation_VXGcbfMs"/>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640327.487165"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">true</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:VisualPerception>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640330.278218">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640334.936498">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:Retracting rdf:about="&knowrob;Retracting_vuXmWypO">
+  <knowrob:bodyPartsUsed rdf:resource="&pr2;pr2_right_gripper"/>
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640332.62153"/>
+  <knowrob:goalLocation rdf:resource="&knowrob;Pose_dntSDERk"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:previousAction rdf:resource="&knowrob;ReleasingGraspOfSomething_DAdPBcuH"/>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640332.22784"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">true</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:Retracting>
+
+<knowrob:Pose rdf:about="&knowrob;Pose_hSmyiLiV">
+  <knowrob:inFieldOfView rdf:resource="&pr2;PR2Robot1"/>
+  <knowrob:quaternion rdf:datatype="&xsd;string">0.0 0.0 0.0 1.0</knowrob:quaternion>
+  <knowrob:translation rdf:datatype="&xsd;string">1.75 0.34999990463256836 0.85</knowrob:translation>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:Pose>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640328.585465">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640310.631044">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640306.22963">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:Pose rdf:about="&knowrob;Pose_yyLegGrQ">
+  <knowrob:quaternion rdf:datatype="&xsd;string">0.22213716729814062 0.6660343379910938 -0.22241852073670215 0.6764491009937754</knowrob:quaternion>
+  <knowrob:relativeTo rdf:resource="&pr2;pr2_base_footprint"/>
+  <knowrob:translation rdf:datatype="&xsd;string">0.560847457893509 -0.056115869313644276 0.8975757964277961</knowrob:translation>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:Pose>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640334.637686">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:NavigatingToLocation rdf:about="&knowrob;NavigatingToLocation_XwpyjUkq">
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640330.540729"/>
+  <knowrob:goalLocation rdf:resource="&knowrob;ConnectedSpaceRegion_eypLwvuf"/>
+  <knowrob:nextAction rdf:resource="&knowrob;LookingAtLocation_GVQxEgNN"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640329.781437"/>
+  <knowrob:subAction rdf:resource="&knowrob;MovingToLocation_GGrHpmby"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">true</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:NavigatingToLocation>
+
+<knowrob:MovingToLocation rdf:about="&knowrob;MovingToLocation_dgOmTBiH">
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640334.599067"/>
+  <knowrob:goalLocation rdf:resource="&knowrob;Pose_kZjannoW"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640334.360467"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">true</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:MovingToLocation>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640320.427306">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:MovingToLocation rdf:about="&knowrob;MovingToLocation_QifCuFiG">
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640308.095847"/>
+  <knowrob:goalLocation rdf:resource="&knowrob;Pose_noJHgORs"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640307.840427"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">true</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:MovingToLocation>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640321.356228">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640328.022578">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640309.871377">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640312.91408">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:SettingAGripper rdf:about="&knowrob;SettingAGripper_LPjyQRDR">
+  <knowrob:bodyPartsUsed rdf:resource="&pr2;pr2_right_gripper"/>
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640325.554983"/>
+  <knowrob:nextAction rdf:resource="&knowrob;Reaching_VgfDxrle"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:position rdf:datatype="&xsd;float">0.1</knowrob:position>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640325.319725"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">true</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:SettingAGripper>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640314.491114">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:Pose rdf:about="&knowrob;Pose_EZdoFwLR">
+  <knowrob:quaternion rdf:datatype="&xsd;string">0.0 0.0 1.0 0.0</knowrob:quaternion>
+  <knowrob:translation rdf:datatype="&xsd;string">-0.7799999713897705 1.5 0.8600000143051147</knowrob:translation>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:Pose>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640332.22784">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:NavigatingToLocation rdf:about="&knowrob;NavigatingToLocation_ExJpRNHP">
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640304.313052"/>
+  <knowrob:goalLocation rdf:resource="&knowrob;ConnectedSpaceRegion_TaVWzXre"/>
+  <knowrob:nextAction rdf:resource="&knowrob;LookingAtLocation_rMsqkRjP"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640302.759784"/>
+  <knowrob:subAction rdf:resource="&knowrob;MovingToLocation_xqQsIBFN"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">true</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:NavigatingToLocation>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640336.515788">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640309.623194">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640317.066475">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640336.571378">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640308.146966">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640307.010393">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640318.794057">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640318.537913">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640309.917415">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:VisualPerception rdf:about="&knowrob;VisualPerception_ZNCBBMOP">
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640323.153762"/>
+  <knowrob:objectActedOn rdf:resource="BOWL-1"/>
+  <knowrob:objectType rdf:resource="BOWL"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:previousAction rdf:resource="&knowrob;LookingAtLocation_tWnpEzId"/>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640322.851577"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">true</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:VisualPerception>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640307.840427">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:ConnectedSpaceRegion rdf:about="&knowrob;ConnectedSpaceRegion_WingBxNy">
+  <knowrob:onPhysical rdf:resource="http://knowrob.org/kb/iai-kitchen.owl#iai_kitchen_sink_area_counter_top"/>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:ConnectedSpaceRegion>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640334.90062">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640312.323333">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640337.009929">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:MovingToLocation rdf:about="&knowrob;MovingToLocation_GGrHpmby">
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640330.503027"/>
+  <knowrob:goalLocation rdf:resource="&knowrob;Pose_ERYktZTF"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640330.278218"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">true</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:MovingToLocation>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640311.418601">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640329.312534">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640333.28101">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640325.908636">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640326.893626">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640331.549451">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640311.714664">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:ConnectedSpaceRegion rdf:about="&knowrob;ConnectedSpaceRegion_uGmuwKPo">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:ConnectedSpaceRegion>
+
+<knowrob:VisualPerception rdf:about="&knowrob;VisualPerception_UkKPxwlH">
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640315.106992"/>
+  <knowrob:objectActedOn rdf:resource="MILK-1"/>
+  <knowrob:objectType rdf:resource="MILK"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:previousAction rdf:resource="&knowrob;LookingAtLocation_UdoWRvuP"/>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640314.797756"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">true</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:VisualPerception>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640327.124076">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:NavigatingToLocation rdf:about="&knowrob;NavigatingToLocation_jcuEjsae">
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640318.496492"/>
+  <knowrob:goalLocation rdf:resource="&knowrob;ConnectedSpaceRegion_dRhefLOw"/>
+  <knowrob:nextAction rdf:resource="&knowrob;LookingAtLocation_DfuAtnfx"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640317.43165"/>
+  <knowrob:subAction rdf:resource="&knowrob;MovingToLocation_KEgXjnNa"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">true</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:NavigatingToLocation>
+
+<knowrob:Pose rdf:about="&knowrob;Pose_gTcYQFlh">
+  <knowrob:quaternion rdf:datatype="&xsd;string">0.0 0.0 0.0 1.0</knowrob:quaternion>
+  <knowrob:translation rdf:datatype="&xsd;string">1.75 0.8499999046325684 0.85</knowrob:translation>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:Pose>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640336.179829">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:ConnectedSpaceRegion rdf:about="&knowrob;ConnectedSpaceRegion_cYHVteTZ">
+  <knowrob:onPhysical rdf:resource="http://knowrob.org/kb/iai-kitchen.owl#iai_kitchen_sink_area_counter_top"/>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:ConnectedSpaceRegion>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640328.946002">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640310.2294">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640326.156647">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:Pose rdf:about="&knowrob;Pose_ZxKuHwbZ">
+  <knowrob:quaternion rdf:datatype="&xsd;string">0.0 0.0 0.0 1.0</knowrob:quaternion>
+  <knowrob:translation rdf:datatype="&xsd;string">1.75 1.25 0.85</knowrob:translation>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:Pose>
+
+<knowrob:Pose rdf:about="&knowrob;Pose_wEUxTIOq">
+  <knowrob:quaternion rdf:datatype="&xsd;string">0.0 0.0 0.0 1.0</knowrob:quaternion>
+  <knowrob:translation rdf:datatype="&xsd;string">1.700000286102295 1.200000286102295 0.85</knowrob:translation>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:Pose>
+
+<knowrob:Reaching rdf:about="&knowrob;Reaching_VgfDxrle">
+  <knowrob:bodyPartsUsed rdf:resource="&pr2;pr2_right_gripper"/>
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640325.908636"/>
+  <knowrob:goalLocation rdf:resource="&knowrob;Pose_yyLegGrQ"/>
+  <knowrob:nextAction rdf:resource="&knowrob;AcquireGraspOfSomething_vpXEWMVD"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:previousAction rdf:resource="&knowrob;SettingAGripper_LPjyQRDR"/>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640325.328012"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">true</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:Reaching>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640313.438315">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:Pose rdf:about="&knowrob;Pose_kRmyDqqu">
+  <knowrob:quaternion rdf:datatype="&xsd;string">0.0 0.0 1.0 0.0</knowrob:quaternion>
+  <knowrob:translation rdf:datatype="&xsd;string">-0.7799999713897705 0.8999999761581421 0.949999988079071</knowrob:translation>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:Pose>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640324.523831">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:VisualPerception rdf:about="&knowrob;VisualPerception_OrUIzvEY">
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640304.98697"/>
+  <knowrob:failure rdf:resource="CRAM-COMMON-FAILURES:PERCEPTION-OBJECT-NOT-FOUND"/>
+  <knowrob:nextAction rdf:resource="&knowrob;NavigatingToLocation_tDjYwuhx"/>
+  <knowrob:objectType rdf:resource="BREAKFAST-CEREAL"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:previousAction rdf:resource="&knowrob;LookingAtLocation_rMsqkRjP"/>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640304.715065"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">false</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:VisualPerception>
+
+<knowrob:LookingAtLocation rdf:about="&knowrob;LookingAtLocation_qTLyxIFy">
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640310.2294"/>
+  <knowrob:goalLocation rdf:resource="&knowrob;Pose_wEUxTIOq"/>
+  <knowrob:nextAction rdf:resource="&knowrob;VisualPerception_MrfWJQRB"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:previousAction rdf:resource="&knowrob;NavigatingToLocation_omYvrywq"/>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640309.962456"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">true</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:LookingAtLocation>
+
+<knowrob:NavigatingToLocation rdf:about="&knowrob;NavigatingToLocation_ghTMwHAh">
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640316.119069"/>
+  <knowrob:failure rdf:resource="CRAM-COMMON-FAILURES:NAVIGATION-POSE-IN-COLLISION"/>
+  <knowrob:goalLocation rdf:resource="&knowrob;ConnectedSpaceRegion_QEycFNmX"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:previousAction rdf:resource="&knowrob;LookingForSomething_IlrpcdCP"/>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640315.274136"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">false</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:NavigatingToLocation>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640304.247138">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:LookingAtLocation rdf:about="&knowrob;LookingAtLocation_VXGcbfMs">
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640327.443187"/>
+  <knowrob:goalLocation rdf:resource="&knowrob;Pose_cOyIWcXt"/>
+  <knowrob:nextAction rdf:resource="&knowrob;VisualPerception_tPURVDoa"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:previousAction rdf:resource="&knowrob;NavigatingToLocation_KdZXERCi"/>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640327.201782"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">true</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:LookingAtLocation>
+
+<knowrob:LookingAtLocation rdf:about="&knowrob;LookingAtLocation_FSxITSXt">
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640312.023543"/>
+  <knowrob:goalLocation rdf:resource="&knowrob;Pose_VPCGpXbm"/>
+  <knowrob:nextAction rdf:resource="&knowrob;VisualPerception_PpvNSGNy"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:previousAction rdf:resource="&knowrob;NavigatingToLocation_OaaPxeMq"/>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640311.758865"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">true</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:LookingAtLocation>
+
+<knowrob:TRANSPORTING rdf:about="&knowrob;TRANSPORTING_KVRJlsOG">
+  <knowrob:goalLocation rdf:resource="&knowrob;ConnectedSpaceRegion_SgfniCWn"/>
+  <knowrob:goalLocation rdf:resource="&knowrob;Pose_eLrKlpcE"/>
+  <knowrob:arm rdf:resource="&pr2;pr2_left_arm"/>
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640320.499945"/>
+  <knowrob:failure rdf:resource="CRAM-COMMON-FAILURES:OBJECT-UNFETCHABLE"/>
+  <knowrob:nextAction rdf:resource="&knowrob;TRANSPORTING_ysHEUIwW"/>
+  <knowrob:objectType rdf:resource="CUP"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:previousAction rdf:resource="&knowrob;TRANSPORTING_FkRlsFGa"/>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640316.535484"/>
+  <knowrob:subAction rdf:resource="&knowrob;PickingUpAnObject_iLTYaxBE"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">false</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TRANSPORTING>
+
+<knowrob:Pose rdf:about="&knowrob;Pose_kZjannoW">
+  <knowrob:inFieldOfView rdf:resource="&pr2;PR2Robot1"/>
+  <knowrob:quaternion rdf:datatype="&xsd;string">0.0 0.0 0.0 1.0</knowrob:quaternion>
+  <knowrob:translation rdf:datatype="&xsd;string">1.450000286102295 1.200000286102295 0.85</knowrob:translation>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:Pose>
+
+<knowrob:ReleasingGraspOfSomething rdf:about="&knowrob;ReleasingGraspOfSomething_DAdPBcuH">
+  <knowrob:bodyPartsUsed rdf:resource="&pr2;pr2_right_gripper"/>
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640332.137554"/>
+  <knowrob:nextAction rdf:resource="&knowrob;Retracting_vuXmWypO"/>
+  <knowrob:objectActedOn rdf:resource="BOWL-1"/>
+  <knowrob:objectType rdf:resource="BOWL"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:previousAction rdf:resource="&knowrob;SinkingAGripper_JxREiliu"/>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640331.944475"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">true</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:ReleasingGraspOfSomething>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640336.571132">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640304.655191">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:MovingToLocation rdf:about="&knowrob;MovingToLocation_ZjbGlAFl">
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640327.124076"/>
+  <knowrob:goalLocation rdf:resource="&knowrob;Pose_gPphamyQ"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640326.893626"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">true</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:MovingToLocation>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640302.338486">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640300.585916">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640312.391202">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640326.586865">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640329.781437">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:VoluntaryBodyMovement rdf:about="&knowrob;VoluntaryBodyMovement_EKkBnCXd">
+  <knowrob:subAction rdf:resource="&knowrob;AcquireGraspOfSomething_kafdTKju"/>
+  <knowrob:subAction rdf:resource="&knowrob;LiftingAGripper_KtaWSAmO"/>
+  <knowrob:subAction rdf:resource="&knowrob;Reaching_DkpvqoTE"/>
+  <knowrob:subAction rdf:resource="&knowrob;SettingAGripper_mQmDFocl"/>
+  <knowrob:arm rdf:resource="&pr2;pr2_right_arm"/>
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640329.351073"/>
+  <knowrob:objectActedOn rdf:resource="BOWL-1"/>
+  <knowrob:objectType rdf:resource="BOWL"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:previousAction rdf:resource="&knowrob;VisualPerception_tPURVDoa"/>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640327.873346"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">true</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:VoluntaryBodyMovement>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640305.12006">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:LookingAtLocation rdf:about="&knowrob;LookingAtLocation_rMsqkRjP">
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640304.655191"/>
+  <knowrob:goalLocation rdf:resource="&knowrob;Pose_stXqnGrc"/>
+  <knowrob:nextAction rdf:resource="&knowrob;VisualPerception_OrUIzvEY"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:previousAction rdf:resource="&knowrob;NavigatingToLocation_ExJpRNHP"/>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640304.365868"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">true</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:LookingAtLocation>
+
+<knowrob:ConnectedSpaceRegion rdf:about="&knowrob;ConnectedSpaceRegion_uBKpoubm">
+  <knowrob:onPhysical rdf:resource="http://knowrob.org/kb/iai-kitchen.owl#iai_kitchen_sink_area_counter_top"/>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:ConnectedSpaceRegion>
+
+<knowrob:TRANSPORTING rdf:about="&knowrob;TRANSPORTING_HRgQoeEw">
+  <knowrob:goalLocation rdf:resource="&knowrob;ConnectedSpaceRegion_HOnvcomI"/>
+  <knowrob:goalLocation rdf:resource="&knowrob;Pose_EZdoFwLR"/>
+  <knowrob:nextAction rdf:resource="&knowrob;LookingAtLocation_cXVTpaXX"/>
+  <knowrob:nextAction rdf:resource="&knowrob;OpeningAGripper_QYQjEvza"/>
+  <knowrob:arm rdf:resource="&pr2;pr2_right_arm"/>
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640336.515788"/>
+  <knowrob:failure rdf:resource="CRAM-COMMON-FAILURES:OBJECT-UNFETCHABLE"/>
+  <knowrob:objectType rdf:resource="SPOON"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:previousAction rdf:resource="&knowrob;TRANSPORTING_ysHEUIwW"/>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640332.768377"/>
+  <knowrob:subAction rdf:resource="&knowrob;PickingUpAnObject_dTNiOkWw"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">false</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TRANSPORTING>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640319.120982">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TRANSPORTING rdf:about="&knowrob;TRANSPORTING_GJNNLYhq">
+  <knowrob:goalLocation rdf:resource="&knowrob;ConnectedSpaceRegion_rlvFJyrl"/>
+  <knowrob:goalLocation rdf:resource="&knowrob;Pose_kRmyDqqu"/>
+  <knowrob:arm rdf:resource="&pr2;pr2_right_arm"/>
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640312.512278"/>
+  <knowrob:failure rdf:resource="CRAM-COMMON-FAILURES:OBJECT-NOWHERE-TO-BE-FOUND"/>
+  <knowrob:nextAction rdf:resource="&knowrob;TRANSPORTING_FkRlsFGa"/>
+  <knowrob:objectType rdf:resource="BREAKFAST-CEREAL"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:previousAction rdf:resource="&knowrob;MovingToLocation_vUXiHMJy"/>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640301.662415"/>
+  <knowrob:subAction rdf:resource="&knowrob;PickingUpAnObject_lEOECMZR"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">false</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TRANSPORTING>
+
+<knowrob:ConnectedSpaceRegion rdf:about="&knowrob;ConnectedSpaceRegion_nDUOgASF">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:ConnectedSpaceRegion>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640303.982679">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640325.554983">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:ConnectedSpaceRegion rdf:about="&knowrob;ConnectedSpaceRegion_obzxzwaP">
+  <knowrob:onPhysical rdf:resource="http://knowrob.org/kb/iai-kitchen.owl#iai_kitchen_sink_area_counter_top"/>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:ConnectedSpaceRegion>
+
+<knowrob:NavigatingToLocation rdf:about="&knowrob;NavigatingToLocation_MuTbjdzb">
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640324.196048"/>
+  <knowrob:goalLocation rdf:resource="&knowrob;ConnectedSpaceRegion_fmSqOdsm"/>
+  <knowrob:nextAction rdf:resource="&knowrob;LookingAtLocation_GYGUevJh"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:previousAction rdf:resource="&knowrob;LookingForSomething_BcCxRJuS"/>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640323.313619"/>
+  <knowrob:subAction rdf:resource="&knowrob;MovingToLocation_zgPoUHLu"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">true</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:NavigatingToLocation>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640318.834059">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640320.147995">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640308.195144">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:VisualPerception rdf:about="&knowrob;VisualPerception_MrfWJQRB">
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640310.530132"/>
+  <knowrob:failure rdf:resource="CRAM-COMMON-FAILURES:PERCEPTION-OBJECT-NOT-FOUND"/>
+  <knowrob:nextAction rdf:resource="&knowrob;NavigatingToLocation_OaaPxeMq"/>
+  <knowrob:objectType rdf:resource="BREAKFAST-CEREAL"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:previousAction rdf:resource="&knowrob;LookingAtLocation_qTLyxIFy"/>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640310.27652"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">false</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:VisualPerception>
+
+<knowrob:ConnectedSpaceRegion rdf:about="&knowrob;ConnectedSpaceRegion_rlvFJyrl">
+  <knowrob:onPhysical rdf:resource="http://knowrob.org/kb/iai-kitchen.owl#iai_kitchen_sink_area_counter_top"/>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:ConnectedSpaceRegion>
+
+<knowrob:VisualPerception rdf:about="&knowrob;VisualPerception_FWcHvbLr">
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640306.886222"/>
+  <knowrob:failure rdf:resource="CRAM-COMMON-FAILURES:PERCEPTION-OBJECT-NOT-FOUND"/>
+  <knowrob:nextAction rdf:resource="&knowrob;NavigatingToLocation_DpphmPqg"/>
+  <knowrob:objectType rdf:resource="BREAKFAST-CEREAL"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:previousAction rdf:resource="&knowrob;LookingAtLocation_RMwNovGs"/>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640306.617639"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">false</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:VisualPerception>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640322.47819">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:Pose rdf:about="&knowrob;Pose_jtxKLNVr">
+  <knowrob:quaternion rdf:datatype="&xsd;string">0.0 0.0 0.0 1.0</knowrob:quaternion>
+  <knowrob:translation rdf:datatype="&xsd;string">1.450000286102295 1.200000286102295 0.85</knowrob:translation>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:Pose>
+
+<knowrob:NavigatingToLocation rdf:about="&knowrob;NavigatingToLocation_faoIqwYU">
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640334.637686"/>
+  <knowrob:goalLocation rdf:resource="&knowrob;ConnectedSpaceRegion_OqxmhqoK"/>
+  <knowrob:nextAction rdf:resource="&knowrob;LookingAtLocation_ikRCgDAl"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640333.587245"/>
+  <knowrob:subAction rdf:resource="&knowrob;MovingToLocation_dgOmTBiH"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">true</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:NavigatingToLocation>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640325.328012">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:Pose rdf:about="&knowrob;Pose_ERYktZTF">
+  <knowrob:inReachOf rdf:resource="&pr2;PR2Robot1"/>
+  <knowrob:quaternion rdf:datatype="&xsd;string">0.0 0.0 1.0 0.0</knowrob:quaternion>
+  <knowrob:translation rdf:datatype="&xsd;string">-0.7599999904632568 1.190000057220459 0.9300000071525574</knowrob:translation>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:Pose>
+
+<knowrob:Pose rdf:about="&knowrob;Pose_CLhXBpBt">
+  <knowrob:quaternion rdf:datatype="&xsd;string">0.0 0.0 1.0 0.0</knowrob:quaternion>
+  <knowrob:translation rdf:datatype="&xsd;string">-0.7599999904632568 1.190000057220459 0.9300000071525574</knowrob:translation>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:Pose>
+
+<knowrob:Pose rdf:about="&knowrob;Pose_cOyIWcXt">
+  <knowrob:quaternion rdf:datatype="&xsd;string">-0.006298020482063293 -0.003822062397375703 0.2499957382678986 0.9682189226150513</knowrob:quaternion>
+  <knowrob:translation rdf:datatype="&xsd;string">1.298923244278935 0.5509895758355998 0.8878745396931966</knowrob:translation>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:Pose>
+
+<knowrob:OpeningAGripper rdf:about="&knowrob;OpeningAGripper_QYQjEvza">
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640336.850412"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:previousAction rdf:resource="&knowrob;TRANSPORTING_HRgQoeEw"/>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640336.571132"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">true</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:OpeningAGripper>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640324.470174">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640330.503027">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:ConnectedSpaceRegion rdf:about="&knowrob;ConnectedSpaceRegion_slMotbEY">
+  <knowrob:onPhysical rdf:resource="http://knowrob.org/kb/iai-kitchen.owl#iai_kitchen_sink_area_counter_top"/>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:ConnectedSpaceRegion>
+
+<knowrob:MovingToLocation rdf:about="&knowrob;MovingToLocation_xqQsIBFN">
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640304.247138"/>
+  <knowrob:goalLocation rdf:resource="&knowrob;Pose_hSmyiLiV"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640303.982679"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">true</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:MovingToLocation>
+
+<knowrob:Pose rdf:about="&knowrob;Pose_tHWElQip">
+  <knowrob:quaternion rdf:datatype="&xsd;string">0.0 0.0 0.0 1.0</knowrob:quaternion>
+  <knowrob:translation rdf:datatype="&xsd;string">1.450000286102295 1.25 0.85</knowrob:translation>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:Pose>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640318.496492">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:LookingAtLocation rdf:about="&knowrob;LookingAtLocation_QnqNJuDB">
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640308.455905"/>
+  <knowrob:goalLocation rdf:resource="&knowrob;Pose_eSAhRerq"/>
+  <knowrob:nextAction rdf:resource="&knowrob;VisualPerception_XevXKWTG"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:previousAction rdf:resource="&knowrob;NavigatingToLocation_DpphmPqg"/>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640308.195144"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">true</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:LookingAtLocation>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640330.994127">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:VisualPerception rdf:about="&knowrob;VisualPerception_PpvNSGNy">
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640312.323333"/>
+  <knowrob:failure rdf:resource="CRAM-COMMON-FAILURES:PERCEPTION-OBJECT-NOT-FOUND"/>
+  <knowrob:objectType rdf:resource="BREAKFAST-CEREAL"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:previousAction rdf:resource="&knowrob;LookingAtLocation_FSxITSXt"/>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640312.071259"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">false</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:VisualPerception>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640316.119069">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640328.020883">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:LookingForSomething rdf:about="&knowrob;LookingForSomething_ZzGCfXfC">
+  <knowrob:subAction rdf:resource="&knowrob;LookingAtLocation_ikRCgDAl"/>
+  <knowrob:subAction rdf:resource="&knowrob;NavigatingToLocation_faoIqwYU"/>
+  <knowrob:subAction rdf:resource="&knowrob;VisualPerception_LAyOHtdS"/>
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640335.305425"/>
+  <knowrob:goalLocation rdf:resource="&knowrob;ConnectedSpaceRegion_pupUUOog"/>
+  <knowrob:nextAction rdf:resource="&knowrob;NavigatingToLocation_PGGxOqTn"/>
+  <knowrob:objectActedOn rdf:resource="SPOON-1"/>
+  <knowrob:objectType rdf:resource="SPOON"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640333.28101"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">true</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:LookingForSomething>
+
+<knowrob:MovingToLocation rdf:about="&knowrob;MovingToLocation_eQdyEMXp">
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640311.670038"/>
+  <knowrob:goalLocation rdf:resource="&knowrob;Pose_Klgoavja"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640311.418601"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">true</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:MovingToLocation>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640301.662415">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:VoluntaryBodyMovement rdf:about="&knowrob;VoluntaryBodyMovement_GFRdnCoS">
+  <knowrob:subAction rdf:resource="&knowrob;Reaching_dQdqCSih"/>
+  <knowrob:subAction rdf:resource="&knowrob;ReleasingGraspOfSomething_DAdPBcuH"/>
+  <knowrob:subAction rdf:resource="&knowrob;Retracting_vuXmWypO"/>
+  <knowrob:subAction rdf:resource="&knowrob;SinkingAGripper_JxREiliu"/>
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640332.660197"/>
+  <knowrob:goalLocation rdf:resource="&knowrob;Pose_uRzDlVNV"/>
+  <knowrob:objectActedOn rdf:resource="BOWL-1"/>
+  <knowrob:objectType rdf:resource="BOWL"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:previousAction rdf:resource="&knowrob;LookingAtLocation_GVQxEgNN"/>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640330.994127"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">true</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:VoluntaryBodyMovement>
+
+<knowrob:LookingAtLocation rdf:about="&knowrob;LookingAtLocation_RMwNovGs">
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640306.568088"/>
+  <knowrob:goalLocation rdf:resource="&knowrob;Pose_ZxKuHwbZ"/>
+  <knowrob:nextAction rdf:resource="&knowrob;VisualPerception_FWcHvbLr"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:previousAction rdf:resource="&knowrob;NavigatingToLocation_tDjYwuhx"/>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640306.282573"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">true</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:LookingAtLocation>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640323.233329">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:NavigatingToLocation rdf:about="&knowrob;NavigatingToLocation_KdZXERCi">
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640327.164003"/>
+  <knowrob:goalLocation rdf:resource="&knowrob;ConnectedSpaceRegion_GzPzatCQ"/>
+  <knowrob:nextAction rdf:resource="&knowrob;LookingAtLocation_VXGcbfMs"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:previousAction rdf:resource="&knowrob;VoluntaryBodyMovement_CFhTYbti"/>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640326.586865"/>
+  <knowrob:subAction rdf:resource="&knowrob;MovingToLocation_ZjbGlAFl"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">true</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:NavigatingToLocation>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640327.726531">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640327.487165">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640324.234225">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640333.104713">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:MovingToLocation rdf:about="&knowrob;MovingToLocation_WsNNrTDf">
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640314.396064"/>
+  <knowrob:goalLocation rdf:resource="&knowrob;Pose_VEixmFrf"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640314.141754"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">true</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:MovingToLocation>
+
+<knowrob:Pose rdf:about="&knowrob;Pose_SmHHnxdq">
+  <knowrob:quaternion rdf:datatype="&xsd;string">0.5875265716860365 0.39346223619586723 -0.5875265716860365 0.39346223619586723</knowrob:quaternion>
+  <knowrob:relativeTo rdf:resource="&pr2;pr2_base_footprint"/>
+  <knowrob:translation rdf:datatype="&xsd;string">0.4868158501032749 0.026652517522687682 0.9400000054389238</knowrob:translation>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:Pose>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640306.18227">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640300.593709">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:LookingForSomething rdf:about="&knowrob;LookingForSomething_IlrpcdCP">
+  <knowrob:subAction rdf:resource="&knowrob;LookingAtLocation_UdoWRvuP"/>
+  <knowrob:subAction rdf:resource="&knowrob;NavigatingToLocation_DCUxBNyK"/>
+  <knowrob:subAction rdf:resource="&knowrob;VisualPerception_UkKPxwlH"/>
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640315.191741"/>
+  <knowrob:goalLocation rdf:resource="&knowrob;ConnectedSpaceRegion_RitAkLiA"/>
+  <knowrob:nextAction rdf:resource="&knowrob;NavigatingToLocation_ghTMwHAh"/>
+  <knowrob:objectActedOn rdf:resource="MILK-1"/>
+  <knowrob:objectType rdf:resource="MILK"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640313.110077"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">true</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:LookingForSomething>
+
+<knowrob:Pose rdf:about="&knowrob;Pose_gaOpMBqF">
+  <knowrob:inFieldOfView rdf:resource="&pr2;PR2Robot1"/>
+  <knowrob:quaternion rdf:datatype="&xsd;string">0.0 0.0 0.0 1.0</knowrob:quaternion>
+  <knowrob:translation rdf:datatype="&xsd;string">1.700000286102295 1.200000286102295 0.85</knowrob:translation>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:Pose>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640332.697854">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640322.808656">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:Pose rdf:about="&knowrob;Pose_ibAhvmeY">
+  <knowrob:quaternion rdf:datatype="&xsd;string">0.0 0.0 0.7071067811865476 0.7071067811865476</knowrob:quaternion>
+  <knowrob:translation rdf:datatype="&xsd;string">-0.75 1.7000000476837158 0.949999988079071</knowrob:translation>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:Pose>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640315.274136">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640306.568088">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640302.102993">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:Pose rdf:about="&knowrob;Pose_stXqnGrc">
+  <knowrob:quaternion rdf:datatype="&xsd;string">0.0 0.0 0.0 1.0</knowrob:quaternion>
+  <knowrob:translation rdf:datatype="&xsd;string">1.75 0.34999990463256836 0.85</knowrob:translation>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:Pose>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640324.196048">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640331.900734">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640334.676479">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640331.511127">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640335.305425">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640313.110077">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640304.365868">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640312.512278">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640301.248385">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640327.201782">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640329.351073">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:Pose rdf:about="&knowrob;Pose_noJHgORs">
+  <knowrob:inFieldOfView rdf:resource="&pr2;PR2Robot1"/>
+  <knowrob:quaternion rdf:datatype="&xsd;string">0.0 0.0 0.0 1.0</knowrob:quaternion>
+  <knowrob:translation rdf:datatype="&xsd;string">1.6500000953674316 1.200000286102295 0.85</knowrob:translation>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:Pose>
+
+<knowrob:ConnectedSpaceRegion rdf:about="&knowrob;ConnectedSpaceRegion_fmSqOdsm">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:ConnectedSpaceRegion>
+
+<knowrob:Pose rdf:about="&knowrob;Pose_uRzDlVNV">
+  <knowrob:quaternion rdf:datatype="&xsd;string">0.0 0.0 1.0 0.0</knowrob:quaternion>
+  <knowrob:translation rdf:datatype="&xsd;string">-0.7599999904632568 1.190000057220459 0.9300000071525574</knowrob:translation>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:Pose>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640315.191741">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:LiftingAGripper rdf:about="&knowrob;LiftingAGripper_KtaWSAmO">
+  <knowrob:bodyPartsUsed rdf:resource="&pr2;pr2_right_gripper"/>
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640329.312534"/>
+  <knowrob:goalLocation rdf:resource="&knowrob;Pose_bykDUrCz"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:previousAction rdf:resource="&knowrob;AcquireGraspOfSomething_kafdTKju"/>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640328.946002"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">true</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:LiftingAGripper>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640304.98697">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:LookingAtLocation rdf:about="&knowrob;LookingAtLocation_ikRCgDAl">
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640334.90062"/>
+  <knowrob:goalLocation rdf:resource="&knowrob;Pose_jtxKLNVr"/>
+  <knowrob:nextAction rdf:resource="&knowrob;VisualPerception_LAyOHtdS"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:previousAction rdf:resource="&knowrob;NavigatingToLocation_faoIqwYU"/>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640334.676479"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">true</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:LookingAtLocation>
+
+<knowrob:LookingForSomething rdf:about="&knowrob;LookingForSomething_EuRQCNBL">
+  <knowrob:subAction rdf:resource="&knowrob;LookingAtLocation_FSxITSXt"/>
+  <knowrob:subAction rdf:resource="&knowrob;LookingAtLocation_QnqNJuDB"/>
+  <knowrob:subAction rdf:resource="&knowrob;LookingAtLocation_RMwNovGs"/>
+  <knowrob:subAction rdf:resource="&knowrob;LookingAtLocation_qTLyxIFy"/>
+  <knowrob:subAction rdf:resource="&knowrob;LookingAtLocation_rMsqkRjP"/>
+  <knowrob:subAction rdf:resource="&knowrob;NavigatingToLocation_DpphmPqg"/>
+  <knowrob:subAction rdf:resource="&knowrob;NavigatingToLocation_ExJpRNHP"/>
+  <knowrob:subAction rdf:resource="&knowrob;NavigatingToLocation_OaaPxeMq"/>
+  <knowrob:subAction rdf:resource="&knowrob;NavigatingToLocation_omYvrywq"/>
+  <knowrob:subAction rdf:resource="&knowrob;NavigatingToLocation_tDjYwuhx"/>
+  <knowrob:subAction rdf:resource="&knowrob;VisualPerception_FWcHvbLr"/>
+  <knowrob:subAction rdf:resource="&knowrob;VisualPerception_MrfWJQRB"/>
+  <knowrob:subAction rdf:resource="&knowrob;VisualPerception_OrUIzvEY"/>
+  <knowrob:subAction rdf:resource="&knowrob;VisualPerception_PpvNSGNy"/>
+  <knowrob:subAction rdf:resource="&knowrob;VisualPerception_XevXKWTG"/>
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640312.391202"/>
+  <knowrob:failure rdf:resource="CRAM-COMMON-FAILURES:OBJECT-NOWHERE-TO-BE-FOUND"/>
+  <knowrob:goalLocation rdf:resource="&knowrob;ConnectedSpaceRegion_obzxzwaP"/>
+  <knowrob:objectType rdf:resource="BREAKFAST-CEREAL"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640302.338486"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">false</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:LookingForSomething>
+
+<knowrob:NavigatingToLocation rdf:about="&knowrob;NavigatingToLocation_qjNQTtkC">
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640322.519383"/>
+  <knowrob:goalLocation rdf:resource="&knowrob;ConnectedSpaceRegion_YRNZlpaL"/>
+  <knowrob:nextAction rdf:resource="&knowrob;LookingAtLocation_tWnpEzId"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640321.356228"/>
+  <knowrob:subAction rdf:resource="&knowrob;MovingToLocation_akBUAiAo"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">true</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:NavigatingToLocation>
+
+<knowrob:OpeningAGripper rdf:about="&knowrob;OpeningAGripper_qdaDeDZn">
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640301.248385"/>
+  <knowrob:nextAction rdf:resource="&knowrob;LookingAtLocation_pQmhNKHv"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640300.589687"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">true</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:OpeningAGripper>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640330.822727">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:TimePoint rdf:about="&knowrob;timepoint_1526640333.587245">
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:TimePoint>
+
+<knowrob:MovingToLocation rdf:about="&knowrob;MovingToLocation_KEgXjnNa">
+  <knowrob:endTime rdf:resource="&knowrob;timepoint_1526640318.454577"/>
+  <knowrob:goalLocation rdf:resource="&knowrob;Pose_QnGSUiQg"/>
+  <knowrob:performedInProjection rdf:datatype="&xsd;boolean">true</knowrob:performedInProjection>
+  <knowrob:startTime rdf:resource="&knowrob;timepoint_1526640318.164452"/>
+  <knowrob:taskContext rdf:datatype="&xsd;string">TableSetting</knowrob:taskContext>
+  <knowrob:taskSuccess rdf:datatype="&xsd;boolean">true</knowrob:taskSuccess>
+  <rdf:type rdf:resource="&owl;NamedIndividual"/>
+</knowrob:MovingToLocation>
+
+</rdf:RDF>
