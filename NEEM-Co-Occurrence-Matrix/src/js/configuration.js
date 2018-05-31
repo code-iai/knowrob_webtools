@@ -7,8 +7,9 @@ exports.margin = {
 
 exports.width = 350;
 exports.height = 350;
-exports.containerId;
 
-exports.initConfiguration = (containerId) => {
+
+exports.initConfiguration = (containerId,onClickLabelMethod) => {
     exports.containerId = containerId;
+    exports.onClickLabelMethod = onClickLabelMethod;
 };

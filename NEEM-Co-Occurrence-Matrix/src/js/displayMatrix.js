@@ -21,8 +21,8 @@ let rowMatrixScale;
 let rowOrders;
 
 
-exports.displayMatrix = (data, containerId) => {
-    configuration.initConfiguration(containerId);
+exports.displayMatrix = (data, containerId, onClickLabelMethod) => {
+    configuration.initConfiguration(containerId, onClickLabelMethod);
     opacityScale = d3.scaleLinear().domain([0, 10]).range([0.3, 1.0]).clamp(true);
     initSvg();
     drawMatrix(data);
@@ -135,7 +135,12 @@ function drawMatrix(data){
         .attr('y', rowMatrixScale.bandwidth()/2)
         .attr('dy', '.32em')
         .attr('text-anchor', 'end')
-        .text((d, i) => utils.capitalize_Words(nodes[indexGroupOneMatrixToNode[i]].name));
+        .text((d, i) => utils.capitalize_Words(nodes[indexGroupOneMatrixToNode[i]].name))
+        .on('click',(d)=>{
+            if(configuration.onClickLabelMethod){
+                configuration.onClickLabelMethod(d, nodes);
+            }
+        });
     //
     columns.append('text')
         .attr('class', (d, i) => {return 'node-label ' + utils.intToGroup(nodes[indexGroupTwoMatrixToNode[i]].group)})
@@ -143,7 +148,12 @@ function drawMatrix(data){
         .attr('y', columnMatrixScale.bandwidth()/2)
         .attr('dy', '.32em')
         .attr('text-anchor', 'start')
-        .text((d, i) => utils.capitalize_Words(nodes[indexGroupTwoMatrixToNode[i]].name));
+        .text((d, i) => utils.capitalize_Words(nodes[indexGroupTwoMatrixToNode[i]].name))
+        .on('click',(d)=>{
+            if(configuration.onClickLabelMethod){
+                configuration.onClickLabelMethod(d, nodes);
+            }
+        });
 
 
     rowOrders = {

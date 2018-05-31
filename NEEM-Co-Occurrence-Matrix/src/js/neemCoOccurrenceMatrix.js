@@ -2,7 +2,7 @@ const displayMatrix = require('./displayMatrix');
 const $rdf =  window.$rdf || require('rdflib');
 const $ = window.$ || require('jquery');
 
-function showMatrix(logPath, containerId) {
+function showMatrix(logPath, containerId, onClickLabelMethod) {
     fetch(logPath)
         .then(response => response.text())
         .then(text => {
@@ -17,7 +17,7 @@ function showMatrix(logPath, containerId) {
                 '              <option value="count">By Frequency</option>\n' +
                 '          </select>\n' +
                 '          </aside>');
-            displayMatrix.displayMatrix(matrix, containerId);
+            displayMatrix.displayMatrix(matrix, containerId, onClickLabelMethod);
 
         });
 }

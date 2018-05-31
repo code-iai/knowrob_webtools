@@ -236,22 +236,37 @@ function PrologConsole(client, options) {
     function prologJSWrapper(query){
         var splitedQuery = query.split('(');
         if(splitedQuery[0] && 'showTaskTree' == splitedQuery[0]){
-                $.getScript( "/static/lib/d3/d3.v3.min.js", function() {
+            var myNode = document.getElementById("chart");
+            while (myNode.firstChild) {
+                myNode.removeChild(myNode.firstChild);
+            }
+
+            $.getScript( "/static/lib/d3/d3.v3.min.js", function() {
+                $.getScript('/static/lib/NEEM-Visualization-Task-Tree/build/neemVisualizationTaskTree.js', function(){
                     var pathToLogFile = splitedQuery[1].split(')')[0].replace(new RegExp('\'', 'g'),'');
-                    parent.frames['cog-frame'].contentWindow.d3 = d3;
+                    parent.frames['cog-frame'].contentWindow.visualizeTaskTree = neemVisualizationTaskTree.visualizeTaskTree
                     parent.frames['cog-frame'].
-                    contentWindow.neemVisualizationTaskTree.
-                    visualizeTaskTree('/static'+pathToLogFile,'#chart','#chart', nodeClickCallback);
+                    contentWindow.visualizeTaskTree('/static'+pathToLogFile,'#chart','#chart', nodeClickCallback);
                 });
+            });
             return "true";
         }
 
         if(splitedQuery[0] && 'showTaskErrorMatrix' == splitedQuery[0]){
+            var myNode = document.getElementById("chart");
+            while (myNode.firstChild) {
+                myNode.removeChild(myNode.firstChild);
+            }
+
             $.getScript( "/static/lib/d3/d3.v4.min.js", function() {
-                var pathToLogFile = splitedQuery[1].split(')')[0].replace(new RegExp('\'', 'g'),'');
-                parent.frames['cog-frame'].contentWindow.d3 = d3;
-                parent.frames['cog-frame'].
-                contentWindow.showMatrx('/static'+pathToLogFile,'#chart');
+                $.getScript('/static/lib/NEEM-Co-Occurrence-Matrix/build/neemCoOccurrenceMatrix.js', function(){
+                    var pathToLogFile = splitedQuery[1].split(')')[0].replace(new RegExp('\'', 'g'),'');
+                    parent.frames['cog-frame'].
+                        contentWindow.showMatrx = showMatrx;
+                    parent.frames['cog-frame'].
+                        contentWindow.showMatrx('/static'+pathToLogFile,'#chart', matrixLabelClickCallback);
+
+                });
             });
 
             return 'true';
@@ -260,13 +275,31 @@ function PrologConsole(client, options) {
         return query;
     }
 
+    function matrixLabelClickCallback(d, nodes){
+        var typeName = "";
+
+        if (!isNaN(d)) {
+            //READING the error name
+            typeName = nodes[d].name;
+            var splitedTypeName = typeName.split(':');
+            typeName = splitedTypeName[0].toLowerCase() + ':' + splitedTypeName[1];
+        }
+        else{
+            //READING the task type
+            typeName = nodes[d[0].x].name;
+        }
+
+        console.log(typeName);
+    }
     function nodeClickCallback(node){
         var knowrob_uri = 'http://knowrob.org/kb/knowrob.owl#';
         console.log(knowrob_uri + node.name);
-        var q = 'asserta(last_clicked(\''+knowrob_uri + node.name+'\'))';
+        var q = 'retractall(last_clicked(_)),asserta(last_clicked(\''+knowrob_uri + node.name+'\'))';
+        prolog = that.newProlog()
         prolog.jsonQuery(q+", ignore(marker_publish)", function(result) {
-
-        }, mode=1); // incremental mode
+            console.log(result);
+            console.log('DONE');
+        }, mode=0);
     }
 
     // TODO(daniel): better use CSS class / disabled selector
