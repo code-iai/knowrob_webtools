@@ -272,6 +272,86 @@ function PrologConsole(client, options) {
             return 'true';
         }
 
+        if(splitedQuery[0] && 'showTaskTimeBarchart' == splitedQuery[0]){
+            var myNode = document.getElementById("chart");
+            while (myNode.firstChild) {
+                myNode.removeChild(myNode.firstChild);
+            }
+
+            $.getScript( "/static/lib/d3/d3.v3.min.js", function() {
+                $.getScript('/static/lib/NEEM-Hierarchy-Barchart/build/neemHierarchyBarchart.js', function(){
+                    var pathToLogFile = splitedQuery[1].split(')')[0].replace(new RegExp('\'', 'g'),'');
+                    parent.frames['cog-frame'].
+                        contentWindow.neemHierarchyBarchart.visualizeTaskTimeBarchart = neemHierarchyBarchart.visualizeTaskTimeBarchart;
+                    parent.frames['cog-frame'].
+                    contentWindow.neemHierarchyBarchart.visualizeTaskTimeBarchart('/static'+pathToLogFile,'#chart', 'test');
+
+                });
+            });
+
+            return 'true';
+        }
+
+        if(splitedQuery[0] && 'showTaskNumBarchart' == splitedQuery[0]){
+            var myNode = document.getElementById("chart");
+            while (myNode.firstChild) {
+                myNode.removeChild(myNode.firstChild);
+            }
+
+            $.getScript( "/static/lib/d3/d3.v3.min.js", function() {
+                $.getScript('/static/lib/NEEM-Hierarchy-Barchart/build/neemHierarchyBarchart.js', function(){
+                    var pathToLogFile = splitedQuery[1].split(')')[0].replace(new RegExp('\'', 'g'),'');
+                    parent.frames['cog-frame'].
+                        contentWindow.neemHierarchyBarchart.visualizeTaskNumBarchart = neemHierarchyBarchart.visualizeTaskNumBarchart;
+                    parent.frames['cog-frame'].
+                    contentWindow.neemHierarchyBarchart.visualizeTaskNumBarchart('/static'+pathToLogFile,'#chart', 'test');
+
+                });
+            });
+
+            return 'true';
+        }
+
+        if(splitedQuery[0] && 'showReasoningNumBarchart' == splitedQuery[0]){
+            var myNode = document.getElementById("chart");
+            while (myNode.firstChild) {
+                myNode.removeChild(myNode.firstChild);
+            }
+
+            $.getScript( "/static/lib/d3/d3.v3.min.js", function() {
+                $.getScript('/static/lib/NEEM-Hierarchy-Barchart/build/neemHierarchyBarchart.js', function(){
+                    var pathToLogFile = splitedQuery[1].split(')')[0].replace(new RegExp('\'', 'g'),'');
+                    parent.frames['cog-frame'].
+                        contentWindow.neemHierarchyBarchart.visualizeReasoningNumBarchart = neemHierarchyBarchart.visualizeReasoningNumBarchart;
+                    parent.frames['cog-frame'].
+                    contentWindow.neemHierarchyBarchart.visualizeReasoningNumBarchart('/static'+pathToLogFile,'#chart', 'test');
+
+                });
+            });
+
+            return 'true';
+        }
+
+        if(splitedQuery[0] && 'showReasoningTimeBarchart' == splitedQuery[0]){
+            var myNode = document.getElementById("chart");
+            while (myNode.firstChild) {
+                myNode.removeChild(myNode.firstChild);
+            }
+
+            $.getScript( "/static/lib/d3/d3.v3.min.js", function() {
+                $.getScript('/static/lib/NEEM-Hierarchy-Barchart/build/neemHierarchyBarchart.js', function(){
+                    var pathToLogFile = splitedQuery[1].split(')')[0].replace(new RegExp('\'', 'g'),'');
+                    parent.frames['cog-frame'].
+                        contentWindow.neemHierarchyBarchart.visualizeReasoningTimeBarchart = neemHierarchyBarchart.visualizeReasoningTimeBarchart;
+                    parent.frames['cog-frame'].
+                    contentWindow.neemHierarchyBarchart.visualizeReasoningTimeBarchart('/static'+pathToLogFile,'#chart', 'test');
+
+                });
+            });
+
+            return 'true';
+        }
+
         return query;
     }
 
@@ -286,10 +366,16 @@ function PrologConsole(client, options) {
         }
         else{
             //READING the task type
-            typeName = nodes[d[0].x].name;
+            var knowrob_uri = 'http://knowrob.org/kb/knowrob.owl#';
+            typeName = knowrob_uri+nodes[d[0].x].name;
         }
 
-        console.log(typeName);
+        var q = 'retractall(last_clicked(_)),asserta(last_clicked(\''+typeName+'\'))';
+        prolog = that.newProlog()
+        prolog.jsonQuery(q+", ignore(marker_publish)", function(result) {
+            console.log(result);
+            console.log('DONE');
+        }, mode=0);
     }
     function nodeClickCallback(node){
         var knowrob_uri = 'http://knowrob.org/kb/knowrob.owl#';

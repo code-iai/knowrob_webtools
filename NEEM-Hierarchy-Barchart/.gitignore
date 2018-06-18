@@ -1,0 +1,8 @@
+*~
+.idea
+dist
+build
+debug
+node_modules
+src/styles/main.css
+src/styles/main.css.map

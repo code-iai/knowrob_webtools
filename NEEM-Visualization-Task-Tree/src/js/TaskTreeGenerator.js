@@ -39,7 +39,8 @@ function createEntitiesDict(triple) {
 
 function createTaskDict(entityName){
     let propertyDict = entitiesDict[entityName];
-    if(propertyDict.hasOwnProperty(constants.URI_START_TIME)){
+    if(propertyDict.hasOwnProperty(constants.URI_START_TIME)
+        && !propertyDict.hasOwnProperty(constants.URI_REASONING_PREDICATE)){
         taskDict[entityName] = propertyDict;
     }
 }

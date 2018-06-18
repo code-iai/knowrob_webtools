@@ -1,0 +1,23 @@
+text {
+  font: 10px sans-serif;
+}
+
+rect.background {
+  fill: white;
+  overflow:auto;
+}
+
+.axis {
+  shape-rendering: crispEdges;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+}
+
+
+.barchart-container{
+  overflow: auto;
+}

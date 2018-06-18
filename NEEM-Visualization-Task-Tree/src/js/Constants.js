@@ -11,4 +11,5 @@ exports.URI_TASK_REASONING_TASK = exports.URI_PREFIX + 'reasoningTask';
 exports.URI_TASK_SUB_MOTION = exports.URI_PREFIX + 'subMotion';
 exports.URI_TASK_SUB_EVENT = exports.URI_PREFIX + 'subEvent';
 exports.URI_TASK_FAILURE = exports.URI_PREFIX + 'failure';
+exports.URI_REASONING_PREDICATE = exports.URI_PREFIX + 'predicate';
 
