@@ -325,7 +325,6 @@ function PrologConsole(client, options) {
                         contentWindow.neemHierarchyBarchart.visualizeReasoningNumBarchart = neemHierarchyBarchart.visualizeReasoningNumBarchart;
                     parent.frames['cog-frame'].
                     contentWindow.neemHierarchyBarchart.visualizeReasoningNumBarchart('/static'+pathToLogFile,'#chart', 'test');
-
                 });
             });
 
@@ -345,6 +344,66 @@ function PrologConsole(client, options) {
                         contentWindow.neemHierarchyBarchart.visualizeReasoningTimeBarchart = neemHierarchyBarchart.visualizeReasoningTimeBarchart;
                     parent.frames['cog-frame'].
                     contentWindow.neemHierarchyBarchart.visualizeReasoningTimeBarchart('/static'+pathToLogFile,'#chart', 'test');
+
+                });
+            });
+
+            return 'true';
+        }
+
+        if(splitedQuery[0] && 'showReasoningVsTaskTimePiechart' == splitedQuery[0]){
+            var myNode = document.getElementById("chart");
+            while (myNode.firstChild) {
+                myNode.removeChild(myNode.firstChild);
+            }
+
+            $.getScript( "/static/lib/d3/d3.v3.min.js", function() {
+                $.getScript('/static/lib/NEEM-Piechart/build/neemPiechart.js', function(){
+                    var pathToLogFile = splitedQuery[1].split(')')[0].replace(new RegExp('\'', 'g'),'');
+                    parent.frames['cog-frame'].
+                        contentWindow.neemPiechart.visualizeReasoningVsTaskTimePiechart = neemPiechart.visualizeReasoningVsTaskTimePiechart;
+                    parent.frames['cog-frame'].
+                    contentWindow.neemPiechart.visualizeReasoningVsTaskTimePiechart('/static'+pathToLogFile,'#chart', 'test');
+
+                });
+            });
+
+            return 'true';
+        }
+
+        if(splitedQuery[0] && 'showReasoningVsTaskNumPiechart' == splitedQuery[0]){
+            var myNode = document.getElementById("chart");
+            while (myNode.firstChild) {
+                myNode.removeChild(myNode.firstChild);
+            }
+
+            $.getScript( "/static/lib/d3/d3.v3.min.js", function() {
+                $.getScript('/static/lib/NEEM-Piechart/build/neemPiechart.js', function(){
+                    var pathToLogFile = splitedQuery[1].split(')')[0].replace(new RegExp('\'', 'g'),'');
+                    parent.frames['cog-frame'].
+                        contentWindow.neemPiechart.visualizeReasoningVsTaskNumPiechart = neemPiechart.visualizeReasoningVsTaskNumPiechart;
+                    parent.frames['cog-frame'].
+                    contentWindow.neemPiechart.visualizeReasoningVsTaskNumPiechart('/static'+pathToLogFile,'#chart', 'test');
+
+                });
+            });
+
+            return 'true';
+        }
+
+        if(splitedQuery[0] && 'showErrorVsTaskNumPiechart' == splitedQuery[0]){
+            var myNode = document.getElementById("chart");
+            while (myNode.firstChild) {
+                myNode.removeChild(myNode.firstChild);
+            }
+
+            $.getScript( "/static/lib/d3/d3.v3.min.js", function() {
+                $.getScript('/static/lib/NEEM-Piechart/build/neemPiechart.js', function(){
+                    var pathToLogFile = splitedQuery[1].split(')')[0].replace(new RegExp('\'', 'g'),'');
+                    parent.frames['cog-frame'].
+                        contentWindow.neemPiechart.visualizeErrorVsTaskNumPiechart = neemPiechart.visualizeErrorVsTaskNumPiechart;
+                    parent.frames['cog-frame'].
+                    contentWindow.neemPiechart.visualizeErrorVsTaskNumPiechart('/static'+pathToLogFile,'#chart', 'test');
 
                 });
             });
